@@ -248,7 +248,7 @@ public class JDiff extends Doclet {
     /** A description for HTML META tags. */
     static final String jDiffDescription = "JDiff is a Javadoc doclet which generates an HTML report of all the packages, classes, constructors, methods, and fields which have been removed, added or changed in any way, including their documentation, when two APIs are compared.";
     /** Keywords for HTML META tags. */
-    static final String jDiffKeywords = "diff, jdiff, javadiff, java diff, java difference, API difference, API diff, Javadoc, doclet";
+    static final String jDiffKeywords = "diff, jdiff, javadiff, java diff, java difference, API difference, difference between two APIs, API diff, Javadoc, doclet";
 
     /** The current JDiff version. */
     static final String version = "1.0.7";
