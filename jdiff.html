@@ -139,6 +139,7 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-firstsentence]
  [-docchanges]
  [-checkcomments]
+ [-packagesonly]
  [-retainnonprinting]
  [-excludetag &lt;<i>exclude tag</i>>]
  [-stats]
@@ -303,6 +304,18 @@ the output to the given directory.
    If this argument is used, JDiff
    will warn the user when the report is generated if there are comments
    which do not end in a period, question mark or exclamation mark. 
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-packagesonly</code></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   If this argument is used, JDiff
+   will not scan classes specified on the command line. This should
+   only need to be used with the &quot;jdiffjar&quot; script, when
+   comparing Jar files.
+   If this options is not used when comparing Jar files, duplicate
+   classes with no packages (&quot;anonymous&quot; classes) may be
+   wrongly reported by JDiff.
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
@@ -544,6 +557,15 @@ ANT is a general-purpose build tool and can be found
     <TD VALIGN="top">JDiff fails to handle <code>assert</code> in J2SE1.4</TD>
     <TD VALIGN="top">Be sure to use the <code>-source 1.4</code> argument to
     Javadoc to handle assertions present in J2SE1.4 source code.
+    </TD>
+  </TR>
+
+  <TR>
+    <TD VALIGN="top">Comparing Jar files results in duplicate class
+    changes being reported.</TD>
+    <TD VALIGN="top">Be sure to use the <code>-packagesonly</code>
+    option when using Jar files as the input to JDiff. You should not
+    need to use <code>-packagesonly</code> otherwise.
     </TD>
   </TR>
 
