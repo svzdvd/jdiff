@@ -31,6 +31,7 @@ SuperProduct.
   <!-- Values used for the old API -->
   <property name="OLD_SRC" value="${PROJECTBASE}\old"/>
   <property name="OLD_PACKAGES" value="RemovedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2"/>
+  <property name="OLD_CLASSES" value="NoPackage,NoPackageRemoved"/>
   <property name="OLD_DOCS" value="${PROJECTBASE}\olddocs\"/>
   <property name="OLD_API"  value="Old Test API"/>
   <property name="OLD_API_TITLE" value="JDiff Test Old API"/>
@@ -38,6 +39,7 @@ SuperProduct.
   <!-- Values used for the new API -->
   <property name="NEW_SRC" value="${PROJECTBASE}\new"/>
   <property name="NEW_PACKAGES" value="AddedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2"/>
+  <property name="NEW_CLASSES" value="NoPackage,NoPackageAdded"/>
   <property name="NEW_DOCS" value="${PROJECTBASE}\newdocs\"/>
   <property name="NEW_API"  value="New Test API"/>
   <property name="NEW_API_TITLE" value="JDiff Test New API"/>
@@ -77,7 +79,7 @@ SuperProduct.
   sourcepath="${OLD_SRC}"
   destdir="${OLD_DOCS}"
   verbose="no"
-  packagenames="${OLD_PACKAGES}" 
+  packagenames="${OLD_PACKAGES},${OLD_CLASSES}" 
   doctitle="${OLD_API_TITLE}"
   windowtitle="${OLD_API_TITLE}">
   <classpath>
@@ -95,7 +97,7 @@ SuperProduct.
   sourcepath="${NEW_SRC}"
   destdir="${NEW_DOCS}"
   verbose="no"
-  packagenames="${NEW_PACKAGES}" 
+  packagenames="${NEW_PACKAGES},${NEW_CLASSES}" 
   doctitle="${NEW_API_TITLE}"
   windowtitle="${NEW_API_TITLE}">
   <classpath>
@@ -111,7 +113,7 @@ SuperProduct.
 <target name="jdiff_old_api" depends="create_javadoc_dirs">
 <javadoc 
   sourcepath="${OLD_SRC}"
-  packagenames="${OLD_PACKAGES}">
+  packagenames="${OLD_PACKAGES},${OLD_CLASSES}">
   <doclet name="jdiff.JDiff"
     path="${JDIFF_INSTALL}\lib\jdiff.jar">
     <param name="-excludeclass" value="private"/>
@@ -132,7 +134,7 @@ SuperProduct.
 <target name="jdiff_new_api" depends="create_javadoc_dirs">
 <javadoc 
   sourcepath="${NEW_SRC}"
-  packagenames="${NEW_PACKAGES}">
+  packagenames="${NEW_PACKAGES},${NEW_CLASSES}">
   <doclet name="jdiff.JDiff"
     path="${JDIFF_INSTALL}\lib\jdiff.jar">
     <param name="-excludeclass" value="private"/>
