@@ -348,12 +348,19 @@ public class HTMLIndexes {
             oldsw = emitIndexEntry(currIndex, oldsw, multipleMarker);
     }
     
+    /** Whether to check for missing @since tags or not. */
+    public static boolean checkSinces = true;
+
+    /** The file used to output details of missing @since tags. */
     public static PrintWriter missingSincesFile = null;
+
     /** 
      * Emit elements in the given iterator
      * which are missing @since tags. 
      */
     public void emitMissingSinces(Iterator iter) {
+        if (!checkSinces)
+            return;
         if (missingSincesFile == null) {
             String sinceFileName = h_.outputDir + JDiff.DIR_SEP + "missingSinces.txt";
             try {
@@ -391,7 +398,7 @@ public class HTMLIndexes {
             if (currIndex.doc_ == null || currIndex.doc_.indexOf("@since") != -1) {
                 missingSincesFile.println("OK: " + details);
             } else {
-                missingSincesFile.println("MISSING @SINCE" + details);
+                missingSincesFile.println("MISSING @SINCE TAG: " + details);
             }
         }
     }
