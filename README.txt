@@ -12,8 +12,8 @@ examples/README.html
 
 ./jdiff.html contains the reference page for JDiff. 
 
-An example of using JDiff to compare the public APIs of J2SE1.2 and
-J2SE1.3 can be seen at: 
+Examples of using JDiff to compare the public APIs of J2SE1.3 and
+J2SE1.4 can be seen at: 
 
 http://www.jdiff.org 
 
@@ -30,7 +30,7 @@ http://sourceforge.net/projects/javadiff/
 
 SYSTEM REQUIREMENTS:
 
-JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4B3.
+JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4.
 
 You need to have xerces.jar (used for XML parsing) from the Apache
 project on your classpath. The version tested with was Xerces 1.4.2.

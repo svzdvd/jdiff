@@ -1,6 +1,6 @@
 <!-- An ANT build configuration file for the JDiff examples -->
 
-<project name="examples" default="jdiff" basedir=".">
+<project name="tests" default="jdiff" basedir=".">
 
 <description>
 This build file will generate Javadoc HTML for each version of the
@@ -21,7 +21,7 @@ SuperProduct.
 <target name="init">
   <property name="app.name" value="JDiff Tests"/>
   <!-- Change this to where JDiff is installed locally -->
-  <property name="JDIFF_INSTALL" value="c:\jdiff"/>
+  <property name="JDIFF_HOME" value="c:\jdiff"/>
   <!-- The location of the source code for the APIs to be compared -->
   <property name="PROJECTBASE" value="c:\jdiff\test"/>
 
@@ -48,7 +48,7 @@ SuperProduct.
   <property name="NEW_DOCS2" value="${PROJECTBASE}\newdocs2\"/>
 
   <path id="class.path">
-    <pathelement location="${JDIFF_INSTALL}\lib\xerces.jar"/>
+    <pathelement location="${JDIFF_HOME}\lib\xerces.jar"/>
   </path>
   <property name="BASE_URI" value="http://www.w3.org"/>
   
@@ -115,7 +115,7 @@ SuperProduct.
   sourcepath="${OLD_SRC}"
   packagenames="${OLD_PACKAGES},${OLD_CLASSES}">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_INSTALL}\lib\jdiff.jar">
+    path="${JDIFF_HOME}\lib\jdiff.jar">
     <param name="-excludeclass" value="private"/>
     <param name="-excludemember" value="private"/>
     <param name="-apiname" value="${OLD_API}"/>
@@ -136,7 +136,7 @@ SuperProduct.
   sourcepath="${NEW_SRC}"
   packagenames="${NEW_PACKAGES},${NEW_CLASSES}">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_INSTALL}\lib\jdiff.jar">
+    path="${JDIFF_HOME}\lib\jdiff.jar">
     <param name="-excludeclass" value="private"/>
     <param name="-excludemember" value="private"/>
     <param name="-apiname" value="${NEW_API}"/>
@@ -158,9 +158,9 @@ SuperProduct.
   private="yes"
   sourcepath="${JDIFF}"
   destdir="${NEW_DOCS}"
-  packagenames="${JDIFF_INSTALL}\lib\Null.java">
+  packagenames="${JDIFF_HOME}\lib\Null.java">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_INSTALL}\lib\jdiff.jar">
+    path="${JDIFF_HOME}\lib\jdiff.jar">
     <param name="-oldapi" value="${OLD_API}"/>
     <param name="-newapi" value="${NEW_API}"/>
     <param name="-javadocold" value="${OLD_DOCS}"/>
@@ -171,7 +171,7 @@ SuperProduct.
   </classpath>
 </javadoc>	
   <!-- Copy one image file. -->
-  <copy file="${JDIFF_INSTALL}\lib\background.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_HOME}\lib\background.gif" todir="${NEW_DOCS}"/>
 </target>
 
 <!-- Generate another HTML report comparing the old and new APIs, but -->
@@ -182,9 +182,9 @@ SuperProduct.
   private="yes"
   sourcepath="${JDIFF}"
   destdir="${NEW_DOCS2}"
-  packagenames="${JDIFF_INSTALL}\lib\Null.java">
+  packagenames="${JDIFF_HOME}\lib\Null.java">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_INSTALL}\lib\jdiff.jar">
+    path="${JDIFF_HOME}\lib\jdiff.jar">
     <param name="-docchanges"/>
     <param name="-stats"/>
     <param name="-oldapi" value="${OLD_API}"/>
@@ -198,8 +198,8 @@ SuperProduct.
 </javadoc>	
   <!-- Copy two image files. black.gif is only needed because -stats was -->
   <!-- used -->
-  <copy file="${JDIFF_INSTALL}\lib\background.gif" todir="${NEW_DOCS}"/>
-  <copy file="${JDIFF_INSTALL}\lib\black.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_HOME}\lib\background.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_HOME}\lib\black.gif" todir="${NEW_DOCS}"/>
 </target>
 
 <!-- ======================================================= -->

@@ -8,11 +8,11 @@ if (${?JAVA_HOME} == 0) then
     exit 1
 endif
 
-# Set JDIFF_INSTALL to the root of your local JDiff installation, 
+# Set JDIFF_HOME to the root of your local JDiff installation, 
 # e.g. $HOME/jdiff
-if (${?JDIFF_INSTALL} == 0) then
+if (${?JDIFF_HOME} == 0) then
     echo " " 
-    echo "Error:  The JDIFF_INSTALL environment variable must be set before running this script."
+    echo "Error:  The JDIFF_HOME environment variable must be set before running this script."
     echo  " " 
     exit 1
 endif
@@ -21,9 +21,9 @@ endif
 
 # This adds xerces.jar and ant.jar to the classpath, in case they are not 
 # there already.
-set CLASSPATH $JAVA_HOME/lib/tools.jar:$JDIFF_INSTALL/lib/xerces.jar:$JDIFF_INSTALL/lib/ant.jar:$JDIFF_INSTALL/lib/jdiff.jar:$CLASSPATH
+set CLASSPATH $JAVA_HOME/lib/tools.jar:$JDIFF_HOME/lib/xerces.jar:$JDIFF_HOME/lib/ant.jar:$JDIFF_HOME/lib/jdiff.jar:$CLASSPATH
 
-java -classpath %CLASSPATH% jdiff.JDiff $*
+java -classpath $CLASSPATH jdiff.JDiff $*
 
 # usage:
 #

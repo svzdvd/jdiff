@@ -1,0 +1,20 @@
+JDiff 1.0.7
+
+Known limitations, features and bugs which aren't likely to get fixed
+soon. The number which follows is the SourceForge bug id.
+
+1) HTML comments are also included in the diff between
+documentation. (510309).
+2) JDiff doesn't expand @docroot doc tags in Javadoc1.4
+3) JDiff does not support locales other than English (530063).
+4) Handling of @link tags in the first sentence of comments is not as 
+general as it should be. See convertAtLinks() comments.
+5) There is no -d option to redirect the generated XML output, or to
+indicate where to read the API XML files in from. This was a
+deliberate simplification, but is inconvenient on OS's which do not
+support soft links.
+6) strictfp and strict modifiers are not checked for between
+APIs (547422).
+7) An ANT task specifically for JDiff, as opposed to using the ANT
+core Javadoc task (521353).
+

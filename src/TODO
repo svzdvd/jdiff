@@ -44,8 +44,23 @@ parameters whose Javadoc named anchor has no space in it, but other such
 constructors do. This produces a link to the top of the page rather than the 
 correct place. Same with the Servlet report.
 
+538102. A developer may not want to show changes from
+native to non-native, etc, since this is really
+an implementation detail. An easy way to select
+what is shown would be useful.
+
+548382. Separate class and interface information might be useful, 
+since Javadoc does so.
+
+476310. There are some cases where a doc change is the only change. 
+Should this really count towards the API % change?
+
+
 Long Term:
 ---------
+
+549926 - add ability to emit XML representation of the changes, which can then
+be transformed into HTML.
 
 Ship .gz and .tar?
 
