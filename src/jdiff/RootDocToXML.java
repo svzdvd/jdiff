@@ -227,9 +227,11 @@ public class RootDocToXML {
             outputFile.println("</package>");
         }
 
-        // Deal with classes which have no package
+        // Deal with classes which have no package.
+        // If the RootDoc object has been created from a jar file
+        // this duplicates classes, so need to be disable it.
         ClassDoc[] cd = root.specifiedClasses();
-        if (cd != null && cd.length != 0) {
+        if (!packagesOnly && cd != null && cd.length != 0) {
             String pkgName = "anonymous";
             outputFile.println("<package name=\"" + pkgName + "\">");
             List classList = new LinkedList(Arrays.asList(cd));
@@ -1029,6 +1031,14 @@ public class RootDocToXML {
      * which is available in J2SE1.4. Default is that this is not set.
      */
     static boolean addSrcInfo = false;
+
+    /** 
+     * If set, scan classes with no packages. 
+     * If the source is  a jar file this may duplicates classes, so 
+     * disable it using the -packagesonly option. Default is that this is 
+     * not set.
+     */
+    static boolean packagesOnly = false;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;

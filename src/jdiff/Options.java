@@ -65,6 +65,7 @@ public class Options {
 
         if (opt.equals("-firstsentence"))    return 1;
         if (opt.equals("-docchanges"))    return 1;
+        if (opt.equals("-packagesonly"))    return 1;
 
         // Option to change the location for the existing Javadoc
         // documentation for the new API. Default is "../"
@@ -267,6 +268,10 @@ public class Options {
             if (options[i][0].toLowerCase().equals("-docchanges")) {
                 HTMLReportGenerator.reportDocChanges = true;
                 Diff.noDocDiffs = false;
+                continue;
+            }
+            if (options[i][0].toLowerCase().equals("-packagesonly")) {
+                RootDocToXML.packagesOnly = true;
                 continue;
             }
             if (options[i][0].toLowerCase().equals("-nosuggest")) {

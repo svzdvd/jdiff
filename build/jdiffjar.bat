@@ -37,13 +37,13 @@ REM Choose the level of comparison
 set DOCLEVEL=-private -excludeclass private -excludemember private
 
 REM STEP THREE. Generate XML for the old API.
-java -cp %INPUTJAR1%;%CLASSDOC%;%JDIFF%;%JAVA_HOME%\lib\tools.jar;%CLASSPATH% classdoc -docpath %INPUTJAR1% -doclet jdiff.JDiff -apiname %INPUTNAME1% %DOCLEVEL% 
+java -cp %INPUTJAR1%;%CLASSDOC%;%JDIFF%;%JAVA_HOME%\lib\tools.jar;%CLASSPATH% classdoc -docpath %INPUTJAR1% -doclet jdiff.JDiff -packagesonly -apiname %INPUTNAME1% %DOCLEVEL% 
 
 REM STEP FOUR. Generate XML for the new API
-java -cp %INPUTJAR2%;%CLASSDOC%;%JDIFF%;%JAVA_HOME%\lib\tools.jar;%CLASSPATH% classdoc -docpath %INPUTJAR2% -doclet jdiff.JDiff -apiname %INPUTNAME2% %DOCLEVEL%
+java -cp %INPUTJAR2%;%CLASSDOC%;%JDIFF%;%JAVA_HOME%\lib\tools.jar;%CLASSPATH% classdoc -docpath %INPUTJAR2% -doclet jdiff.JDiff -packagesonly -apiname %INPUTNAME2% %DOCLEVEL%
 
 REM STEP FIVE. Generate HTML report comparing the old and new APIs
 javadoc %DOCLEVEL% -J-Xmx128m -doclet jdiff.JDiff -docletpath %JDIFF% -d newdocs -stats -oldapi %INPUTNAME1% -newapi %INPUTNAME2% -javadocold "../../olddocs/" -javadocnew "../../newdocs/" %JDIFF_HOME%\lib\Null.java
 
-
-
+copy %JDIFF_HOME%\lib\background.gif newdocs
+copy %JDIFF_HOME%\lib\black.gif newdocs
