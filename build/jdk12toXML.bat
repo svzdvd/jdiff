@@ -1,5 +1,5 @@
 REM This would scan all the private classes and members too
-REM c:\local\jdk1.3.x\bin\javadoc -private -excludeclass private -excludemember private 
+REM javadoc -private -excludeclass private -excludemember private 
 
 REM Remember to set the sourcepath to find the Java source files on your system
 setlocal
