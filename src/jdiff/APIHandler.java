@@ -198,8 +198,10 @@ class APIHandler extends DefaultHandler {
         // Eliminate any whitespace at each end of the text.
         currentText = currentText.trim();        
         // Convert any @link tags to HTML links.
-        currentText = Comments.convertAtLinks(currentText, currentElement, 
-                                              api_.currPkg_, api_.currClass_);
+        if (convertAtLinks) {
+            currentText = Comments.convertAtLinks(currentText, currentElement, 
+                                                  api_.currPkg_, api_.currClass_);
+        }
         // Check that it is a sentence
         if (checkIsSentence && !currentText.endsWith(".") && 
             currentText.compareTo(Comments.placeHolderText) != 0) {
@@ -349,6 +351,9 @@ class APIHandler extends DefaultHandler {
         e.printStackTrace();
         System.exit(1);
     }    
+
+    /** If set, then attempt to convert @link tags to HTML links. */
+    private static boolean convertAtLinks = false;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;

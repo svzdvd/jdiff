@@ -628,7 +628,7 @@ public class HTMLReportGenerator {
             Iterator iter = classDiff.fieldsChanged.iterator();
             while (iter.hasNext()) {
                 MemberDiff memberDiff = (MemberDiff)(iter.next());
-                if (trace) System.out.println("Field " + memberDiff.name_ + " was changed from " + memberDiff.oldType_ + " to " + memberDiff.newType_);
+                if (trace) System.out.println("Field " + pkgName + "." + className + "." + memberDiff.name_ + " was changed from " + memberDiff.oldType_ + " to " + memberDiff.newType_);
                 writeFieldChangedTableEntry(pkgName, className, memberDiff);
             }
             writeTableEnd();
@@ -1355,12 +1355,10 @@ public class HTMLReportGenerator {
         emitChanges(memberDiff, 1);
         // Get the comment from the parent class if more appropriate
         if (memberDiff.modifiersChange_ != null) {
-            int parentIdx = memberDiff.modifiersChange_.indexOf("now defined in");
-            int endParentIndex = memberDiff.modifiersChange_.indexOf(reportFileExt + "\">");
-            if (parentIdx != -1 && endParentIndex != -1) {
-                // 24 is the length of this: now defined in <a href="
-                commentID = memberDiff.modifiersChange_.substring(parentIdx+24, endParentIndex);
-                commentID += "." + memberName + "_added(" + newSignature + ")";
+            int parentIdx = memberDiff.modifiersChange_.indexOf("now inherited from");
+            if (parentIdx != -1) {
+                // Change the commentID to pick up the appropriate method
+                // TODO
             }
         }
         emitComment(commentID, null, 2);
@@ -1489,12 +1487,9 @@ public class HTMLReportGenerator {
         emitChanges(memberDiff, 2);
         // Get the comment from the parent class if more appropriate
         if (memberDiff.modifiersChange_ != null) {
-            int parentIdx = memberDiff.modifiersChange_.indexOf("now defined in");
-            int endParentIndex = memberDiff.modifiersChange_.indexOf(reportFileExt + "\">");
-            if (parentIdx != -1 && endParentIndex != -1) {
-                // 24 is the length of this: now defined in <a href="
-                commentID = memberDiff.modifiersChange_.substring(parentIdx+24, endParentIndex);
-                commentID += "." + memberName;
+            int parentIdx = memberDiff.modifiersChange_.indexOf("now inherited from");
+            if (parentIdx != -1) {
+                // TODO
             }
         }
         emitComment(commentID, null, 2);

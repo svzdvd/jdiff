@@ -48,13 +48,25 @@ changed because the documentation was inherited from a superclass.
 BUG? The MergeChanges code may not be transferring all change information into 
 the MemberDiff for methods and fields?
 
+MINOR BUG: The end of sentence algorithm in RootDocToXML.java is not working
+very well on the text for javax.swing.AbstractCellEditor in J2SE1.3, possibly 
+because it starts with @version
+
+
 DESIGN
 ======
 
 Short Term:
 ----------
 
+linkToClass() could actually link to a member now it is using Javadoc pages
+
+Get the comments for elements moved to their parents
+
 Compare new test results to old test results to check parent/child work
+
+Does not check when there is a change in the class in which a locally defined 
+method is overriding another method.
 
 Process the Xenu link checker output
 
@@ -202,7 +214,8 @@ Avoid single letter indexes with just one entry on a new line
 If a return type has a [] in it, browser may break the line before the []
 Maybe the table should be name and a row under it for the description , to stop cramped names and descriptions?
 
-black.gif is only needed if -stats is used
+Add note that links in docdiffs may not necessarily work, since some of them
+are written expecting to be in documents in the Java API tree.
 
 MISCELLANEOUS
 =============

@@ -706,7 +706,7 @@ public class RootDocToXML {
         int index = -1;
         // Handle some special cases
         int fromindex = 0;
-        int ellipsis = text.indexOf(". . ."); // Handles one instances of this
+        int ellipsis = text.indexOf(". . ."); // Handles one instance of this
         if (ellipsis != -1)
             fromindex = ellipsis + 5;
         // Use the brute force approach.

@@ -103,7 +103,7 @@ public class API {
      * @param c The given ClassAPI object.
      * @param indent The number of spaces to indent the output.
      */
-    public void dumpClass(ClassAPI c, int indent) {
+    public static void dumpClass(ClassAPI c, int indent) {
         for (int i = 0; i < indent; i++) System.out.print(" ");
         if (c.isInterface_)
             System.out.println("Interface name: " + c.name_);

@@ -116,6 +116,7 @@ public class XMLToAPI {
     /** 
      * Add all the inherited methods and fields in the second class to 
      * the first class, marking them as inherited from the second class.
+     * Do not add a method or a field if it is already defined locally.
      *
      * Only elements at the specified visibility level or
      * higher appear in the XML file. All that remains to be tested for
@@ -129,24 +130,36 @@ public class XMLToAPI {
         if (parent.methods_.size() != 0) {
             Iterator iter = parent.methods_.iterator();
             while (iter.hasNext()) {
-                MethodAPI m = new MethodAPI((MethodAPI)(iter.next()));
-                if (m.inheritedFrom_ == null &&
+                MethodAPI m = (MethodAPI)(iter.next());
+                // See if it the method is overridden locally
+                boolean overridden = false;
+                Iterator iter2 = child.methods_.iterator();
+                while (iter2.hasNext()) {
+                    MethodAPI localM = (MethodAPI)(iter2.next());
+                    if (localM.name_.compareTo(m.name_) == 0 && 
+                        localM.getSignature().compareTo(m.getSignature()) == 0)
+                        overridden = true;
+                }
+                if (!overridden && m.inheritedFrom_ == null &&
                     m.modifiers_.visibility != null && 
                     m.modifiers_.visibility.compareTo("private") != 0) {
-                    m.inheritedFrom_ = fqParentName;
-                    child.methods_.add(m);
+                    MethodAPI m2 = new MethodAPI(m);
+                    m2.inheritedFrom_ = fqParentName;
+                    child.methods_.add(m2);
                 }
             }            
         }
         if (parent.fields_.size() != 0) {
             Iterator iter = parent.fields_.iterator();
             while (iter.hasNext()) {
-                FieldAPI f = new FieldAPI((FieldAPI)(iter.next()));
-                if (f.inheritedFrom_ == null &&
+                FieldAPI f = (FieldAPI)(iter.next());
+                if (child.fields_.indexOf(f) == -1 &&
+                    f.inheritedFrom_ == null &&
                     f.modifiers_.visibility != null && 
                     f.modifiers_.visibility.compareTo("private") != 0) {
-                    f.inheritedFrom_ = fqParentName;
-                    child.fields_.add(f);
+                    FieldAPI f2 = new FieldAPI(f);
+                    f2.inheritedFrom_ = fqParentName;
+                    child.fields_.add(f2);
                 }
             }            
         }

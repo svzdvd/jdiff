@@ -29,11 +29,19 @@ public class APIComparator {
         apiDiff = new APIDiff();
     }   
 
+    /** For easy local access to the old API object. */
+    private static API oldAPI_;
+    /** For easy local access to the new API object. */
+    private static API newAPI_;
+
     /** 
      * Compare two APIs. 
      */
     public void compareAPIs(API oldAPI, API newAPI) {
         System.out.println("JDiff: comparing the old and new APIs ...");
+        oldAPI_ = oldAPI;
+        newAPI_ = newAPI;
+
         double differs = 0.0;
 
         apiDiff.oldAPIName_ = oldAPI.name_;
@@ -570,12 +578,12 @@ public class APIComparator {
         if (inh != 0)
             differs = true;
         if (inh == 1) {
-            methodDiff.addModifiersChange("Method was locally defined, but is now defined in " + linkToClass(newMethod.inheritedFrom_) + ".");
+            methodDiff.addModifiersChange("Method was locally defined, but is now inherited from " + linkToClass(newMethod.inheritedFrom_, true) + ".");
         } else if (inh == 2) {
-            methodDiff.addModifiersChange("Method was defined in " + linkToClass(oldMethod.inheritedFrom_) + ", but is now defined locally.");
+            methodDiff.addModifiersChange("Method was inherited from " + linkToClass(oldMethod.inheritedFrom_, false) + ", but is now defined locally.");
         } else if (inh == 3) {
-            methodDiff.addModifiersChange("Method was defined in " + 
-                                          linkToClass(oldMethod.inheritedFrom_) + ", but is now defined in " + linkToClass(newMethod.inheritedFrom_) + ".");
+            methodDiff.addModifiersChange("Method was inherited from " + 
+                                          linkToClass(oldMethod.inheritedFrom_, false) + ", and is now inherited from " + linkToClass(newMethod.inheritedFrom_, true) + ".");
         }
         // Abstract or not
         if (oldMethod.isAbstract_ != newMethod.isAbstract_) {
@@ -695,11 +703,11 @@ public class APIComparator {
                         if (inh != 0)
                             differs = true;
                         if (inh == 1) {
-                            memberDiff.addModifiersChange("Field was locally defined, but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
+                            memberDiff.addModifiersChange("Field was locally defined, but is inherited from " + linkToClass(newField.inheritedFrom_, true) + ".");
                         } else if (inh == 2) {
-                            memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined locally.");
+                            memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField.inheritedFrom_, false) + ", but is now defined locally.");
                         } else if (inh == 3) {
-                            memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
+                            memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField.inheritedFrom_, false) + ", and is now inherited from " + linkToClass(newField.inheritedFrom_, true) + ".");
                         }
                         // Transient or not
                         if (oldField.isTransient_ != newField.isTransient_) {
@@ -828,15 +836,38 @@ public class APIComparator {
     }
 
     /** 
-     * Generate a link to a class changes page. 
+     * Given the name of the class, generate a link to a relevant page.
+     * This was originally for inheritance changes, so the JDiff page could be a 
+     * class changes page, or a section in a removed or added classes 
+     * table. Since there was no easy way to tell which type the link
+     * should be, it is now just a link to the relevant Javadoc page.
      */
-    public static String linkToClass(String className) {
-        int idx = className.lastIndexOf(".");
-        String name = className;
-        if (idx != -1)
-            name = className.substring(idx+1);
-        return "<a href=\"" + className + 
-            HTMLReportGenerator.reportFileExt + "\">" + name + "</a>";
+    public static String linkToClass(String className, boolean useNew) {
+        if (!useNew && HTMLReportGenerator.oldDocPrefix == null) {
+            return "<tt>" + className + "</tt>"; // No link possible
+        }
+        API api = oldAPI_;
+        String prefix = HTMLReportGenerator.oldDocPrefix;
+        if (useNew) {
+            api = newAPI_;
+            prefix = HTMLReportGenerator.newDocPrefix;
+        }
+        ClassAPI cls = (ClassAPI)api.classes_.get(className);
+        if (cls == null) {
+            if (useNew)
+                System.out.println("Warning: class " + className + " not found in the new API when creating Javadoc link");
+            else
+                System.out.println("Warning: class " + className + " not found in theold  API when creating Javadoc link");
+            return "<tt>" + className + "</tt>";
+        }
+        int clsIdx = className.indexOf(cls.name_);
+        if (clsIdx != -1) {
+            String pkgRef = className.substring(0, clsIdx);
+            pkgRef = pkgRef.replace('.', '/');
+            return "<a href=\"" + prefix + pkgRef + cls.name_ + ".html\" target=\"_top\">" + 
+                "<tt>" + cls.name_ + "</tt></a>";
+        }
+        return "<tt>" + className + "</tt>";
     }    
 
     /** 
