@@ -2,7 +2,10 @@
 * JDiff Work Items *
 ********************
 
-1.0.3 - JDK1.4, statistics, Pete's bugs, more tests, license change, color diffs from Pete?
+1.0.3 - JDK1.4, statistics, Pete's bugs, more tests, license change
+
+Check 1.4 method removed (bug?) http://java.sun.com/j2se/1.4/docs/api/java/awt/Window.html#applyResourceBundle(java.lang.String)
+file://C:\jdiff\jdkchanges\changes\java.awt.Window.html#java.awt.Window.applyResourceBundle_removed
 
 KNOWN BUGS
 ==========
