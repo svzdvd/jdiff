@@ -394,7 +394,6 @@ alternatively it can be downloaded from
 <hr>
 
 <H2><A NAME="troubleshooting"></A>TROUBLESHOOTING</H2>
-<!-- Change table to an easier format to read. Add more entries. -->
 <BLOCKQUOTE>
 <TABLE border="1" width="100%">
   <TR>
@@ -518,8 +517,13 @@ follows:
     <TD VALIGN="top">Error: file <i>X</i> does not exist for the [old|new] API.</TD>
     <TD VALIGN="top">The XML files corresponding to the names given to
     <code>-oldapi</code> and <code>-newapi</code> are not in the
-    current directory. This may bee because they have not yet been
-    generated, or were generated elsewhere.</TD>
+    current directory. This may be because the XML files have not yet been
+    generated, or were generated elsewhere.<br>
+    It can also occur if the
+    XML file was generated with one API identifier, and is now being
+    read in with another identifier. Either use the same identifier,
+    or change the &lt;api&gt; name element value in the XML file to the new
+    API identifier.</TD>
   </TR>
   <TR>
     <TD VALIGN="top">Error: no API identifier found in the XML file <i>X</i>.</TD>
@@ -705,7 +709,7 @@ details.
 <p align="center">
 <font size="-1">
 Copyright &copy; 2001 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
-<a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.4.
+<a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.5.
 </font>
 </p>
 

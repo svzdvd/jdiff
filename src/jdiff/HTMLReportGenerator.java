@@ -75,7 +75,8 @@ public class HTMLReportGenerator {
             writeText("<BODY>");
 
             // Add the nav bar for the summary page
-            writeNavigationBar(reportFileName + "-summary", null, 0, true,
+            writeNavigationBar(reportFileName + "-summary", null, null, 
+                               null, 0, true,
                                apiDiff.packagesRemoved.size() != 0, 
                                apiDiff.packagesAdded.size() != 0,
                                apiDiff.packagesChanged.size() != 0);
@@ -197,10 +198,10 @@ public class HTMLReportGenerator {
 
             // Now emit a separate file for each changed package.
             writeText("<!-- Start of packages section -->");
-            iter = apiDiff.packagesChanged.iterator();
-            while (iter.hasNext()) {
-                PackageDiff pkgDiff = (PackageDiff)(iter.next());
-                reportChangedPackage(pkgDiff);
+            PackageDiff[] pkgDiffs = new PackageDiff[apiDiff.packagesChanged.size()];
+            pkgDiffs = (PackageDiff[])apiDiff.packagesChanged.toArray(pkgDiffs);
+            for (int i = 0; i < pkgDiffs.length; i++) {
+                reportChangedPackage(pkgDiffs, i);
             }
         }
     }
@@ -208,7 +209,8 @@ public class HTMLReportGenerator {
     /** 
      * Write out the details of a changed package in a separate file. 
      */
-    public void reportChangedPackage(PackageDiff pkgDiff) {
+    public void reportChangedPackage(PackageDiff[] pkgDiffs, int pkgIndex) {
+        PackageDiff pkgDiff = pkgDiffs[pkgIndex];
         String pkgName = pkgDiff.name_;
 
         PrintWriter oldReportFile = null;
@@ -238,7 +240,19 @@ public class HTMLReportGenerator {
         pkgRef = newDocPrefix + pkgRef + "/package-summary";
         // A link to the package in the new API
         String linkedPkgName = "<A HREF=\"" + pkgRef + ".html\" target=\"_top\"><tt>" + pkgName + "</tt></A>";
-        writeSectionHeader("Package " + linkedPkgName, pkgName, null, 1,
+        String prevPkgRef = null;
+        if (pkgIndex != 0) {
+            prevPkgRef = "pkg_" + pkgDiffs[pkgIndex-1].name_ + reportFileExt;
+        }
+        // Create the HTML link to the next package
+        String nextPkgRef = null;
+        if (pkgIndex < pkgDiffs.length - 1) {
+            nextPkgRef = "pkg_" + pkgDiffs[pkgIndex+1].name_ + reportFileExt;
+        }
+        
+        writeSectionHeader("Package " + linkedPkgName, pkgName, 
+                           prevPkgRef, nextPkgRef,
+                           null, 1,
                            pkgDiff.classesRemoved.size() != 0, 
                            pkgDiff.classesAdded.size() != 0,
                            pkgDiff.classesChanged.size() != 0);
@@ -351,14 +365,14 @@ public class HTMLReportGenerator {
             }
             writeTableEnd();
             // Now emit a separate file for each changed class and interface.
-            iter = pkgDiff.classesChanged.iterator();
-            while (iter.hasNext()) {
-                ClassDiff classDiff = (ClassDiff)(iter.next());
-                reportChangedClass(pkgName, classDiff);
+            ClassDiff[] classDiffs = new ClassDiff[pkgDiff.classesChanged.size()];
+            classDiffs = (ClassDiff[])pkgDiff.classesChanged.toArray(classDiffs);
+            for (int k = 0; k < classDiffs.length; k++) {
+                reportChangedClass(pkgName, classDiffs, k);
             }
         }
         
-        writeSectionFooter(pkgName, null, 1);
+        writeSectionFooter(pkgName, prevPkgRef, nextPkgRef, null, 1);
         writeHTMLFooter();
         reportFile.close();
         reportFile = oldReportFile;
@@ -367,7 +381,8 @@ public class HTMLReportGenerator {
     /** 
      * Write out the details of a changed class in a separate file. 
      */
-    public void reportChangedClass(String pkgName, ClassDiff classDiff) {
+    public void reportChangedClass(String pkgName, ClassDiff[] classDiffs, int classIndex) {
+        ClassDiff classDiff = classDiffs[classIndex];
         String className = classDiff.name_;
 
         PrintWriter oldReportFile = null;
@@ -402,6 +417,17 @@ public class HTMLReportGenerator {
         // A link to the class in the new API
         String linkedClassName = "<A HREF=\"" + classRef + ".html\" target=\"_top\"><tt>" + className + "</tt></A>";
         String lcn = pkgName + "." + linkedClassName;
+        //Links to the previous and next classes
+        String prevClassRef = null;
+        if (classIndex != 0) {
+            prevClassRef = pkgName + "." + classDiffs[classIndex-1].name_ + reportFileExt;
+        }
+        // Create the HTML link to the next package
+        String nextClassRef = null;
+        if (classIndex < classDiffs.length - 1) {
+            nextClassRef = pkgName + "." + classDiffs[classIndex+1].name_ + reportFileExt;
+        }
+
         if (classDiff.isInterface_)
             lcn = "Interface " + lcn;
         else
@@ -415,7 +441,8 @@ public class HTMLReportGenerator {
         boolean hasFields = classDiff.fieldsRemoved.size() != 0 ||
             classDiff.fieldsAdded.size() != 0 ||
             classDiff.fieldsChanged.size() != 0;
-        writeSectionHeader(lcn, pkgName, className, 2,
+        writeSectionHeader(lcn, pkgName, prevClassRef, nextClassRef, 
+                           className, 2,
                            hasCtors, hasMethods, hasFields);
 
         if (classDiff.inheritanceChange_ != null)
@@ -450,7 +477,7 @@ public class HTMLReportGenerator {
         reportAllMethods(pkgName, classDiff);
         reportAllFields(pkgName, classDiff);
 
-        writeSectionFooter(pkgName, className, 2);
+        writeSectionFooter(pkgName, prevClassRef, nextClassRef, className, 2);
         writeHTMLFooter();
         reportFile.close();
         reportFile = oldReportFile;
@@ -659,17 +686,23 @@ public class HTMLReportGenerator {
      * 
      * @param title Title of the header. Contains any links necessary.
      * @param packageName The name of the current package, with no slashes or 
-     *                    links in it. may be null
+     *                    links in it. May be null
+     * @param prevElemLink An HTML link to the previous element (a package or 
+     *                     class). May be null.
+     * @param nextElemLink An HTML link to the next element (a package or 
+     *                     class). May be null.
      * @param className The name of the current class, with no slashes or 
-     *                  links in it. May be null
+     *                  links in it. May be null.
      * @param level 0 = overview, 1 = package, 2 = class/interface
      */
     public void writeSectionHeader(String title, String packageName, 
+                                   String prevElemLink, String nextElemLink,
                                    String className, int level, 
                                    boolean hasRemovals, 
                                    boolean hasAdditions, 
                                    boolean hasChanges) {
-        writeNavigationBar(packageName, className, level, true,
+        writeNavigationBar(packageName, prevElemLink, nextElemLink,
+                           className, level, true,
                            hasRemovals, hasAdditions, hasChanges);
         if (level != 0) {
             reportFile.println("<H2>");
@@ -683,14 +716,20 @@ public class HTMLReportGenerator {
      * 
      * @param packageName The name of the current package, with no slashes or 
      *                    links in it. may be null
+     * @param prevElemLink An HTML link to the previous element (a package or 
+     *                     class). May be null.
+     * @param nextElemLink An HTML link to the next element (a package or 
+     *                     class). May be null.
      * @param className The name of the current class, with no slashes or 
      *                  links in it. May be null
      * @param level 0 = overview, 1 = package, 2 = class/interface
      */
     public void writeSectionFooter(String packageName, 
+                                   String prevElemLink, String nextElemLink,
                                    String className, int level) {
         reportFile.println("<HR>");
-        writeNavigationBar(packageName, className, level, false,
+        writeNavigationBar(packageName, prevElemLink, nextElemLink, 
+                           className, level, false,
                            false, false, false);
     }
     
@@ -699,11 +738,17 @@ public class HTMLReportGenerator {
      * 
      * @param pkgName The name of the current package, with no slashes or 
      *                links in it.
+     * @param prevElemLink An HTML link to the previous element (a package or 
+     *                     class). May be null.
+     * @param nextElemLink An HTML link to the next element (a package or 
+     *                     class). May be null.
      * @param className The name of the current class, with no slashes or 
      *                links in it. May be null.
      * @param level 0 = overview, 1 = package, 2 = class/interface
      */
-    public void writeNavigationBar(String pkgName, String className, int level,
+    public void writeNavigationBar(String pkgName,
+                                   String prevElemLink, String nextElemLink,
+                                   String className, int level,
                                    boolean upperNavigationBar,
                                    boolean hasRemovals, boolean hasAdditions, 
                                    boolean hasChanges) {
@@ -759,13 +804,30 @@ public class HTMLReportGenerator {
         // Links for frames and no frames
         reportFile.println("<TR>");
 
-        // TODO Links for prev and next in one table cell
-//        reportFile.println("  <TD BGCOLOR=\"" + bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">");
-//        reportFile.println("&nbsp;PREV&nbsp;");
-//        reportFile.println("&nbsp;NEXT</FONT></TD>");
-
-        // Both of the frames and non-frames links are in one table cell
-        reportFile.println("  <TD BGCOLOR=\"" + bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">");
+        // All of the previous and next links, and the frames and non-frames 
+        // links are in one table cell
+        reportFile.println("  <TD BGCOLOR=\"" + bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">");        
+        // Display links to the previous and next packages or classes
+        if (level != 0) {
+            String elemName = "CLASS";
+            if (className == null) {
+                elemName = "PACKAGE";
+            }
+            if (prevElemLink == null) {
+                reportFile.println("&nbsp;<B>PREV " + elemName + "</B>&nbsp;");
+            } else {
+                reportFile.println("&nbsp;<A HREF=\"" + prevElemLink + "\"><B>PREV " + elemName + "</B></A>");
+            }
+            if (nextElemLink == null) {
+                reportFile.println("&nbsp;<B>NEXT " + elemName + "</B>&nbsp;");
+            } else {
+                reportFile.println("&nbsp;<A HREF=\"" + nextElemLink + "\"><B>NEXT " + elemName + "</B></A>");
+            }
+            reportFile.println("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+        } else {
+            reportFile.println("  &nbsp;&nbsp;");        
+        }
+        // Links for frames and non-frames.
         reportFile.println("  <A HREF=\"" + "../" + reportFileName + reportFileExt + "\" TARGET=\"_top\"><B>FRAMES</B></A>  &nbsp;");
         if (className == null) {
             if (level == 0) {

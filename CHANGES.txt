@@ -1,4 +1,5 @@
 1.0.5.
+Added links to previous and next packages and classes.
 Corrected somes uses of JDK/J2SE and the capitalization of Javadoc.
 
 1.0.4

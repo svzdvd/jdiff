@@ -180,8 +180,6 @@ javax.swing.DefaultCellEditor
 REPORT PRESENTATION
 ===================
 
-Add next, prev class etc links
-
 Better text demo of showing all private changes in APIs
 
 Fix the small size of old and new links
@@ -189,6 +187,8 @@ Fix the small size of old and new links
 Add ability to have no newjavadoc links either
 
 Better presentation of all the documentation changes - sorted?
+
+Run HTML checker on all generated HTML files
 
 Avoid single letter indexes with just one entry on a new line
 If a return type has a [] in it, browser may break the line before the []
