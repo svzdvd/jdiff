@@ -8,6 +8,12 @@ Jan Rueten-Budde <jan@rueten-budde.de> noted that the -excludetag
 option was not working for package-level documentation block,
 and that its documentation needed improvement.
 
+Jan also observed that only the simple names, not the fully-qualified names of 
+exceptions were being saved and compared. This meant that if an exception 
+changed class, but kept the same name, the change was not detected. The 
+qualified name is now used. See the troubleshooting section for how to use the 
+simple names if the entries in reports are too large.
+
 1.0.8 - 31st July 2002
 Completed feature request 543260 (add an option to emit XML in another 
 directory) - thanks to Martin Bosak for these changes.
