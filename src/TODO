@@ -19,10 +19,6 @@ file://C:\jdiff\jdkchanges\changes\java.awt.Window.html#java.awt.Window.applyRes
 
 More work for JDK1.4:
 
--source  1.4 
-Necessary to enable javadoc to handle assertions present in J2SE v 1.4 source 
-code. This option documents code that compiles using "javac -source 1.4", 
-
 Should JDiff check for changes in @value values?
 
 Is there a problem with links to non-existent documentation, from where the 

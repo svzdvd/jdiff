@@ -368,8 +368,8 @@ sentence from the appropriate JavaDoc comment.
 <H2><A NAME="environment"></A>ENVIRONMENT</H2>
 
 <BLOCKQUOTE>
-The JDiff doclet has been tested with JDK1.2 and JDK1.3 on
-Windows 2000 1.1 and Windows NT 4.0SP6. It does not work with JDK1.4 yet.
+The JDiff doclet has been tested with JDK1.2, JDK1.3 and JDK1.4B2 on
+Windows 2000 1.1 and Windows NT 4.0SP6.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>
@@ -414,6 +414,7 @@ alternatively it can be downloaded from
     for packages. Of course, comments can still be 
     <a href="#addingcomments">added by hand</a>.</TD>
   </TR>
+
   <TR>
     <TD VALIGN="top">JDiff takes a long time to load XML, or throws 
     <code>java.net.NoRouteToHostException: Operation timed out</code>.</TD>
@@ -421,6 +422,7 @@ alternatively it can be downloaded from
     currently requires the ability to make an HTTP connection. Check
     your network and try again, or see the next suggestion.</TD>
   </TR>
+
   <TR>
     <TD VALIGN="top">From behind a firewall, 
     JDiff fails to load one of the XML files.</TD>
@@ -430,8 +432,16 @@ alternatively it can be downloaded from
     where <code>PROXYSERVER</code> is the hostname or IP address of
     your proxy server, and <code>PORT</code> is the port number of the 
     proxy server. 
-</TD>
+    </TD>
   </TR>
+
+  <TR>
+    <TD VALIGN="top">JDiff fails to handle <code>assert</code> in JDK1.4</TD>
+    <TD VALIGN="top">Use the <code>-source 1.4</code> argument to
+    JavaDoc to handle assertions present in J2SE v 1.4 source code.
+    </TD>
+  </TR>
+
 </TABLE>
 </BLOCKQUOTE>
 
@@ -631,11 +641,9 @@ JDK1.3, which is approximately 8%.
 <H2><A NAME="limitations"></A>LIMITATIONS</H2>
 <BLOCKQUOTE>
 <ol>
-<li>JDiff does not tell you how two web pages differ. Nor does it
-compare the contents of JavaDoc web pages. So if you change the text
-in comments
-between versions, don't expect to see the changes appear in JDiff output.</li>
-<li>If JDiff could tell you what had changed about the way two
+<li>JDiff does not tell you how two web pages differ.</li>
+<li> Nor does it
+compare waht the methods in an API do; if JDiff could tell you what had changed about the way two
 versions of an API execute, the <a
 href="http://www.wikipedia.com/wiki.fcgi?action=browse&id=Halting_Problem&oldid=Halting_problem">Halting
 Problem</a> would be solved, and our lives would be very different.</li>
