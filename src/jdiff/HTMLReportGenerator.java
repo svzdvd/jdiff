@@ -249,9 +249,9 @@ public class HTMLReportGenerator {
                 newPkgRef = newDocPrefix + newPkgRef;
             if (oldPkgRef != null) 
                 pkgDiff.documentationChange_ += "<A HREF=\"" + oldPkgRef +
-                    ".html\" target=\"_self\"><tt>old</tt></A> to ";
+                    ".html#package_description\" target=\"_self\"><tt>old</tt></A> to ";
             pkgDiff.documentationChange_ += "<A HREF=\"" + newPkgRef + 
-                ".html\" target=\"_self\"><tt>new</tt></A>. ";
+                ".html#package_description\" target=\"_self\"><tt>new</tt></A>. ";
             writeText(pkgDiff.documentationChange_);
         }
 
