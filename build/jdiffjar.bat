@@ -1,5 +1,6 @@
 REM Use the classdoc application from
-REM http://www.jensgulden.de/, Jens Gulden, mail@jensgulden.de,
+REM http://classdoc.sourceforge.net or http://www.jensgulden.de/, by 
+REM Jens Gulden, mail@jensgulden.de,
 REM to call a doclet such as jdiff on a .jar file rather than on source.
 REM This script can be used to run JDiff on two jar files.
 REM
