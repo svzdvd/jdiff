@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
+<config
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+  xsi:noNamespaceSchemaLocation='config.xsd'
+  name="Example Configuration"
+  jdversion="1.0.6">
+
+<!-- This file contains a configuration for running Javadoc. and -->
+<!-- optionally for running JDiff to compare two APIs. -->
+
+<!-- If there is only one API element, Javadoc is produced for it, -->
+<!-- using the arguments in javadoc element. -->
+<!-- TODO use the line continuation char in javadoc? -->
+<api name="Old Test API">
+  <javadoc args="-private -doctitle \"JDiff Test Old API\"
+  -windowtitle \"JDiff Test Old API\""/>
+  <!-- Can have multiple source elements -->
+  <source location="old" packages=
+    "RemovedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2"/>
+</api>
+
+<!-- If there are two API elements in a config file, JDiff reports the -->
+<!-- changes between the first and second API. Javadoc output is also -->
+<!-- produced for each API if javadoc is specified. -->
+<api name="New Test API">
+  <javadoc args="-private -doctitle \"JDiff Test New API\" -windowtitle \"JDiff Test New API\""/>
+  <!-- Can have multiple source elements -->
+  <source location="new" packages=
+    "AddedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2"/>
+  <!-- Arguments for jdiff are passed in the jdiff element -->
+  <jdiff baseURI="file:///C:/jdiff/lib"/>
+</api>
+
+<!-- Configuration of each JDiff report using the same two APIs. -->
+<report output="newdocs"
+       args="-private -excludeclass private -excludemember private" 
+       javadocold="../../olddocs/" javadocnew="../../newdocs/" stats="true"/>
+<report output="newdocs2"
+       args="-private -excludeclass private -excludemember private" 
+       javadocold="../../olddocs/" javadocnew="../../newdocs/"
+       stats="true" nodocchanges="true"/>
+</config>
