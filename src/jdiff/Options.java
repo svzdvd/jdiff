@@ -59,6 +59,11 @@ public class Options {
         if (opt.equals("-oldapi"))    return 2;
         if (opt.equals("-newapi"))    return 2;
 
+        // Options to control the location of the XML files
+        if (opt.equals("-apidir"))       return 2;
+        if (opt.equals("-oldapidir"))    return 2;
+        if (opt.equals("-newapidir"))    return 2;
+
         // Options for the exclusion level for classes and members
         if (opt.equals("-excludeclass"))    return 2;
         if (opt.equals("-excludemember"))    return 2;
@@ -169,7 +174,15 @@ public class Options {
                 }
                 continue;
             }
-            if (options[i][0].toLowerCase().equals("-oldapi")) {
+            if (options[i][0].toLowerCase().equals("-apidir")) {
+                if (options[i].length < 2) {
+                    err.msg("No directory specified after -apidir option.");
+                } else {
+		    RootDocToXML.outputDirectory = options[i][1];
+                }
+                continue;
+            }
+	    if (options[i][0].toLowerCase().equals("-oldapi")) {
                 if (options[i].length < 2) {
                     err.msg("No version identifier specified after -oldapi option.");
                 } else if (JDiff.writeXML) {
@@ -180,6 +193,14 @@ public class Options {
                     JDiff.oldFileName =  filename + ".xml";
                     JDiff.writeXML = false;
                     JDiff.compareAPIs = true;
+                }
+                continue;
+            }
+            if (options[i][0].toLowerCase().equals("-oldapidir")) {
+                if (options[i].length < 2) {
+                    err.msg("No directory specified after -oldapidir option.");
+                } else { 
+                	JDiff.oldDirectory = options[i][1];
                 }
                 continue;
             }
@@ -194,6 +215,14 @@ public class Options {
                     JDiff.newFileName =  filename + ".xml";
                     JDiff.writeXML = false;
                     JDiff.compareAPIs = true;
+                }
+                continue;
+            }
+            if (options[i][0].toLowerCase().equals("-newapidir")) {
+                if (options[i].length < 2) {
+                    err.msg("No directory specified after -newapidir option.");
+                } else { 
+                	JDiff.newDirectory = options[i][1];
                 }
                 continue;
             }
@@ -366,7 +395,10 @@ public class Options {
         
         System.err.println("  Optional Arguments");
         System.err.println();
-        System.err.println("  -d <directory> Destination directory for output files");
+        System.err.println("  -d <directory> Destination directory for output HTML files");
+        System.err.println("  -apidir <directory> Destination directory for the XML file generated with the '-apiname' argument.");
+        System.err.println("  -oldapidir <directory> Location of the XML file for the old API");
+        System.err.println("  -newapidir <directory> Location of the XML file for the new API");
         System.err.println("  -sourcepath <location of Java source files>");
         System.err.println("  -javadocnew <location of existing Javadoc files for the new API>");
         System.err.println("  -javadocold <location of existing Javadoc files for the old API>");

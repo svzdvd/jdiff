@@ -26,9 +26,18 @@ public class RootDocToXML {
      * @return true if no problems encountered
      */
     public static boolean writeXML(RootDoc root) {
+    	String tempFileName = outputFileName;
+    	if (outputDirectory != null) {
+	    tempFileName = outputDirectory;
+	    if (!tempFileName.endsWith(JDiff.DIR_SEP)) 
+		tempFileName += JDiff.DIR_SEP;
+	    tempFileName += outputFileName;
+    	}
+
         try {
-            FileOutputStream fos = new FileOutputStream(outputFileName);
+            FileOutputStream fos = new FileOutputStream(tempFileName);
             outputFile = new PrintWriter(fos);
+            System.out.println("JDiff: writing the API to file '" + tempFileName + "'...");
             if (root.specifiedPackages().length != 0) {
                 RootDocToXML apiWriter = new RootDocToXML();
                 apiWriter.emitXMLHeader();
@@ -38,7 +47,7 @@ public class RootDocToXML {
             }
             outputFile.close();
         } catch(IOException e) {
-            System.out.println("IO Error while attempting to create " + outputFileName);
+            System.out.println("IO Error while attempting to create " + tempFileName);
             System.out.println("Error: " +  e.getMessage());
             System.exit(1);
         }
@@ -55,18 +64,24 @@ public class RootDocToXML {
      */
     public static void writeXSD() {
         String xsdFileName = outputFileName;
-        int idx = xsdFileName.lastIndexOf('\\');
-        int idx2 = xsdFileName.lastIndexOf('/');
-        if (idx == -1 && idx2 == -1) {
-            xsdFileName = "";
-        } else if (idx == -1 && idx2 != -1) {
-            xsdFileName = xsdFileName.substring(0, idx2);
-        } else if (idx != -1  && idx2 == -1) {
-            xsdFileName = xsdFileName.substring(0, idx);
-        } else if (idx != -1  && idx2 != -1) {
-            int max = idx2 > idx ? idx2 : idx;
-            xsdFileName = xsdFileName.substring(0, max);
-        }
+        if (outputDirectory == null) {
+	    int idx = xsdFileName.lastIndexOf('\\');
+	    int idx2 = xsdFileName.lastIndexOf('/');
+	    if (idx == -1 && idx2 == -1) {
+		xsdFileName = "";
+	    } else if (idx == -1 && idx2 != -1) {
+		xsdFileName = xsdFileName.substring(0, idx2);
+	    } else if (idx != -1  && idx2 == -1) {
+		xsdFileName = xsdFileName.substring(0, idx);
+	    } else if (idx != -1  && idx2 != -1) {
+		int max = idx2 > idx ? idx2 : idx;
+		xsdFileName = xsdFileName.substring(0, max);
+	    }
+	} else {
+	    xsdFileName = outputDirectory;
+	    if (!xsdFileName.endsWith(JDiff.DIR_SEP)) 
+		 xsdFileName += JDiff.DIR_SEP;
+	}
         xsdFileName += "api.xsd";
         try {
             FileOutputStream fos = new FileOutputStream(xsdFileName);
@@ -890,10 +905,11 @@ public class RootDocToXML {
             fromindex = ellipsis + 5;
         // If the first non-whitespace character is an @, go beyond it
         int i = 0;
-        while (text.charAt(i) == ' ') {
+	int textLen = text.length();
+        while (i < textLen && text.charAt(i) == ' ') {
             i++;
         }
-        if (text.charAt(i) == '@')
+        if (text.charAt(i) == '@' && fromindex < textLen-1)
             fromindex = i + 1;
         // Use the brute force approach.
         index = minIndex(index, text.indexOf("? ", fromindex));
@@ -982,6 +998,12 @@ public class RootDocToXML {
      */
     private static PrintWriter outputFile = null;
     
+    /** 
+     * The name of the directory where the XML representing the API will be 
+     * stored. 
+     */
+    public static String outputDirectory = null;
+
     /** 
      * Do not display a class  with a lower level of visibility than this. 
      * Default is to display all public and protected classes.

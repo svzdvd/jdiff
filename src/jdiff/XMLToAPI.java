@@ -29,11 +29,19 @@ public class XMLToAPI {
   
     /** 
      * Read the file where the XML representing the API is stored.
+     *
+     * @param filename The full name of the file containing the XML 
+     *                 representing the API
+     * @param crateGlobalComments If set, then store possible comments
+     * @param apiName The simple name of the API file. If -oldapidir and 
+     *                -newapidir are not used, then this is the same as 
+     *                the filename parameter
      */
-    public static API readFile(String filename, boolean createGlobalComments) {
+    public static API readFile(String filename, boolean createGlobalComments,
+			       String apiName) {
         // The instance of the API object which is populated from the file. 
         api_ = new API();
-        api_.name_ = filename; // Checked later
+        api_.name_ = apiName; // Checked later
         try {
             XMLReader parser = null;
             DefaultHandler handler = new APIHandler(api_, createGlobalComments);

@@ -41,35 +41,52 @@ public class JDiff extends Doclet {
         // Open the file where the XML representing the API will be stored.
         // and generate the XML for the API into it.
         if (writeXML) {
-            System.out.println("JDiff: writing the API to file '" + RootDocToXML.outputFileName + "'...");
             RootDocToXML.writeXML(newRoot);           
         }
 
         if (compareAPIs) {
+	    String tempOldFileName = oldFileName;
+	    if (oldDirectory != null) {
+		tempOldFileName = oldDirectory;
+		if (!tempOldFileName.endsWith(JDiff.DIR_SEP)) {
+		    tempOldFileName += JDiff.DIR_SEP;
+		}
+		tempOldFileName += oldFileName;
+	    }
+
             // Check the file for the old API exists
-            File f = new File(oldFileName);
+            File f = new File(tempOldFileName);
             if (!f.exists()) {
-                System.out.println("Error: file '" + oldFileName + "' does not exist for the old API");
+                System.out.println("Error: file '" + tempOldFileName + "' does not exist for the old API");
                 return false;
             }
             // Check the file for the new API exists
-            f = new File(newFileName);
+
+	    String tempNewFileName = newFileName;
+            if (newDirectory != null) {
+		tempNewFileName = newDirectory;
+		if (!tempNewFileName.endsWith(JDiff.DIR_SEP)) {
+		    tempNewFileName += JDiff.DIR_SEP;
+		}
+		tempNewFileName += newFileName;
+            }
+            f = new File(tempNewFileName);
             if (!f.exists()) {
-                System.out.println("Error: file '" + newFileName + "' does not exist for the new API");
+                System.out.println("Error: file '" + tempNewFileName + "' does not exist for the new API");
                 return false;
             }
 
             // Read the file where the XML representing the old API is stored
             // and create an API object for it.
-            System.out.print("JDiff: reading the old API in from file '" + oldFileName + "'...");
+            System.out.print("JDiff: reading the old API in from file '" + tempOldFileName + "'...");
             // Read the file in, but do not add any text to the global comments
-            API oldAPI = XMLToAPI.readFile(oldFileName, false);
+            API oldAPI = XMLToAPI.readFile(tempOldFileName, false, oldFileName);
             
             // Read the file where the XML representing the new API is stored
             // and create an API object for it.
-            System.out.print("JDiff: reading the new API in from file '" + newFileName + "'...");
+            System.out.print("JDiff: reading the new API in from file '" + tempNewFileName + "'...");
             // Read the file in, and do add any text to the global comments
-            API newAPI = XMLToAPI.readFile(newFileName, true);
+            API newAPI = XMLToAPI.readFile(tempNewFileName, true, newFileName);
             
             // Compare the old and new APIs.
             APIComparator comp = new APIComparator();
@@ -224,10 +241,22 @@ public class JDiff extends Doclet {
     static String oldFileName = "old_java.xml";
 
     /** 
+     * The name of the directory where the XML representing the old API is
+     * stored. 
+     */
+    static String oldDirectory = null;
+
+    /** 
      * The name of the file where the XML representing the new API is 
      * stored. 
      */
     static String newFileName = "new_java.xml";
+
+    /** 
+     * The name of the directory where the XML representing the new API is 
+     * stored. 
+     */
+    static String newDirectory = null;
 
     /** If set, then generate the XML for an API and exit. */
     static boolean writeXML = false;
@@ -251,7 +280,7 @@ public class JDiff extends Doclet {
     static final String jDiffKeywords = "diff, jdiff, javadiff, java diff, java difference, API difference, difference between two APIs, API diff, Javadoc, doclet";
 
     /** The current JDiff version. */
-    static final String version = "1.0.7";
+    static final String version = "1.0.8";
 
     /** The current JVM version. */
     static String javaVersion = System.getProperty("java.version");
