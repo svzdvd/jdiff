@@ -1,7 +1,8 @@
 package ChangedPackageDoc2;
 
 /** 
- * OLD: The changes in this class are only in documentation.
+ * OLD: The changes in this class are only in documentation, and
+ * a non-UTF8 character test Bård: Hærøy.
  */
 public class ChangedMethod {
 
