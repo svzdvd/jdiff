@@ -54,7 +54,6 @@ class Diff {
         text += "<blockquote>";
         text = addDiffs(oldDocWords, newDocWords, script, text);
         text += "</blockquote>";
-        text += "<hr align=\"left\" width=\"50%\">";
         docDiffs.add(new DiffOutput(pkgName, className, id, title, text));
     }
 
@@ -405,8 +404,14 @@ class Diff {
                     System.exit(1);
                 }
             } // if (currPkgName == null || currPkgName.compareTo(diffOutput.pkgName_) != 0)
-            // Now add the documentation difference
+            // Now add the documentation difference text
             diffFile.println(diffOutput.text_);
+            // Separate with a horizontal line
+            if (i == docDiffsArr.length -1 ||
+                diffOutput.className_.compareTo(docDiffsArr[i+1].className_) != 0)
+                diffFile.println("<hr align=\"left\" width=\"100%\">");
+//            else
+//                diffFile.println("<hr align=\"left\" width=\"50%\">");
         } // for (i = 0;
         if (currPkgName != null)
             closeDiffFile(); // Close the existing file
