@@ -5,8 +5,8 @@
 KNOWN BUGS
 ==========
 
-JDiff1.0.5 Bugs
----------------
+Bugs for JDiff1.0.5
+-------------------
 
 BUG 482207: Add support for XML parser use behind firewalls with no connection out at all.
 
@@ -54,6 +54,8 @@ DESIGN
 
 Short Term:
 ----------
+
+Check where the user comments file is being generated to
 
 Should JDiff check for changes in @value values?
 

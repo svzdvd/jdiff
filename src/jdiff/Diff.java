@@ -407,7 +407,9 @@ class Diff {
             // Now add the documentation difference text
             diffFile.println(diffOutput.text_);
             // Separate with a horizontal line
-            if (i == docDiffsArr.length -1 ||
+            if (i != docDiffsArr.length - 1 && 
+                diffOutput.className_ != null && 
+                docDiffsArr[i+1].className_ != null &&
                 diffOutput.className_.compareTo(docDiffsArr[i+1].className_) != 0)
                 diffFile.println("<hr align=\"left\" width=\"100%\">");
 //            else

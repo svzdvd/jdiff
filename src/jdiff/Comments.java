@@ -303,7 +303,7 @@ public class Comments {
      * Emit the XML header.
      */
     public void emitXMLHeader(String filename) {
-        outputFile.println("<?xml version=\"1.0\"?>");
+        outputFile.println("<?xml version=\"1.0\" encoding=\"iso-8859-1\" standalone=\"yes\"?>");
         outputFile.println("<comments");
         outputFile.println("  xmlns:xsi='http://www.w3.org/2000/10/XMLSchema-instance'");
         outputFile.println("  xsi:noNamespaceSchemaLocation='comments.xsd'");
