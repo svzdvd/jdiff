@@ -739,8 +739,10 @@ public class HTMLIndexes {
         if (multipleMarker == 1) {
             h_.writeText("<i>" + fld.name_ + "</i><br>");
         }
-        if (multipleMarker != 0)
-            h_.indent(INDENT_SIZE);
+        if (multipleMarker != 0) {
+// More context than this is helpful here: h_.indent(INDENT_SIZE);
+            h_.writeText("&nbsp;in&nbsp;");
+        }
         // Deal with each type of difference
         if (fld.changeType_ == 0) {
             String commentID = className + "." + fld.name_;                    
