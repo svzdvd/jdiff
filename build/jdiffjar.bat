@@ -6,6 +6,7 @@ REM
 REM Usage: jdiffjar <Old API name> <Old API jar absolute filename> <New API name> <New API jar absolute filename>
 REM
 REM e.g. jdiffjar SuperProduct1.0 C:\jdiff\test\old\SuperProduct1.0.jar SuperProduct2.0 C:\jdiff\test\new\SuperProduct2.0.jar 
+REM You can also scan multiple jar files using classdoc
 
 setlocal
 set JDIFF_HOME=C:\jdiff
