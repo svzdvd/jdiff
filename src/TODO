@@ -66,8 +66,6 @@ Short Term:
 
 Doc diff identifiers are not yet unique
 
-Doc diff tokenization still needs some more work
-
 Break down the large doc changes HTML file into per-package change files.
 
 Break out subclasses in DiffMyers.java for jar files?

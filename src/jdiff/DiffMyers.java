@@ -479,9 +479,9 @@ public class DiffMyers
     /** Previous or next edit command. */
     public change link;                
     /** # lines of file 1 changed here.  */
-    public final int inserted;        
+    public int inserted;        
     /** # lines of file 0 changed here.  */
-    public final int deleted;                
+    public int deleted;                
     /** Line number of 1st deleted line.  */
     public final int line0;                
     /** Line number of 1st inserted line.  */

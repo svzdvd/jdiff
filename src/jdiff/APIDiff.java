@@ -20,9 +20,9 @@ public class APIDiff {
     public List packagesChanged = null; // PackageDiff[]
 
     /** Name of the old API. */
-    public String oldAPIName_;
+    public static String oldAPIName_;
     /** Name of the old API. */
-    public String newAPIName_;
+    public static String newAPIName_;
 
     /* The overall percentage difference between the two APIs. */
     public double pdiff = 0.0;
