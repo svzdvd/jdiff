@@ -55,7 +55,7 @@ class APIHandler extends DefaultHandler {
      */
     private LinkedList tagStack = null;
 
-    /** Default constructor. */
+    /** Called at the start of the document. */
     public void startDocument() {
     }
     
