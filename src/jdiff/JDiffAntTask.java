@@ -176,39 +176,11 @@ public class JDiffAntTask {
 	if (getStats()) {
 	    // There are no arguments to this argument
 	    dInfo.createParam().setName("-stats");
-	    // We also have to copy an image file for the stats pages
-	    File src = new File(jdiffHome + DIR_SEP + "lib" + DIR_SEP + 
-				"black.gif");
-	    File dst = new File(getDestdir().toString() + DIR_SEP + "changes" +
-				DIR_SEP + "black.gif");
-	    try {
-		File reportSubdir = new File(getDestdir().toString() + 
-					     DIR_SEP + "changes");
-		if (!reportSubdir.mkdir() && !reportSubdir.exists()) {
-		    project.log("Warning: unable to create " + reportSubdir,
-				Project.MSG_WARN);
-		}
-
-		InputStream in = new FileInputStream(src);
-		OutputStream out = new FileOutputStream(dst);
-		
-		// Transfer bytes from in to out
-		byte[] buf = new byte[1024];
-		int len;
-		while ((len = in.read(buf)) > 0) {
-		    out.write(buf, 0, len);
-		}
-		in.close();
-		out.close();
-	    } catch (java.io.FileNotFoundException fnfe) {
-		project.log("Warning: unable to copy " + src.toString() + 
-			    " to " + dst.toString(), Project.MSG_WARN);
-		// Discard the exception
-	    } catch (java.io.IOException ioe) {
-		project.log("Warning: unable to copy " + src.toString() + 
-			    " to " + dst.toString(), Project.MSG_WARN);
-		// Discard the exception
-	    }
+	    // We also have to copy two image files for the stats pages
+	    copyFile(jdiffHome + DIR_SEP + "lib" + DIR_SEP + "black.gif",
+		     getDestdir().toString() + DIR_SEP + "black.gif");
+	    copyFile(jdiffHome + DIR_SEP + "lib" + DIR_SEP + "background.gif",
+		     getDestdir().toString() + DIR_SEP + "background.gif");
 	}
 	
 	if (getDocchanges()) {
@@ -312,6 +284,42 @@ public class JDiffAntTask {
 	project.log(" Package list: " + packageList, Project.MSG_INFO);
 	
 	return packageList;
+    }
+
+    /**
+     * Copy a file from src to dst. Also checks that "destdir/changes" exists
+     */
+    protected void copyFile(String src, String dst){
+	File srcFile = new File(src);
+	File dstFile = new File(dst);
+	try {
+	    File reportSubdir = new File(getDestdir().toString() + 
+					 DIR_SEP + "changes");
+	    if (!reportSubdir.mkdir() && !reportSubdir.exists()) {
+		project.log("Warning: unable to create " + reportSubdir,
+			    Project.MSG_WARN);
+	    }
+
+	    InputStream in = new FileInputStream(src);
+	    OutputStream out = new FileOutputStream(dst);
+		
+	    // Transfer bytes from in to out
+	    byte[] buf = new byte[1024];
+	    int len;
+	    while ((len = in.read(buf)) > 0) {
+		out.write(buf, 0, len);
+	    }
+	    in.close();
+	    out.close();
+	} catch (java.io.FileNotFoundException fnfe) {
+	    project.log("Warning: unable to copy " + src.toString() + 
+			" to " + dst.toString(), Project.MSG_WARN);
+	    // Discard the exception
+	} catch (java.io.IOException ioe) {
+	    project.log("Warning: unable to copy " + src.toString() + 
+			" to " + dst.toString(), Project.MSG_WARN);
+	    // Discard the exception
+	}
     }
 
     /**
