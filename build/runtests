@@ -26,16 +26,15 @@ javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet
 javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -apiname "New Test API" -baseURI "file:///$HOME/jdiff/lib" -sourcepath new $NEWPKGS
 
 # Generate HTML report comparing the old and new APIs
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ../lib Null
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ../lib/Null.java
 cp ../lib/background.gif newdocs
-cp ../lib/black.gif newdocs/changes/black.gif
 
 # Generate another HTML report comparing the old and new APIs, but including 
-# changes in documentation by using -docchanges
+# changes in documentation by using -docchanges and statistics using -stats
 mkdir newdocs2
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs2 -docchanges -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ../lib Null
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs2 -docchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ../lib/Null.java
 cp ../lib/background.gif newdocs2
-cp ../lib/black.gif newdocs2/changes/black.gif
+cp ../lib/black.gif newdocs2/black.gif
 
 cd ../build
 

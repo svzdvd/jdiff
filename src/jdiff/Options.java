@@ -261,6 +261,7 @@ public class Options {
             }
             if (options[i][0].toLowerCase().equals("-docchanges")) {
                 HTMLReportGenerator.reportDocChanges = true;
+                Diff.noDocDiffs = false;
                 continue;
             }
             if (options[i][0].toLowerCase().equals("-nosuggest")) {

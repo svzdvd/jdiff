@@ -28,16 +28,15 @@ REM javadoc -private -excludeclass private -excludemember private -J-Xmx128m -do
 javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "New Test API" -sourcepath new %NEWPKGS%
 
 REM Generate an HTML report comparing the old and new APIs
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
 copy ..\lib\background.gif newdocs
-copy ..\lib\black.gif newdocs\changes\black.gif
 
 REM Generate another HTML report comparing the old and new APIs, but including 
-REM changes in documentation by using -docchanges
+REM changes in documentation by using -docchanges and statistics using -stats
 mkdir newdocs2
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs2 -docchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
 copy ..\lib\background.gif newdocs2
-copy ..\lib\black.gif newdocs2\changes\black.gif
+copy ..\lib\black.gif newdocs2\black.gif
 
 cd ..\build
 
