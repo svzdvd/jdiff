@@ -170,6 +170,14 @@ public class JDiff extends Doclet {
 
         String oldPkgs = getTopDirs(oldSrcDirName);
         String newPkgs = getTopDirs(newSrcDirName);
+        if (oldPkgs == null) {
+            System.out.println("JDiff: no packages found for the old API");
+            return;
+        }
+        if (newPkgs == null) {
+            System.out.println("JDiff: no packages found for the new API");
+            return;
+        }
 
         // TODO Add a config file
         // TODO Define the packages more easily
@@ -262,8 +270,10 @@ public class JDiff extends Doclet {
                                  String defaultDocletClassName, 
                                  String[] args) {
         if (earlyJDK) {
-            // TODO set the docletpath correctly
-            String allArgs = "javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\\src";
+            // Assumes that the class files for JDiff are in the classpath
+            // which was used to invoke JDiff directly. This does not work
+            // from inside an applet.
+            String allArgs = "javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath " + System.getProperty("java.class.path");
             for (int i = 0; i < args.length; i++) {
                 allArgs += (" " + args[i]);
             }
@@ -271,21 +281,16 @@ public class JDiff extends Doclet {
             System.out.println(allArgs);
         
             Process proc  = null;
+            int retCode = -1;
             try {
                 proc = Runtime.getRuntime().exec(allArgs);
-                BufferedReader commandResult = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-                String sout = commandResult.readLine();
-                try {
-                    while (sout != null) {
-                        System.out.println(sout);
-                        sout = commandResult.readLine();
-                    }
-                    commandResult.close();
-                } catch (Exception e) {
-                    // Ignore read errors which indicate that the process is complete
-                }
-                // TODO display any errors too
-                proc.waitFor();
+                StreamReader op = new StreamReader(proc.getInputStream());
+                StreamReader err = new StreamReader(proc.getErrorStream());
+                op.start();
+                err.start();
+                retCode = proc.waitFor();
+                op = null;
+                err = null;
             } catch (SecurityException sex) {
                 System.out.println("Permission error invoking Javadoc");
                 sex.printStackTrace();
@@ -295,8 +300,8 @@ public class JDiff extends Doclet {
             } catch (InterruptedException iex) {
                 // Do nothing
             }
-            Runtime.getRuntime().gc(); // Clean up after running Javadoc
-            return proc.exitValue();
+            System.gc(); // Clean up after running Javadoc
+            return retCode;
         }
         
         // Call Javadoc directly (this is only possible from J2SE1.4 onwards).
@@ -321,7 +326,7 @@ public class JDiff extends Doclet {
             methodArgs[2] = args;
             // The object can be null because the method is static
             Integer res = (Integer)javaDocMethod.invoke(null, methodArgs);
-            Runtime.getRuntime().gc(); // Clean up after running Javadoc
+            System.gc(); // Clean up after running Javadoc
             return res.intValue();
         } catch (ClassNotFoundException e1) {
             System.err.println("Error: class \"" + className + "\"not found");
@@ -339,7 +344,7 @@ public class JDiff extends Doclet {
             System.err.println("Error: ");
             e6.printStackTrace();
         }
-        Runtime.getRuntime().gc(); // Clean up after running Javadoc
+        System.gc(); // Clean up after running Javadoc
         return -1;
     }
 
