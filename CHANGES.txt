@@ -21,7 +21,7 @@ simple names if the entries in reports are too large.
 Tested with J2SE1.4.1.
 Minor HTML formatting fixes.
 
-Changed the default behaviour to not show changes in antive and sychronized
+Changed the default behaviour to not show changes in native and sychronized
 modifiers. Added the -showallchanges to show changes in these modifiers. Thanks
 go to Jesse Glick for this.
 
