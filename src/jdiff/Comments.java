@@ -415,24 +415,31 @@ public class Comments {
 
     /** 
      * Return true if the given HTML tag has no separate </tag> end element. 
+     *
+     * If you want to be able to use sloppy HTML in your comments, then you can
+     * add the element, e.g. li back into the condition here. However, if you 
+     * then become more careful and do provide the closing tag, the output is 
+     * generally just the closing tag, which is incorrect.
+     *
+     * tag.equalsIgnoreCase("tr") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("th") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("td") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("dt") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("dd") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("img") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("code") || // Is sometimes minimized (error)
+     * tag.equalsIgnoreCase("font") || // Is sometimes minimized (error)
+     * tag.equalsIgnoreCase("ul") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("ol") || // Is sometimes minimized
+     * tag.equalsIgnoreCase("li") // Is sometimes minimized
      */
     public static boolean isMinimizedTag(String tag) {
         if (tag.equalsIgnoreCase("p") ||
             tag.equalsIgnoreCase("br") ||
-            tag.equalsIgnoreCase("hr") ||
-            tag.equalsIgnoreCase("tr") || // Is sometimes minimized
-            tag.equalsIgnoreCase("th") || // Is sometimes minimized
-            tag.equalsIgnoreCase("td") || // Is sometimes minimized
-            tag.equalsIgnoreCase("dt") || // Is sometimes minimized
-            tag.equalsIgnoreCase("dd") || // Is sometimes minimized
-            tag.equalsIgnoreCase("img") || // Is sometimes minimized
-            tag.equalsIgnoreCase("code") || // Is sometimes minimized (error)
-            tag.equalsIgnoreCase("font") || // Is sometimes minimized (error)
-            tag.equalsIgnoreCase("ul") || // Is sometimes minimized
-            tag.equalsIgnoreCase("ol") || // Is sometimes minimized
-            tag.equalsIgnoreCase("li") // Is sometimes minimized
-            )
+            tag.equalsIgnoreCase("hr")
+            ) {
             return true;
+	}
         return false;
     }
 
