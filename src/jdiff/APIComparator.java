@@ -201,7 +201,7 @@ public class APIComparator {
         boolean differsFlag = false;
         if (docChanged(oldPkg.doc_, newPkg.doc_)) {
             String link = "<a href=\"pkg_" + oldPkg.name_ + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
-            String id = "package";
+            String id = "package_" + oldPkg.name_;
             String title = "Package " + link + oldPkg.name_ + "</a>";
             pkgDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldPkg.doc_, newPkg.doc_, id, title);
             differsFlag = true;
@@ -266,7 +266,7 @@ public class APIComparator {
         if (docChanged(oldClass.doc_, newClass.doc_)) {
             String fqName = pkgDiff.name_ + "." + classDiff.name_;
             String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";;
-            String id = "class_" + classDiff.name_;
+            String id = "class_" + pkgDiff.name_ + "." + classDiff.name_;
             String title = "Class " + link + classDiff.name_ + "</a>";
             classDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_,
  oldClass.doc_, newClass.doc_, id, title);
@@ -377,7 +377,7 @@ public class APIComparator {
                             type = "";
                         String fqName = pkgDiff.name_ + "." + classDiff.name_;
                         String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + ".ctor_changed(" + type + ")\" class=\"hiddenlink\">";
-                        String id = classDiff.name_ + "(" + type + ")";
+                        String id = pkgDiff.name_ + "." + classDiff.name_ + "(" + type + ")";
                         String title = "Class " + link + classDiff.name_ + 
                             ", constructor " + classDiff.name_ + "(" + type + ")</a>";
                         memberDiff.documentationChange_ = Diff.saveDocDiffs(
@@ -597,7 +597,7 @@ public class APIComparator {
                 sig = "";
             String fqName = pkgDiff.name_ + "." + classDiff.name_;
             String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + newMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
-            String id = classDiff.name_ + "." + newMethod.name_ + "(" + sig + ")";
+            String id = pkgDiff.name_ + "." + classDiff.name_ + "." + newMethod.name_ + "(" + sig + ")";
             String title = "Class " + classDiff.name_ + ", method " +
                 link + newMethod.name_ + "(" + sig + ")</a>";
             methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldMethod.doc_, newMethod.doc_, id, title);
@@ -685,7 +685,7 @@ public class APIComparator {
                     if (docChanged(oldField.doc_, newField.doc_)) {
                         String fqName = pkgDiff.name_ + "." + classDiff.name_;
                         String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + newField.name_ + "\" class=\"hiddenlink\">";
-                        String id = classDiff.name_ + "." + newField.name_;
+                        String id = pkgDiff.name_ + "." + classDiff.name_ + "." + newField.name_;
                         String title = "Class " + classDiff.name_ + ", field " +
                             link + newField.name_ + "</a>";
                         memberDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldField.doc_, newField.doc_, id, title);
