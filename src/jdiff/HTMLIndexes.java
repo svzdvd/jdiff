@@ -348,19 +348,19 @@ public class HTMLIndexes {
             oldsw = emitIndexEntry(currIndex, oldsw, multipleMarker);
     }
     
-    /** Whether to check for missing @since tags or not. */
-    public static boolean checkSinces = true;
+    /** Whether to log all missing @since tags or not. */
+    public static boolean logMissingSinces = true;
 
     /** The file used to output details of missing @since tags. */
     public static PrintWriter missingSincesFile = null;
 
     /** 
-     * Emit elements in the given iterator
-     * which are missing @since tags. 
+     * Emit elements in the given iterator which were added and 
+     * missing @since tags. 
      */
     public void emitMissingSinces(Iterator iter) {
-        if (!checkSinces)
-            return;
+//        if (!logMissingSinces)
+//            return;
         if (missingSincesFile == null) {
             String sinceFileName = h_.outputDir + JDiff.DIR_SEP + "missingSinces.txt";
             try {
@@ -395,10 +395,19 @@ public class HTMLIndexes {
                 System.out.println("Error: unknown program element type");
                 System.exit(3);
             }
-            if (currIndex.doc_ == null || currIndex.doc_.indexOf("@since") != -1) {
-                missingSincesFile.println("OK: " + details);
+            if (currIndex.doc_ == null) {
+                if (logMissingSinces)
+                    missingSincesFile.println("NO DOC BLOCK: " + details);
+                else
+                    System.out.println("Warning: the doc block for the new element: " + details + " is missing, so there is no @since tag");
+            } else if (currIndex.doc_.indexOf("@since") != -1) {
+                if (logMissingSinces)
+                    missingSincesFile.println("OK: " + details);
             } else {
-                missingSincesFile.println("MISSING @SINCE TAG: " + details);
+                if (logMissingSinces)
+                    missingSincesFile.println("MISSING @SINCE TAG: " + details);
+                else
+                    System.out.println("Warning: the doc block for the new element: " + details + " is missing an @since tag");
             }
         }
     }
