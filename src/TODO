@@ -4,8 +4,6 @@
 
 For the 1.0.6 release:
 
-Unix scripts need chmod +x and dos2unix to work? Test on Unix.
-
 Populate the lib\2001 directory and check validation works from behind firewalls. 
 
 Need to label files in CVS, also for jdiff1.0.5?
