@@ -748,7 +748,7 @@ public class HTMLIndexes {
                 h_.writeText("<nobr><A HREF=\"" + memberRef + h_.reportFileExt + "#" + commentID + "\" class=\"hiddenlink\" target=\"rightframe\"><strike>" + fld.name_ + "</strike></A>");
                 h_.writeText("</nobr><br>");
             } else {
-                h_.writeText("<nobr><A HREF=\"" + memberRef + h_.reportFileExt + "#" + commentID + "\" class=\"hiddenlink\" target=\"rightframe\"><strike>" + className + "<strike></A>");
+                h_.writeText("<nobr><A HREF=\"" + memberRef + h_.reportFileExt + "#" + commentID + "\" class=\"hiddenlink\" target=\"rightframe\"><strike>" + className + "</strike></A>");
                 h_.writeText("</nobr><br>");
             }
         } else if (fld.changeType_ == 1) {
