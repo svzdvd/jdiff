@@ -5,12 +5,20 @@
 KNOWN BUGS
 ==========
 
-BUG 482207: standalone with a firewall
+JDiff1.0.5 Bugs
+---------------
+
+BUG 482207: Add support for XML parser use behind firewalls with no connection out at all.
 
 BUG 482194: Still have an issue with Unicode: 0xfc in java.lang.String.toUpperCase 
 comments "Fahrvergn" not being treated as valid XML. Workaround is that 
 -firstsentence has been temporarily renamed -allsentences and reversed in 
 meaning.
+
+BUG Work with crimson XML parser
+
+Other Bugs
+----------
 
 BUG: Using classdoc to compare jar files suggests that the handling of
 classes with no packages is not correct. Temporarily disabled.
@@ -22,6 +30,8 @@ MINOR BUG: @links to methods may not be expanded properly if we don't have the
 signature in the @link. This only happens once (at invoke) in J2SE1.2/1.3, 
 and the link goes to the right page, just not the right named anchor. 
 Pretty rare.
+
+BUG: Handle @docroot doc tags in Javadoc1.4
 
 MINOR BUG: Possibly simply due to the method being at the end of the HTML page. createGenericUpdateEventBody method in BW seems to not have the correct named anchor ref: perhaps it's the spaces? The link still works, just doesn't go the named anchor.
 <A NAME="com.vitria.jct.JctLib.createGenericUpdateEventBody_changed(com.vitria.fc.meta.DataInterfaceDef, java.lang.String, java.lang.Object[])"></A>
@@ -45,25 +55,19 @@ DESIGN
 Short Term:
 ----------
 
-Break out subclasses in DiffMyers.java for jar files?
-
-Work with crimson XML parser
-
 Should JDiff check for changes in @value values?
-
-Add support for XML parser use behind firewalls with no connection out at all.
 
 Support inherited exclusion in RootDocToXML.java
 
-Handle @docroot doc tags in Javadoc1.4
-
 Unix scripts need chmod +x and dos2unix to work
 
-Does Javadoc add "()" for links to methods with no arguments? Perhaps it does 
-now but did not with J2SE1.2 javadoc?
+Does Javadoc add "()" for links to methods with no arguments? It does 
+now, but perhaps it did not with J2SE1.2 javadoc?
 
 Long Term:
 ---------
+
+Break out subclasses in DiffMyers.java for jar files?
 
 Add support for differences for other languages - create base classes, 
 generalize XML.
