@@ -30,7 +30,7 @@
 <!-- ======================================================= -->
 <!-- Run all the steps used to build JDiff -->
 <!-- ======================================================= -->
-<target name="jdiff" depends="compile_jdiff,jar_jdiff"/>
+<target name="jdiff" depends="compile_jdiff,jar_jdiff,compile_ant_task,jar_ant_task"/>
   
 <!-- ======================================================= -->
 <!-- Clean up various files and directories                  -->
@@ -44,12 +44,40 @@
 </target>
  	
 <!-- ======================================================= -->
-<!-- Compile all JDiff source files                          -->
+<!-- Compile all JDiff source files, but not the Ant task    -->
 <!-- ======================================================= -->
 <target name="compile_jdiff" depends="init">
 <javac	
   srcdir="${SRC}"
   destdir="${DST}"
+  debug="${debug}"
+  excludes="jdiff/JDiffAntTask.java"
+  includeJavaRuntime="yes">
+  <classpath>
+    <path refid="class.path"/>
+  </classpath>
+</javac>
+</target>	
+	
+<!-- ======================================================= -->
+<!-- Create JDiff.jar, but exclude the Ant task file         -->
+<!-- ======================================================= -->
+<target name="jar_jdiff" depends="compile_jdiff">
+<jar 
+  jarfile="${JDIFF_HOME}/lib/jdiff.jar" 
+  basedir="${DST}"
+  includes="*jdiff/*.class"
+  excludes="*jdiff/JDiffAntTask*.class"/>
+</target>	
+	
+<!-- ======================================================= -->
+<!-- Compile the JDiff Ant task                              -->
+<!-- ======================================================= -->
+<target name="compile_ant_task" depends="init">
+<javac	
+  srcdir="${SRC}"
+  destdir="${DST}"
+  includes="jdiff/JDiffAntTask.java"
   debug="${debug}"
   includeJavaRuntime="yes">
   <classpath>
@@ -59,13 +87,13 @@
 </target>	
 	
 <!-- ======================================================= -->
-<!-- Create JDiff.jar                                        -->
+<!-- Create the jar for the JDiff Ant task                   -->
 <!-- ======================================================= -->
-<target name="jar_jdiff" depends="compile_jdiff">
+<target name="jar_ant_task" depends="compile_ant_task">
 <jar 
-  jarfile="${JDIFF_HOME}/lib/jdiff.jar" 
+  jarfile="${JDIFF_HOME}/lib/antjdiff.jar" 
   basedir="${DST}"
-  includes="*jdiff/*.class"/>
+  includes="*jdiff/JDiffAntTask*.class"/>
 </target>	
 	
 </project>

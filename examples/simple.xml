@@ -1,0 +1,92 @@
+<!-- An ANT build configuration file for the JDiff examples -->
+<!-- but using the custom Ant task for JDiff, JDiffAntTask  -->
+
+<project name="examples" default="simplejdiff" basedir=".">
+
+<description>
+The Ant target "simplejdiff" uses a custom Ant task for JDiff, named 
+JDiffAntTask to build a simple report. This task compares two versions of
+the example SuperProduct source code. The task also generates the Javadoc 
+HTML for each version of the source code. 
+
+This is a much simpler Ant build.file than the build.xml, which uses the 
+default Ant Javadoc task explcitly. However, there are options which can
+be passed to the Javadoc task which are not supported by the JDiffAntTask
+task.
+
+Run with: ant -f simple.xml
+
+</description>
+
+<target name="usage">
+  <echo message="usage: ant simplejdiff"/>
+</target>
+ 
+<!-- ======================================================= -->
+<!-- Properties used when generating Javadoc and JDiff output. -->
+<!-- You must change some of these for this build file to work. -->
+<!-- ======================================================= -->
+<target name="init">
+  <property name="app.name" value="JDiff Examples"/>
+  <!-- Root of the JDiff hierarchy of directories -->
+  <property name="JDIFF_HOME" value="/home/matt/jdiff"/>
+  <!-- The location of the source code for the APIs to be compared -->
+  <property name="PROJECTBASE" value="${JDIFF_HOME}/examples"/>
+
+  <!-- Values used for the old API -->
+  <property name="OLD_SRC" value="${PROJECTBASE}/SuperProduct1.0"/>
+  <property name="OLD_PACKAGES" value="com.acme.*"/>
+  <property name="OLD_DOCS" value="${PROJECTBASE}/sample_output/olddocs/"/>
+  <property name="OLD_API"  value="SuperProduct 1.0"/>
+  <property name="OLD_API_TITLE" value="SuperProduct 1.0 API Documentation"/>
+
+  <!-- Values used for the new API -->
+  <property name="NEW_SRC" value="${PROJECTBASE}/SuperProduct2.0"/>
+  <property name="NEW_PACKAGES" value="com.acme.*"/>
+  <property name="NEW_DOCS" value="${PROJECTBASE}/sample_output/newdocs/"/>  
+  <property name="NEW_API"  value="SuperProduct 2.0"/>
+  <property name="NEW_API_TITLE" value="SuperProduct 2.0 API Documentation"/>
+
+  <path id="class.path">
+    <pathelement location="${JDIFF_HOME}/lib/xerces.jar"/>
+  </path>
+  <property name="BASE_URI" value="http://www.w3.org"/>
+  
+  <property name="debug" value="true"/>
+  <!-- classic, javac13 and JDK1.4 should all work -->
+  <property name="build.compiler"  value="javac13"/>
+</target>
+
+<!-- ======================================================== -->
+<!-- Use the custom Ant task JDiffAntTask to generate a       -->
+<!-- report comparing the source code of two versions of a    -->
+<!-- product.                                                 --> 
+<!-- taskdef is used to tell Ant where to find the JDiff task -->
+<!-- ======================================================== -->
+<target name="simplejdiff" depends="init">
+  <taskdef name="jdiff" 
+           classname="jdiff.JDiffAntTask" 
+           classpath="${JDIFF_HOME}/lib/antjdiff.jar"/>
+
+  <jdiff destdir="${PROJECTBASE}/sample_output2">
+    <old name="${OLD_API_TITLE}">
+      <dirset dir="${OLD_SRC}"><include name="com/**"/></dirset>
+    </old>
+    <new name="${NEW_API_TITLE}">
+      <dirset dir="${NEW_SRC}"><include name="com/**"/></dirset>
+    </new>
+  </jdiff>
+</target>
+
+<!-- ======================================================= -->
+<!-- Clean up various files and directories                  -->
+<!-- ======================================================= -->
+<target	name="clean" depends="init">
+  <delete
+    includeEmptyDirs="true">
+    <fileset dir="${PROJECTBASE}/sample_output" 
+      includes="**/*.xml,**/*.class,**/*.html,**/*.css,**/*.gif"/>
+  </delete>
+</target>
+ 	
+</project>

@@ -13,6 +13,9 @@ It uses the core ANT Javadoc task, which has many more properties than
 are used here. For example, you can exclude packages with 
 excludepackagenames. For more information, see: 
 http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
+
+The Ant target "simplejdiff" in the Ant build file simple.xml
+uses a custom Ant task for JDiff, named JDiffAntTask to build a simple report.
 </description>
 
 <target name="usage">
