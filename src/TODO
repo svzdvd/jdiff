@@ -51,6 +51,8 @@ DESIGN
 Short Term:
 ----------
 
+Compare new test results to old test results to check parent/child work
+
 Process the Xenu link checker output
 
 Is a change in inheritance for a method or field really equivalent to one
