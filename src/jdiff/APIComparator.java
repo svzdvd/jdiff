@@ -135,7 +135,11 @@ public class APIComparator {
         // were no differences between the APIs.
         apiDiff.pdiff = differs;
         Double percentage = new Double(differs);
-        System.out.println(" Approximately " + percentage.intValue() + "% difference between the APIs");
+        int approxPercentage = percentage.intValue();
+        if (approxPercentage == 0)
+            System.out.println(" Approximately " + percentage + "% difference between the APIs");
+        else
+            System.out.println(" Approximately " + approxPercentage + "% difference between the APIs");
 
         Diff.closeDiffFile();
     }   
