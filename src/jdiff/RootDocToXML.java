@@ -228,18 +228,15 @@ public class RootDocToXML {
         }
 
         // Deal with classes which have no package
-        ClassDoc[] cd = null;//TODO root.specifiedClasses();
-        for (int i = 0; cd != null && i < cd.length; i++) {
-            String pkgName = "NoPackage";
-            
+        ClassDoc[] cd = root.specifiedClasses();
+        if (cd != null && cd.length != 0) {
+            String pkgName = "anon";
             outputFile.println("<package name=\"" + pkgName + "\">");
-
             List classList = new LinkedList(Arrays.asList(cd));
             Collections.sort(classList);
             ClassDoc[] classes = new ClassDoc[classList.size()];
             classes = (ClassDoc[])classList.toArray(classes);
             processClasses(classes, pkgName);
-
             outputFile.println("</package>");
         }
     } // processPackages
