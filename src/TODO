@@ -13,6 +13,8 @@ BUG Work with crimson XML parser?
 Other Bugs
 ----------
 
+BUG: javax.swing.JFileChooser.html has duplicate accessibleContext fields
+
 BUG: Using classdoc to compare jar files suggests that the handling of
 classes with no packages is not correct. Temporarily disabled.
 
@@ -48,6 +50,8 @@ DESIGN
 
 Short Term:
 ----------
+
+Process the Xenu link checker output
 
 Is a change in inheritance for a method or field really equivalent to one
 add and one delete in all cases?
