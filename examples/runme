@@ -1,22 +1,24 @@
+#!/bin/csh -f -x
+
 echo This batch file will generate JavaDocs for each version of the 
 echo SuperProduct source code. Then it generates XML from each version, 
 echo and finally compares the two XML files to produce an HTML report describing
 echo every change in the API between the two releases of SuperProduct.
 
 echo Make sure we can find xerces.jar for XML parsing
-setenv CLASSPATH ../../lib/xerces.jar;$CLASSPATH
+setenv CLASSPATH ../../lib/xerces.jar:$CLASSPATH
 
 echo These are the packages in each version of the API
-setenv OLDPKGS com.acme.sp com.acme.util
-setenv NEWPKGS com.acme.sp com.acme.spextra
+setenv OLDPKGS 'com.acme.sp com.acme.util'
+setenv NEWPKGS 'com.acme.sp com.acme.spextra'
 
-echo STEP ONE. Generate JavaDoc for the old API (version 1.0 of SuperProduct)
+echo 'STEP ONE. Generate JavaDoc for the old API (version 1.0 of SuperProduct)'
 mkdir sample_output/olddocs
 cd sample_output/olddocs
 javadoc -sourcepath ../../SuperProduct1.0 -doctitle "SuperProduct 1.0 API Documentation" -windowtitle "SuperProduct 1.0 API Documentation" $OLDPKGS
 cd ../..
 
-echo STEP TWO. Generate JavaDoc for the new API (version 2.0 of SuperProduct)
+echo 'STEP TWO. Generate JavaDoc for the new API (version 2.0 of SuperProduct)'
 mkdir sample_output/newdocs
 cd sample_output/newdocs
 javadoc -sourcepath ../../SuperProduct2.0 -doctitle "SuperProduct 2.0 API Documentation" -windowtitle "SuperProduct 2.0 API Documentation"  $NEWPKGS
