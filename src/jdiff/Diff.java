@@ -309,7 +309,7 @@ class Diff {
                     diffFile = new PrintWriter(fos);
                     
                     // Write the HTML header
-                    diffFile.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\"\"http://www.w3.org/TR/REC-html40/frameset.dtd\">");
+                    diffFile.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\"\"" + RootDocToXML.baseURI + "/TR/REC-html40/frameset.dtd\">");
                     diffFile.println("<HTML>");
                     diffFile.println("<HEAD>");
                     diffFile.println("<meta name=\"generator\" content=\"JDiff v" + JDiff.version + "\">");
@@ -438,7 +438,7 @@ class Diff {
             diffFile = new PrintWriter(fos);
             
             // Write the HTML header
-            diffFile.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\"\"http://www.w3.org/TR/REC-html40/frameset.dtd\">");
+            diffFile.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\"\"" + RootDocToXML.baseURI + "/TR/REC-html40/frameset.dtd\">");
             diffFile.println("<HTML>");
             diffFile.println("<HEAD>");
             diffFile.println("<meta name=\"generator\" content=\"JDiff v" + JDiff.version + "\">");

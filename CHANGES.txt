@@ -1,5 +1,6 @@
 1.0.5.
-TODO Fixed bug 482207 (Unable to run javadiff behind a firewall)
+Fixed bug 482207 (Unable to run javadiff behind a firewall) by adding
+the -baseURI option.
 Fixed bug 482194 (Missing support for iso-8859-1 charset), which also
 caused the option -allsentences to be renamed -firstsentence and
 reversed in sense.
@@ -11,7 +12,7 @@ Added META tags to generated HTML.
 Corrected somes uses of JDK/J2SE and the capitalization of Javadoc.
 
 1.0.4
-Added feature request #472605 with the documentation differences page,
+Added feature request 472605 with the documentation differences page,
 which shows specific changes in Javadoc documentation as inserts and deletes.
 Improved the end of sentence checking in doc blocks.
 Added graphics of the statistics histograms.

@@ -23,7 +23,7 @@ cd ..
 javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -apiname "Old Test API" -sourcepath old $OLDPKGS
 
 # Generate XML for the new API
-javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -apiname "New Test API" -sourcepath new $NEWPKGS
+javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -apiname "New Test API" -baseURI "file:///$HOME/jdiff/lib" -sourcepath new $NEWPKGS
 
 # Generate HTML report comparing the old and new APIs
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ../lib Null

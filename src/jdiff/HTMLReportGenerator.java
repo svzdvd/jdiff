@@ -649,7 +649,7 @@ public class HTMLReportGenerator {
 
     /** Write the start of the HTML header. */
     public void writeStartHTMLHeader(boolean addDate) {
-        writeText("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\"\"http://www.w3.org/TR/REC-html40/frameset.dtd\">");
+        writeText("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\"\"" + RootDocToXML.baseURI + "/TR/REC-html40/frameset.dtd\">");
         writeText("<HTML>");
         writeText("<HEAD>");
         writeText("<meta name=\"generator\" content=\"JDiff v" + JDiff.version + "\">");

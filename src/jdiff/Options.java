@@ -73,6 +73,8 @@ public class Options {
         // documentation for the old API. Default is null.
         if (opt.equals("-javadocold"))    return 2;
 
+        if (opt.equals("-baseuri"))    return 2;
+
         // Option not to suggest comments at all
         if (opt.equals("-nosuggest"))    return 2;
 
@@ -206,6 +208,14 @@ public class Options {
                 }
                 continue;
             }
+            if (options[i][0].toLowerCase().equals("-baseuri")) {
+                if (options[i].length < 2) {
+                    err.msg("No base location specified after -baseURI option.");
+                } else {
+                    RootDocToXML.baseURI = options[i][1];
+                }
+                continue;
+            }
             if (options[i][0].toLowerCase().equals("-excludeclass")) {
                 if (options[i].length < 2) {
                     err.msg("No level (public|protected|package|private) specified after -excludeclass option.");
@@ -323,6 +333,7 @@ public class Options {
         System.err.println("  -javadocnew <location of existing Javadoc files for the new API>");
         System.err.println("  -javadocold <location of existing Javadoc files for the old API>");
         
+        System.err.println("  -baseURI <base> Use \"base\" as the base location of the various DTDs used by JDiff");
         System.err.println("  -excludeclass [public|protected|package|private] Exclude classes which are not public, protected etc");
         System.err.println("  -excludemember [public|protected|package|private] Exclude members which are not public, protected etc");
         

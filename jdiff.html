@@ -14,7 +14,7 @@
 <BLOCKQUOTE>
 <b>JDiff</b> is a Javadoc <a href="http://java.sun.com/j2se/1.4/docs/tooldocs/javadoc/overview.html">doclet</a> which generates an HTML report of all the packages, classes,
 constructors, methods, and fields which have been
-removed, added or changed in any way when two APIs are compared. This
+removed, added or changed in any way, including their documentation, when two APIs are compared. This
 is very useful for describing exactly what has changed between two
 releases of a product. Only the API (Application Programming
 Interface) of each version is compared. It does not compare what the
@@ -78,8 +78,10 @@ The results are written into a file called <code>changes.html</code>, with more 
  also generated in the file <code>stylesheet-jdiff.css</code>, and
  this uses a background image in <code>background.gif</code>. <i>These are the
  only 
- files which need to be shipped with a product to include a report
- of what has changed since the previous release.</i>.
+ files which usually need to be shipped with a product to include a report
+ of what has changed since the previous release.</i>. (If the
+ <code>-stats</code> option was used, then the file
+ <code>black.gif</code> should also be shipped.)
 </BLOCKQUOTE>
 
 <hr>
@@ -435,13 +437,22 @@ alternatively it can be downloaded from
 
   <TR>
     <TD VALIGN="top">From behind a firewall, 
-    JDiff fails to load one of the XML files.</TD>
+    JDiff fails to load one of the required XML DTD files.</TD>
     <TD VALIGN="top">Use the following settings to tell the Java2 VM
     that you are behind a firewall:<br>
     <code><nobr>java -DproxySet=true -DproxyHost=PROXYSERVER</nobr><nobr> -DproxyPort=PORT</nobr></code><br>
     where <code>PROXYSERVER</code> is the hostname or IP address of
     your proxy server, and <code>PORT</code> is the port number of the 
-    proxy server. 
+    proxy server.<br><br>
+    The other alternative is to use the local copies of the required
+    files by using the option <code>-baseURI</code> when generating the API XML
+    files. For example, <code>-baseURI "file:///C:/jdiff/lib"</code> would cause
+    the XML parser to use the copies which are shipped in the
+    <code>lib</code> directory, if JDiff is installed in
+    <code>C:\jdiff</code>. Note that there are <i>three<i> forward slashes
+    after "file:".
+    The <code>-baseURI</code> approach has the advantage that it
+    requires <i>no</i> connectivity to the Internet to be able to run JDiff.
     </TD>
   </TR>
 
