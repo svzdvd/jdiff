@@ -319,14 +319,16 @@ class Diff {
                     if (!newDocWords[i].startsWith("<") && 
                         !newDocWords[i].endsWith(">")) {
                         if (!inEmph) {
-                            diffFile.print("<font color=\"red\">");
+//                            diffFile.print("<font color=\"red\">");
+                            diffFile.print("<span style=\"background: #FFFF00\">");
                             inEmph = true;
                         }
                     }
                     diffFile.print(newDocWords[i]);
                 }
                 if (inEmph) {
-                    diffFile.print("</font>");
+//                    diffFile.print("</font>");
+                    diffFile.print("</span>");
                 }
             }
         } //for (; hunk != null; hunk = hunk.link)
