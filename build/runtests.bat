@@ -24,6 +24,7 @@ javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet
 
 REM Generate HTML report comparing the old and new APIs
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ..\lib Null
+copy ..\lib\background.gif newdocs
 
 cd ..\build
 

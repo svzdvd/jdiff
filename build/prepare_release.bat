@@ -28,10 +28,9 @@ del jdiff.jar
 
 cd ..\examples
 del *~
-rm -rf output
+rm -rf sample_output\output
 REM assumes that the jdiff.jar has been built already      
 call runme
-mv output sample_output
 del SuperProduct1.0\com\acme\sp\*~
 del SuperProduct1.0\com\acme\sp\*.class
 del SuperProduct1.0\com\acme\util\*~

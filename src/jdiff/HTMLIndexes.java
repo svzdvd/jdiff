@@ -88,7 +88,7 @@ public class HTMLIndexes {
             h_.writeHTMLTitle(title);
             h_.writeStyleSheetRef();
             h_.writeText("</HEAD>");
-            h_.writeText("<BODY BGCOLOR=\"" + h_.bgcolor + "\">");
+            h_.writeText("<BODY>");
             
             if (programElementType.compareTo("Package") == 0) {
                 emitPackagesIndex(apiDiff, indexType);

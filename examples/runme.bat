@@ -12,14 +12,14 @@ set OLDPKGS=com.acme.sp com.acme.util
 set NEWPKGS=com.acme.sp com.acme.spextra
 
 REM STEP ONE. Generate JavaDoc for the old API (version 1.0 of SuperProduct)
-mkdir output\olddocs
-cd output\olddocs
+mkdir sample_output\olddocs
+cd sample_output\olddocs
 javadoc -sourcepath ..\..\SuperProduct1.0 -doctitle "SuperProduct 1.0 API Documentation" -windowtitle "SuperProduct 1.0 API Documentation" %OLDPKGS%
 cd ..\..
 
 REM STEP TWO. Generate JavaDoc for the new API (version 2.0 of SuperProduct)
-mkdir output\newdocs
-cd output\newdocs
+mkdir sample_output\newdocs
+cd sample_output\newdocs
 javadoc -sourcepath ..\..\SuperProduct2.0 -doctitle "SuperProduct 2.0 API Documentation" -windowtitle "SuperProduct 2.0 API Documentation"  %NEWPKGS%
 cd ..
 
@@ -31,7 +31,8 @@ javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\..\lib\jdiff.jar -apiname 
 
 REM STEP FIVE. Generate HTML report comparing the old and new APIs
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\..\lib\jdiff.jar -d newdocs -oldapi "SuperProduct 1.0" -newapi "SuperProduct 2.0" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ..\..\lib Null
+copy ..\..\lib\background.gif newdocs
 
 cd ..
 
-REM Now open the file output\newdocs\changes.html in a browser
+REM Now open the file sample_output\newdocs\changes.html in a browser

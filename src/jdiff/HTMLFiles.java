@@ -81,7 +81,7 @@ public class HTMLFiles {
             h_.writeHTMLTitle("JDiff");
             h_.writeStyleSheetRef();
             h_.writeText("</HEAD>");
-            h_.writeText("<BODY BGCOLOR=\"" + h_.bgcolor + "\">");
+            h_.writeText("<BODY>");
 
             h_.writeText("<TABLE BORDER=\"0\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
             h_.writeText("<TR>");
@@ -127,7 +127,7 @@ public class HTMLFiles {
             h_.writeHTMLTitle("JDiff Help");
             h_.writeStyleSheetRef();
             h_.writeText("</HEAD>");
-            h_.writeText("<BODY BGCOLOR=\"" + h_.bgcolor + "\">");
+            h_.writeText("<BODY>");
             // Write a customized navigation bar for the help page
             h_.writeText("<!-- Start of nav bar -->");
             h_.writeText("<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
@@ -254,7 +254,8 @@ public class HTMLFiles {
             h_.writeText("/* Define colors, fonts and other style attributes here to override the defaults  */");
             h_.writeText();
             h_.writeText("/* Page background color */");
-            h_.writeText("body { background-color: " + h_.bgcolor + "; font-family: arial; }");
+//            h_.writeText("body { background-color: " + h_.bgcolor + "; font-family: arial; }");
+            h_.writeText("body { background: url(background.gif); font-family: arial; }");
             h_.writeText();
             h_.writeText("/* Table colors */");
             h_.writeText(".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */");

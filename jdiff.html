@@ -73,7 +73,8 @@ for the differences.
 <BLOCKQUOTE>
 The results are written into a file called <code>changes.html</code>, with more files in a directory called <code>changes</code>.
  These files contain links to existing JavaDoc documentation. A CSS stylesheet is
- also generated in the file <code>stylesheet-jdiff.css</code>. <i>These are the
+ also generated in the file <code>stylesheet-jdiff.css</code>, and
+ this uses a background image in <code>background.gif</code>. <i>These are the
  only 
  files which need to be shipped with a product to include a report
  of what has changed since the previous release.</i>.
@@ -93,6 +94,8 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-excludeclass <<i>exclusion level</i>>]
  [-excludemember <<i>exclusion level</i>>]
  [-nosuggest <<i>suggestion level</i>>]
+ [-allsentences]
+ [-nodocchanges]
  [-checkcomments]
  [-retainnonprinting]
  [-excludetag <<i>exclude tag</i>>]
@@ -197,6 +200,29 @@ NOTE: Either <code>-apiname</code>, or both <code>-oldapi</code> and
    If this is changed, the JavaDoc <code>-private</code>
    argument must also be passed to JavaDoc.
    </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-allsentences</code></dt>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   This argument causes JDiff to save all JavaDoc comments as part of
+   the API. This is only necessary when the XML file representing the
+   API is being generated. See <code>-nodocchanges</code> for how to 
+   prevent documentation changes being noted as differences.<br>
+
+   Sometimes the source code is the only documentation for a
+   project. The existence of this argument suggests that sometimes 
+   the documentation is also part of the source code. 
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-nodocchanges</code></dt>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   This argument turns off comparison of JavaDoc documentation.
+   By default, changes in the saved JavaDoc documentation
+   are noted as changes (or at least as a removal and a related
+   addition). See <code>-allsentences</code> for how to compare all
+   documentation, not just the first sentence.
+  </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
   <code>-nosuggest</code> <<i>suggestion level</i>></dt>

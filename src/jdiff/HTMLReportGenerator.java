@@ -71,7 +71,7 @@ public class HTMLReportGenerator {
             writeHTMLTitle("API Differences between " + oldAPIName + " and " + newAPIName);
             writeStyleSheetRef();
             writeText("</HEAD>");
-            writeText("<BODY BGCOLOR=\"" + bgcolor + "\">");
+            writeText("<BODY>");
 
             // Add the nav bar for the summary page
             writeNavigationBar(reportFileName + "-summary", null, 0, true,
@@ -212,7 +212,7 @@ public class HTMLReportGenerator {
             writeHTMLTitle(pkgName);
             writeStyleSheetRef();
             writeText("</HEAD>");
-            writeText("<BODY BGCOLOR=\"" + bgcolor + "\">");
+            writeText("<BODY>");
         } catch(IOException e) {
             System.out.println("IO Error while attempting to create " + localReportFileName);
             System.out.println("Error: "+ e.getMessage());
@@ -351,7 +351,7 @@ public class HTMLReportGenerator {
             writeHTMLTitle(pkgName + "." + className);
             writeStyleSheetRef();
             writeText("</HEAD>");
-            writeText("<BODY BGCOLOR=\"" + bgcolor + "\">");
+            writeText("<BODY>");
         } catch(IOException e) {
             System.out.println("IO Error while attempting to create " + localReportFileName);
             System.out.println("Error: "+ e.getMessage());
@@ -1737,8 +1737,8 @@ public class HTMLReportGenerator {
      */
     public static String outputDir = null;
 
-    /** The desired background color for JDiff pages. */
-    static final String bgcolor = "0xFFFFFF";
+    /** The desired background color for JDiff tables. */
+    static final String bgcolor = "#FFFFFF";
 
     /** Set to enable debugging output. */
     private static final boolean trace = false;
