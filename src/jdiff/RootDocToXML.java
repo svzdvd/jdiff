@@ -1,11 +1,10 @@
 package jdiff;
 
 import com.sun.javadoc.*;
-//import com.sun.tools.doclets.standard.Standard;
 
 import java.util.*;
-//import java.text.SimpleDateFormat;
 import java.io.*;
+import java.lang.reflect.*;
 
 /**
  * Converts a Javadoc RootDoc object into a representation in an 
@@ -163,6 +162,7 @@ public class RootDocToXML {
      * @param ped The given program element.
      */
     public void addCommonModifiers(ProgramElementDoc ped, int indent) {
+        addSourcePosition(ped, indent);
         // Static and final and visibility on one line
         for (int i = 0; i < indent; i++) outputFile.print(" ");
         outputFile.print("static=\"" + ped.isStatic() + "\"");
@@ -214,6 +214,43 @@ public class RootDocToXML {
         }
 
     } //addQualifiers()
+
+    /**
+     * Insert the source code details, if available.
+     *
+     * @param ped The given program element.
+     */
+    public void addSourcePosition(ProgramElementDoc ped, int indent) {
+        if (!addSrcInfo)
+            return;
+        if (JDiff.javaVersion.startsWith("1.1") || 
+            JDiff.javaVersion.startsWith("1.2") || 
+            JDiff.javaVersion.startsWith("1.3")) {
+            return; // position() only appeared in J2SE1.4
+        }
+        try {
+            // Could cache the method for improved performance
+            Class c = ProgramElementDoc.class;
+            Method m = c.getMethod("position", null);
+            Object sp = m.invoke(ped, null);
+            if (sp != null) {
+                for (int i = 0; i < indent; i++) outputFile.print(" ");
+                outputFile.println("src=\"" + sp + "\"");
+            }
+        } catch (NoSuchMethodException e2) {
+            System.err.println("Error: method \"position\" not found");
+            e2.printStackTrace();
+        } catch (IllegalAccessException e4) {
+            System.err.println("Error: class not permitted to be instantiated");
+            e4.printStackTrace();
+        } catch (InvocationTargetException e5) {
+            System.err.println("Error: method \"position\" could not be invoked");
+            e5.printStackTrace();
+        } catch (Exception e6) {
+            System.err.println("Error: ");
+            e6.printStackTrace();
+        }
+    }
 
     /**
      * Process the interfaces implemented by the class.
@@ -845,6 +882,12 @@ public class RootDocToXML {
      * Default is that this is set.
      */
     static boolean stripNonPrintables = true;
+
+    /** 
+     * If set, then add the information about the source file and line number
+     * which is available in J2SE1.4. Default is that this is not set.
+     */
+    static boolean addSrcInfo = false;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;

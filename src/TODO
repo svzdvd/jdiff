@@ -44,7 +44,7 @@ Short Term:
 
 Test @value changes
 
-Use -linksource in tests with J2SE1.4
+Use -linksource in tests with J2SE1.4. (Source info is now in the XML)
 
 Add interactive ability with jdiff.JDiff for easiest use
 

@@ -149,7 +149,6 @@ public class JDiff extends Doclet {
      * or later is implied.
      */
     public static void main(String[] args) {
-        String javaVersion = System.getProperty("java.version");
         if (trace)
             System.out.println("Java version: " + javaVersion);
         if (javaVersion.startsWith("1.1") || 
@@ -254,7 +253,7 @@ public class JDiff extends Doclet {
             methodArgTypes[0] = String.class;
             methodArgTypes[1] = String.class;
             methodArgTypes[2] = args.getClass();
-            Method javaDocMethod  = c.getMethod("execute", methodArgTypes);
+            Method javaDocMethod = c.getMethod("execute", methodArgTypes);
             Object[] methodArgs = new Object[3];
             methodArgs[0] = programName;
             methodArgs[1] = defaultDocletClassName;
@@ -344,6 +343,9 @@ public class JDiff extends Doclet {
 
     /** The current JDiff version. */
     static final String version = "1.0.6";
+
+    /** The current JVM version. */
+    static String javaVersion = System.getProperty("java.version");
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;

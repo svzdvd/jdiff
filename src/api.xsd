@@ -28,6 +28,7 @@
   <xsd:attribute name="name" type="xsd:string"/>
   <xsd:attribute name="extends" type="xsd:string" use='optional'/>
   <xsd:attribute name="abstract" type="xsd:boolean"/>
+  <xsd:attribute name="src" type="xsd:string" use='optional'/>
   <xsd:attribute name="static" type="xsd:boolean"/>
   <xsd:attribute name="final" type="xsd:boolean"/>
   <xsd:attribute name="deprecated" type="xsd:string"/>
@@ -48,6 +49,7 @@
 <xsd:complexType name="constructorType">
   <xsd:attribute name="name" type="xsd:string"/>
   <xsd:attribute name="type" type="xsd:string" use='optional'/>
+  <xsd:attribute name="src" type="xsd:string" use='optional'/>
   <xsd:attribute name="static" type="xsd:boolean"/>
   <xsd:attribute name="final" type="xsd:boolean"/>
   <xsd:attribute name="deprecated" type="xsd:string"/>
@@ -73,6 +75,7 @@
   <xsd:attribute name="abstract" type="xsd:boolean"/>
   <xsd:attribute name="native" type="xsd:boolean"/>
   <xsd:attribute name="synchronized" type="xsd:boolean"/>
+  <xsd:attribute name="src" type="xsd:string" use='optional'/>
   <xsd:attribute name="static" type="xsd:boolean"/>
   <xsd:attribute name="final" type="xsd:boolean"/>
   <xsd:attribute name="deprecated" type="xsd:string"/>
@@ -90,6 +93,7 @@
   <xsd:attribute name="transient" type="xsd:boolean"/>
   <xsd:attribute name="volatile" type="xsd:boolean"/>
   <xsd:attribute name="value" type="xsd:string" use='optional'/>
+  <xsd:attribute name="src" type="xsd:string" use='optional'/>
   <xsd:attribute name="static" type="xsd:boolean"/>
   <xsd:attribute name="final" type="xsd:boolean"/>
   <xsd:attribute name="deprecated" type="xsd:string"/>
