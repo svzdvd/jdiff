@@ -57,7 +57,7 @@ public class HTMLFiles {
             h_.writeText("</FRAMESET>");
             h_.writeText("<NOFRAMES>");
             h_.writeText("<H2>");
-            h_.writeText("Frame Alert</H2>");
+            h_.writeText("Frame Alert");
             h_.writeText("</H2>\n");
             h_.writeText("<P>");
             h_.writeText("This document is designed to be viewed using the frames feature. If you see this message, you are using a non-frame-capable web client.");
@@ -84,7 +84,7 @@ public class HTMLFiles {
             h_.writeText("</HEAD>");
             h_.writeText("<BODY>");
 
-            h_.writeText("<TABLE BORDER=\"0\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+            h_.writeText("<TABLE summary=\"Links to all index files\" BORDER=\"0\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
             h_.writeText("<TR>");
             h_.writeText("  <TD NOWRAP bgcolor=\"#FFFFCC\"><FONT size=\"+1\">");
             h_.writeText("  <B>JDiff&nbsp;Indexes</B></FONT><br></TD>");
@@ -131,10 +131,10 @@ public class HTMLFiles {
             h_.writeText("<BODY>");
             // Write a customized navigation bar for the help page
             h_.writeText("<!-- Start of nav bar -->");
-            h_.writeText("<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
+            h_.writeText("<TABLE summary=\"Navigation bar\" BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
             h_.writeText("<TR>");
             h_.writeText("<TD COLSPAN=2 BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">");
-            h_.writeText("  <TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
+            h_.writeText("  <TABLE summary=\"Navigation bar\" BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
             h_.writeText("    <TR ALIGN=\"center\" VALIGN=\"top\">");
             // Always have a link to the Javadoc files
             h_.writeText("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + h_.newDocPrefix + "index.html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + apiDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");

@@ -169,7 +169,7 @@ public class HTMLIndexes {
             isAllDiffs = true;
         }
         h_.writeText("<a NAME=\"topheader\"></a>"); // Named anchor
-        h_.writeText("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
+        h_.writeText("<table summary=\"Index for " + indexName + "\" width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">");
         h_.writeText("  <tr>");
         h_.writeText("  <td bgcolor=\"#FFFFCC\">");
         // The index name is also a hidden link to the *index_all page
@@ -180,10 +180,9 @@ public class HTMLIndexes {
         h_.writeText("  </td>");
         h_.writeText("  </tr>");
 
-        h_.writeText("  <FONT SIZE=\"-2\">");
-
         h_.writeText("  <tr>");
         h_.writeText("  <td bgcolor=\"#FFFFFF\">");
+        h_.writeText("  <FONT SIZE=\"-2\">");
         if (hasRemovals) {
           if (indexType == 0) {
             h_.writeText("<b>Removals</b>");
@@ -193,11 +192,13 @@ public class HTMLIndexes {
         } else {
             h_.writeText("<font color=\"#999999\">Removals</font>");
         }
+        h_.writeText("  </FONT>");
         h_.writeText("  </td>");
         h_.writeText("  </tr>");
 
         h_.writeText("  <tr>");
         h_.writeText("  <td bgcolor=\"#FFFFFF\">");
+        h_.writeText("  <FONT SIZE=\"-2\">");
         if (hasAdditions) {
           if (indexType == 1) {
             h_.writeText("<b>Additions</b>");
@@ -207,11 +208,13 @@ public class HTMLIndexes {
         } else {
             h_.writeText("<font color=\"#999999\">Additions</font>");
         }
+        h_.writeText("  </FONT>");
         h_.writeText("  </td>");
         h_.writeText("  </tr>");
 
         h_.writeText("  <tr>");
         h_.writeText("  <td bgcolor=\"#FFFFFF\">");
+        h_.writeText("  <FONT SIZE=\"-2\">");
         if (hasChanges) {
           if (indexType == 2) {
             h_.writeText("<b>Changes</b>");
@@ -221,9 +224,9 @@ public class HTMLIndexes {
         } else {
             h_.writeText("<font color=\"#999999\">Changes</font>");
         }
+        h_.writeText("  </FONT>");
         h_.writeText("  </td>");
         h_.writeText("  </tr>");
-        h_.writeText("  </FONT>");
         h_.writeText("  <tr>");
         h_.writeText("  <td>");
         h_.writeText("<font size=\"-2\"><b>Bold</b>&nbsp;is&nbsp;New,&nbsp;<strike>strike</strike>&nbsp;is&nbsp;deleted</font>");
@@ -292,7 +295,7 @@ public class HTMLIndexes {
             // No need to emit section letters for packages
             res = sw;
             // Add the named anchor for this new letter
-            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
+            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\"></A>");
         }
         // Package names are unique, so no need to check for duplicates.
         if (pkg.changeType_ == 0) {
@@ -417,7 +420,7 @@ public class HTMLIndexes {
         if (Character.toUpperCase(sw) != Character.toUpperCase(oldsw)) {
             res = sw;
             // Add the named anchor for this new letter
-            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
+            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\"></A>");
             if (sw == '_')
                 h_.writeText("<br><b>underscore</b>&nbsp;");
             else
@@ -516,7 +519,7 @@ public class HTMLIndexes {
         if (Character.toUpperCase(sw) != Character.toUpperCase(oldsw)) {
             res = sw;
             // Add the named anchor for this new letter
-            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
+            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\"></A>");
             if (sw == '_')
                 h_.writeText("<br><b>underscore</b>&nbsp;");
             else
@@ -536,17 +539,17 @@ public class HTMLIndexes {
             String commentID = className + ".ctor_removed(" + type + ")";
             h_.writeText("<nobr><A HREF=\"" + memberRef + h_.reportFileExt + "#" + commentID + "\" class=\"hiddenlink\" target=\"rightframe\"><strike>" + ctor.name_ + "</strike>");
             h_.emitTypeWithParens(shownType, false);
-            h_.writeText("</nobr></A>&nbsp;constructor<br>");
+            h_.writeText("</A></nobr>&nbsp;constructor<br>");
         } else if (ctor.changeType_ == 1) {
             String commentID = className + ".ctor_added(" + type + ")";
             h_.writeText("<nobr><A HREF=\"" + memberRef + h_.reportFileExt + "#" + commentID + "\" class=\"hiddenlink\" target=\"rightframe\"><b>" + ctor.name_ + "</b>");
             h_.emitTypeWithParens(shownType, false);
-            h_.writeText("</nobr></A>&nbsp;constructor<br>");
+            h_.writeText("</A></nobr>&nbsp;constructor<br>");
         } else if (ctor.changeType_ == 2) {
             String commentID = className + ".ctor_changed(" + type + ")";
             h_.writeText("<nobr><A HREF=\"" + memberRef + h_.reportFileExt + "#" + commentID + "\" class=\"hiddenlink\" target=\"rightframe\">" + ctor.name_);
             h_.emitTypeWithParens(shownType, false);
-            h_.writeText("</nobr></A>&nbsp;constructor<br>");
+            h_.writeText("</A></nobr>&nbsp;constructor<br>");
         }
         return res;
     }
@@ -613,7 +616,7 @@ public class HTMLIndexes {
         if (Character.toUpperCase(sw) != Character.toUpperCase(oldsw)) {
             res = sw;
             // Add the named anchor for this new letter
-            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
+            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\"></A>");
             if (sw == '_')
                 h_.writeText("<br><b>underscore</b>&nbsp;");
             else
@@ -725,7 +728,7 @@ public class HTMLIndexes {
         if (Character.toUpperCase(sw) != Character.toUpperCase(oldsw)) {
             res = sw;
             // Add the named anchor for this new letter
-            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
+            h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\"></A>");
             if (sw == '_')
                 h_.writeText("<br><b>underscore</b>&nbsp;");
             else

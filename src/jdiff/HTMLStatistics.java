@@ -37,10 +37,10 @@ public class HTMLStatistics {
 
             // Write a customized navigation bar for the statistics page
             h_.writeText("<!-- Start of nav bar -->");
-            h_.writeText("<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
+            h_.writeText("<TABLE summary=\"Navigation bar\" BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
             h_.writeText("<TR>");
             h_.writeText("<TD COLSPAN=2 BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">");
-            h_.writeText("  <TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
+            h_.writeText("  <TABLE summary=\"Navigation bar\" BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
             h_.writeText("    <TR ALIGN=\"center\" VALIGN=\"top\">");
             // Always have a link to the Javadoc files
             h_.writeText("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + h_.newDocPrefix + "index.html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + apiDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");
@@ -135,7 +135,7 @@ public class HTMLStatistics {
         Collections.sort(apiDiff.packagesChanged, new ComparePkgPdiffs());
 
         // Write out the table start
-        h_.writeText("<TABLE BORDER=\"1\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+        h_.writeText("<TABLE summary=\"Packages sorted by percentage difference\" BORDER=\"1\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
         h_.writeText("<TR WIDTH=\"20%\">");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage<br>Difference</b></FONT></TD>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Package</b></FONT></TD>");
@@ -165,7 +165,7 @@ public class HTMLStatistics {
         // Emit the histogram of the results
         h_.writeText("<hr>");
         h_.writeText("<p><a name=\"packages_hist\"></a>");
-        h_.writeText("<TABLE BORDER=\"1\" cellspacing=\"0\" cellpadding=\"0\">");
+        h_.writeText("<TABLE summary=\"Histogram of the package percentage differences\" BORDER=\"1\" cellspacing=\"0\" cellpadding=\"0\">");
         h_.writeText("<TR>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage<br>Difference</b></FONT></TD>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Frequency</b></FONT></TD>");
@@ -181,7 +181,7 @@ public class HTMLStatistics {
                 h_.writeText("<TR>");
                 h_.writeText("  <TD ALIGN=\"center\">" + i + "</TD>");
                 h_.writeText("  <TD>" + (hist[i]/total) + "</TD>");
-                h_.writeText("  <TD><img src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
+                h_.writeText("  <TD><img alt=\"|\" src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
                 h_.writeText("</TR>");
             }
         }
@@ -221,7 +221,7 @@ public class HTMLStatistics {
         Collections.sort(allChangedClasses, new CompareClassPdiffs());
 
         // Write out the table start
-        h_.writeText("<TABLE BORDER=\"1\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+        h_.writeText("<TABLE summary=\"Classes sorted by percentage difference\" BORDER=\"1\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
         h_.writeText("<TR WIDTH=\"20%\">");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage<br>Difference</b></FONT></TD>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Class or <i>Interface</i></b></FONT></TD>");
@@ -255,7 +255,7 @@ public class HTMLStatistics {
         // Emit the histogram of the results
         h_.writeText("<hr>");
         h_.writeText("<p><a name=\"classes_hist\"></a>");
-        h_.writeText("<TABLE BORDER=\"1\" cellspacing=\"0\" cellpadding=\"0\">");
+        h_.writeText("<TABLE summary=\"Histogram of the class percentage differences\" BORDER=\"1\" cellspacing=\"0\" cellpadding=\"0\">");
         h_.writeText("<TR>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage<br>Difference</b></FONT></TD>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Frequency</b></FONT></TD>");
@@ -343,9 +343,8 @@ public class HTMLStatistics {
             }
         }
         
-
         // Write out the table
-        h_.writeText("<TABLE BORDER=\"1\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
+        h_.writeText("<TABLE summary=\"Number of differences\" BORDER=\"1\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
         h_.writeText("<TR>");
         h_.writeText("  <TD COLSPAN=5 ALIGN=\"center\" NOWRAP bgcolor=\"#EEEEFF\"><FONT size=\"+1\">");
         h_.writeText("  <B>Number of Differences</B></FONT></TD>");

@@ -319,19 +319,18 @@ class Diff {
                     diffFile.println("<meta name=\"description\" content=\"" + JDiff.jDiffDescription + "\">");
                     diffFile.println("<meta name=\"keywords\" content=\"" + JDiff.jDiffKeywords + "\">");
                     diffFile.println("<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"" + "../" + "stylesheet-jdiff.css\" TITLE=\"Style\">");
-                    diffFile.println("</HEAD>");
-                    diffFile.println("<BODY>");
-                    
                     diffFile.println("<TITLE>");
                     diffFile.println(currPkgName + " Documentation Differences");
                     diffFile.println("</TITLE>");
-                    
+                    diffFile.println("</HEAD>");
+                    diffFile.println("<BODY>");
+                                        
                     // Write the navigation bar
                     diffFile.println("<!-- Start of nav bar -->");
-                    diffFile.println("<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
+                    diffFile.println("<TABLE summary=\"Navigation bar\" BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
                     diffFile.println("<TR>");
                     diffFile.println("<TD COLSPAN=2 BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">");
-                    diffFile.println("  <TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
+                    diffFile.println("  <TABLE summary=\"Navigation bar\" BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
                     diffFile.println("    <TR ALIGN=\"center\" VALIGN=\"top\">");
                     // Always have a link to the Javadoc files
                     diffFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + HTMLReportGenerator.newDocPrefix + "index.html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + APIDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");
@@ -393,7 +392,7 @@ class Diff {
                     diffFile.println("</blockquote>");
                     
                     diffFile.println("<blockquote>");
-                    diffFile.println(" Note that an HTML error in the new documentation may cause the display of other documentation changes to be presented incorrectly. For instance, failure to close a &ltcode&gt; tag will cause all subsequent paragraphs to be displayed differently.");
+                    diffFile.println(" Note that an HTML error in the new documentation may cause the display of other documentation changes to be presented incorrectly. For instance, failure to close a &lt;code&gt; tag will cause all subsequent paragraphs to be displayed differently.");
                     diffFile.println("</blockquote>");
                     diffFile.println("<hr>");
                     diffFile.println();
@@ -448,19 +447,18 @@ class Diff {
             diffFile.println("<meta name=\"description\" content=\"" + JDiff.jDiffDescription + "\">");
             diffFile.println("<meta name=\"keywords\" content=\"" + JDiff.jDiffKeywords + "\">");
             diffFile.println("<LINK REL=\"stylesheet\" TYPE=\"text/css\" HREF=\"" + "../" + "stylesheet-jdiff.css\" TITLE=\"Style\">");
-            diffFile.println("</HEAD>");
-            diffFile.println("<BODY>");
-            
             diffFile.println("<TITLE>");
             diffFile.println("All Documentation Differences");
             diffFile.println("</TITLE>");
-            
+            diffFile.println("</HEAD>");
+            diffFile.println("<BODY>");
+                        
             // Write the navigation bar
             diffFile.println("<!-- Start of nav bar -->");
-            diffFile.println("<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
+            diffFile.println("<TABLE summary=\"Navigation bar\" BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
             diffFile.println("<TR>");
             diffFile.println("<TD COLSPAN=2 BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">");
-            diffFile.println("  <TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
+            diffFile.println("  <TABLE summary=\"Navigation bar\" BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
             diffFile.println("    <TR ALIGN=\"center\" VALIGN=\"top\">");
             // Always have a link to the Javadoc files
             diffFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + HTMLReportGenerator.newDocPrefix + "index.html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + APIDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");
@@ -522,9 +520,9 @@ class Diff {
                     String id = diffOutput.pkgName_ + "!package";
                     firstDiffOutput.put(id, id);
                     if (diffOutput.className_ == null) {
-                        diffFile.println("<A NAME=\"" + id + "\">" + link + "Package <b>" + diffOutput.pkgName_ + "</b></a><br>");
+                        diffFile.println("<A NAME=\"" + id + "\"></A>" + link + "Package <b>" + diffOutput.pkgName_ + "</b></a><br>");
                     } else {
-                        diffFile.println("<A NAME=\"" + id + "\">" + "Package <b>" + diffOutput.pkgName_ + "</b><br>");
+                        diffFile.println("<A NAME=\"" + id + "\"></A>" + "Package <b>" + diffOutput.pkgName_ + "</b><br>");
                     }
                 }
                 // See if the class name changed
@@ -542,9 +540,9 @@ class Diff {
                     String id = diffOutput.pkgName_ + "." + diffOutput.className_ + "!class";
                     firstDiffOutput.put(id, id);
                     if (diffOutput.id_.endsWith("!class")) {
-                        diffFile.println("<A NAME=\"" + id + "\">&nbsp;&nbsp;Class " + link + diffOutput.className_ + "</a><br>");
+                        diffFile.println("<A NAME=\"" + id + "\"></A>&nbsp;&nbsp;Class " + link + diffOutput.className_ + "</a><br>");
                     } else {
-                        diffFile.println("<A NAME=\"" + id + "\">&nbsp;&nbsp;Class " + diffOutput.className_ + "<br>");
+                        diffFile.println("<A NAME=\"" + id + "\"></A>&nbsp;&nbsp;Class " + diffOutput.className_ + "<br>");
                     }
                 }
                 // Work out what kind of member this is, and

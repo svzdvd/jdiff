@@ -93,6 +93,8 @@ public class HTMLReportGenerator {
             writeText("</center>");        
             writeText("<center>");        
             writeText("<H2>Between " + oldAPIName + " and " + newAPIName + "</H2>");
+            writeText("</center>");        
+
             // Write the contents and the other files as well
             writeReport(apiDiff);
             writeHTMLFooter();
@@ -770,10 +772,10 @@ public class HTMLReportGenerator {
                                    boolean hasRemovals, boolean hasAdditions, 
                                    boolean hasChanges) {
         reportFile.println("<!-- Start of nav bar -->");
-        reportFile.println("<TABLE BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
+        reportFile.println("<TABLE summary=\"Navigation bar\" BORDER=\"0\" WIDTH=\"100%\" CELLPADDING=\"1\" CELLSPACING=\"0\">");
         reportFile.println("  <TR>");
         reportFile.println("    <TD COLSPAN=2 BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\">");
-        reportFile.println("    <TABLE BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
+        reportFile.println("    <TABLE summary=\"Navigation bar\" BORDER=\"0\" CELLPADDING=\"0\" CELLSPACING=\"3\">");
         reportFile.println("    <TR ALIGN=\"center\" VALIGN=\"top\">");
         boolean atOverview = (level == 0);
         boolean atPackage = (level == 1);
@@ -943,7 +945,7 @@ public class HTMLReportGenerator {
         int idx = title.indexOf(' ');
         String namedAnchor = title.substring(0, idx);
         reportFile.println("<a NAME=\"" + namedAnchor + "\"></a>"); // Named anchor
-        reportFile.println("<TABLE BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">");
+        reportFile.println("<TABLE summary=\"" + title+ "\" BORDER=\"1\" CELLPADDING=\"3\" CELLSPACING=\"0\" WIDTH=\"100%\">");
         reportFile.println("<TR BGCOLOR=\"#CCCCFF\" CLASS=\"TableHeadingColor\">");
         reportFile.print("  <TD VALIGN=\"TOP\" COLSPAN=" + colSpan + "><FONT SIZE=\"+1\">");
         reportFile.println("<B>" + title + "</B></FONT></TD>");
@@ -974,9 +976,9 @@ public class HTMLReportGenerator {
     public void writePackageTableEntry(String pkgName, int linkType, 
                                        String possibleComment, boolean useOld) {
         if (!useOld) {
-            reportFile.println("<A NAME=\"" + pkgName + "\">"); // Named anchor
             reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
             reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+            reportFile.println("  <A NAME=\"" + pkgName + "\"></A>"); // Named anchor
         }
         String shownPkgName = makeTwoRows(pkgName);
         if (linkType == 0) {
@@ -1016,9 +1018,9 @@ public class HTMLReportGenerator {
                                      int linkType, boolean isInterface, 
                                      String possibleComment, boolean useOld) {
         if (!useOld) {
-            reportFile.println("<A NAME=\"" + className + "\"></A>"); // Named anchor
             reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
             reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+            reportFile.println("  <A NAME=\"" + className + "\"></A>"); // Named anchor
         }
         String fqName = pkgName + "." + className;
         String shownClassName = makeTwoRows(className);
@@ -1088,9 +1090,9 @@ public class HTMLReportGenerator {
             lt = "added";
         String commentID = fqName + ".ctor_" + lt + "(" + type + ")";
         if (!useOld) {
-            reportFile.println("<A NAME=\"" + commentID + "\"></A>"); // Named anchor
             reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
             reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+            reportFile.println("  <A NAME=\"" + commentID + "\"></A>"); // Named anchor
         }
         String shortType = simpleName(type);
         if (linkType == 0) {
@@ -1143,9 +1145,9 @@ public class HTMLReportGenerator {
         if (newSignature.compareTo("void") == 0)
             newSignature = "";
         String commentID = fqName + ".ctor_changed(" + newSignature + ")";
-        reportFile.println("<A NAME=\"" + commentID + "\"></A>"); // Named anchor
         reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
         reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+        reportFile.println("  <A NAME=\"" + commentID + "\"></A>"); // Named anchor
         String memberRef = fqName.replace('.', '/');            
         String shownClassName = makeTwoRows(className);
         // Deal with inner classes
@@ -1217,9 +1219,9 @@ public class HTMLReportGenerator {
             lt = "added";
         String commentID = fqName + "." + methodName + "_" + lt + "(" + signature + ")";
         if (!useOld) {
-            reportFile.println("<A NAME=\"" + commentID + "\"></A>"); // Named anchor
             reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
             reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+            reportFile.println("  <A NAME=\"" + commentID + "\"></A>"); // Named anchor
         }
         if (signature.compareTo("void") == 0)
             signature = "";
@@ -1281,10 +1283,10 @@ public class HTMLReportGenerator {
         String fqName = pkgName + "." + className;
         String newSignature = memberDiff.newSignature_;
         String commentID = fqName + "." + memberName + "_changed(" + newSignature + ")";
-        reportFile.println("<A NAME=\"" + commentID + "\"></A>"); // Named anchor
         reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
 
         reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+        reportFile.println("  <A NAME=\"" + commentID + "\"></A>"); // Named anchor
         String memberRef = fqName.replace('.', '/');            
         // Deal with inner classes
         if (className.indexOf('.') != -1) {
@@ -1353,9 +1355,9 @@ public class HTMLReportGenerator {
         // String shownFieldName = makeTwoRows(fieldName);
         String commentID = fqName + "." + fieldName;
         if (!useOld) {
-            reportFile.println("<A NAME=\"" + commentID + "\"></A>"); // Named anchor
             reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
             reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+            reportFile.println("  <A NAME=\"" + commentID + "\"></A>"); // Named anchor
         }
         String fieldType = fieldAPI.type_;
         if (fieldType.compareTo("void") == 0)
@@ -1412,10 +1414,10 @@ public class HTMLReportGenerator {
         String fqName = pkgName + "." + className;
         // Fields have unique names in a class
         String commentID = fqName + "." + memberName;
-        reportFile.println("<A NAME=\"" + commentID + "\"></A>"); // Named anchor
         reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");
 
         reportFile.println("  <TD VALIGN=\"TOP\" WIDTH=\"25%\">");
+        reportFile.println("  <A NAME=\"" + commentID + "\"></A>"); // Named anchor
         String memberRef = fqName.replace('.', '/');            
         // Deal with inner classes
         if (className.indexOf('.') != -1) {

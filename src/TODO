@@ -177,7 +177,15 @@ Add ability to have no newjavadoc links either
 
 Better presentation of all the documentation changes - sorted?
 
-Run HTML checker on all generated HTML files
+Run HTML checker on all generated HTML files - no errors
+ - some warnings about <span> elements mixed with <blockquote>, due to
+   a combination of diffing HTML with using HTML output
+and also:
+Warning: missing </nobr> before </body>
+Warning: <span> isn't allowed in <tr> elements  - combination of diff and HTML
+Warning: <size> unknown attribute value "(null)" - poor HTML in text
+Warning: missing </a> before </body>
+Warning: missing </nobr> before </body>
 
 Avoid single letter indexes with just one entry on a new line
 If a return type has a [] in it, browser may break the line before the []
