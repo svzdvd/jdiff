@@ -273,7 +273,7 @@ public class APIComparator {
         // Track changes in documentation
         if (docChanged(oldClass.doc_, newClass.doc_)) {
             String fqName = pkgDiff.name_ + "." + classDiff.name_;
-            String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";;
+            String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
             String id = pkgDiff.name_ + "." + classDiff.name_ + "!class";
             String title = link + "Class <b>" + classDiff.name_ + "</b></a>";
             classDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_,

@@ -419,7 +419,7 @@ public class JDiff extends Doclet {
     static String javaVersion = System.getProperty("java.version");
 
     /** Set if the JDK version is prior to JDK1.4. */
-    static boolean earlyJDK = false;;
+    static boolean earlyJDK = false;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;
