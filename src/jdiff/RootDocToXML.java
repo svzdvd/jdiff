@@ -504,7 +504,7 @@ public class RootDocToXML {
             if (!shownElement(md[i], memberVisibilityLevel))
                 continue;
             outputFile.print("    <method name=\"" + methodName + "\"");
-            Type retType = md[i].returnType();
+            com.sun.javadoc.Type retType = md[i].returnType();
             if (retType.qualifiedTypeName().compareTo("void") == 0) {
                 // Don't add a return attribute if the return type is void
                 outputFile.println();
@@ -577,7 +577,7 @@ public class RootDocToXML {
      *
      * @param type A Type object.
      */
-    public void emitType(Type type) {
+    public void emitType(com.sun.javadoc.Type type) {
 	if (type == null)
 	    return;
         String name = type.qualifiedTypeName();

@@ -1,0 +1,8 @@
+outputdir=../jdk142to150b1
+#options="-docchanges -stats"
+options="-stats"
+
+mkdir $outputdir
+/usr/j2sdk1.5.0/bin/javadoc -J-Xmx256m -doclet jdiff.JDiff -docletpath ../src:../lib/xerces.jar -oldapi J2SE1.4.2 -d $outputdir -newapi J2SE1.5.0b1 $options -javadocold "http://java.sun.com/j2se/1.4/docs/api/" -javadocnew "http://java.sun.com/j2se/1.5.0/docs/api/" ../lib/Null.java
+cp ../lib/background.gif $outputdir
+cp ../lib/black.gif $outputdir
