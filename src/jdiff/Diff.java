@@ -392,7 +392,8 @@ class Diff {
                     
                     diffFile.println("<blockquote>");
                     diffFile.println("If no deletions or additions are shown in an entry, the HTML tags will be what has changed. The <i>new</i> HTML tags are shown in the differences. ");
-                    diffFile.println("If no documentation existed, and then some was added in a later version, this change is noted in the appropriate class pages of differences, but the change is not shown on this page. Only changes in existing text are shown here.");
+                    diffFile.println("If no documentation existed, and then some was added in a later version, this change is noted in the appropriate class pages of differences, but the change is not shown on this page. Only changes in existing text are shown here. ");
+                    diffFile.println("Similarly, documentation which was inherited from another class or interface is not shown here.");
                     diffFile.println("</blockquote>");
                     
                     diffFile.println("<blockquote>");

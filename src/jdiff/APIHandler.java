@@ -338,8 +338,11 @@ class APIHandler extends DefaultHandler {
         System.exit(1);
     }    
 
-    /** If set, then attempt to convert @link tags to HTML links. */
-    private static boolean convertAtLinks = false;
+    /** 
+     * If set, then attempt to convert @link tags to HTML links. 
+     * A few of the HTML links may be broken links.
+     */
+    private static boolean convertAtLinks = true;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;

@@ -578,13 +578,13 @@ public class APIComparator {
         if (inh != 0)
             differs = true;
         if (inh == 1) {
-            methodDiff.addModifiersChange("Method was locally defined, but is now inherited from " + linkToClass(newMethod.inheritedFrom_, true) + ".");
+            methodDiff.addModifiersChange("Method was locally defined, but is now inherited from " + linkToClass(newMethod, true) + ".");
             methodDiff.inheritedFrom_ = newMethod.inheritedFrom_;
         } else if (inh == 2) {
-            methodDiff.addModifiersChange("Method was inherited from " + linkToClass(oldMethod.inheritedFrom_, false) + ", but is now defined locally.");
+            methodDiff.addModifiersChange("Method was inherited from " + linkToClass(oldMethod, false) + ", but is now defined locally.");
         } else if (inh == 3) {
             methodDiff.addModifiersChange("Method was inherited from " + 
-                                          linkToClass(oldMethod.inheritedFrom_, false) + ", and is now inherited from " + linkToClass(newMethod.inheritedFrom_, true) + ".");
+                                          linkToClass(oldMethod, false) + ", and is now inherited from " + linkToClass(newMethod, true) + ".");
             methodDiff.inheritedFrom_ = newMethod.inheritedFrom_;
         }
         // Abstract or not
@@ -705,12 +705,12 @@ public class APIComparator {
                         if (inh != 0)
                             differs = true;
                         if (inh == 1) {
-                            memberDiff.addModifiersChange("Field was locally defined, but is now inherited from " + linkToClass(newField.inheritedFrom_, true) + ".");
+                            memberDiff.addModifiersChange("Field was locally defined, but is now inherited from " + linkToClass(newField, true) + ".");
                             memberDiff.inheritedFrom_ = newField.inheritedFrom_;
                         } else if (inh == 2) {
-                            memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField.inheritedFrom_, false) + ", but is now defined locally.");
+                            memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField, false) + ", but is now defined locally.");
                         } else if (inh == 3) {
-                            memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField.inheritedFrom_, false) + ", and is now inherited from " + linkToClass(newField.inheritedFrom_, true) + ".");
+                            memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField, false) + ", and is now inherited from " + linkToClass(newField, true) + ".");
                             memberDiff.inheritedFrom_ = newField.inheritedFrom_;
                         }
                         // Transient or not
@@ -840,13 +840,32 @@ public class APIComparator {
     }
 
     /** 
+     * Generate a link to the Javadoc page for the given method.
+     */
+    public static String linkToClass(MethodAPI m, boolean useNew) {
+        String sig = m.getSignature();
+        if (sig.compareTo("void") == 0)
+            sig = "";
+        return linkToClass(m.inheritedFrom_, m.name_, sig, useNew);
+    }
+
+    /** 
+     * Generate a link to the Javadoc page for the given field.
+     */
+    public static String linkToClass(FieldAPI m, boolean useNew) {
+        return linkToClass(m.inheritedFrom_, m.name_, null, useNew);
+    }
+
+    /** 
      * Given the name of the class, generate a link to a relevant page.
-     * This was originally for inheritance changes, so the JDiff page could be a 
+     * This was originally for inheritance changes, so the JDiff page could 
+     * be a 
      * class changes page, or a section in a removed or added classes 
      * table. Since there was no easy way to tell which type the link
      * should be, it is now just a link to the relevant Javadoc page.
      */
-    public static String linkToClass(String className, boolean useNew) {
+    public static String linkToClass(String className, String memberName, 
+                                     String memberType, boolean useNew) {
         if (!useNew && HTMLReportGenerator.oldDocPrefix == null) {
             return "<tt>" + className + "</tt>"; // No link possible
         }
@@ -861,15 +880,18 @@ public class APIComparator {
             if (useNew)
                 System.out.println("Warning: class " + className + " not found in the new API when creating Javadoc link");
             else
-                System.out.println("Warning: class " + className + " not found in theold  API when creating Javadoc link");
+                System.out.println("Warning: class " + className + " not found in the old API when creating Javadoc link");
             return "<tt>" + className + "</tt>";
         }
         int clsIdx = className.indexOf(cls.name_);
         if (clsIdx != -1) {
             String pkgRef = className.substring(0, clsIdx);
             pkgRef = pkgRef.replace('.', '/');
-            return "<a href=\"" + prefix + pkgRef + cls.name_ + ".html\" target=\"_top\">" + 
-                "<tt>" + cls.name_ + "</tt></a>";
+            String res = "<a href=\"" + prefix + pkgRef + cls.name_ + ".html#" + memberName;
+            if (memberType != null)
+                res += "(" + memberType + ")";
+            res += "\" target=\"_top\">" + "<tt>" + cls.name_ + "</tt></a>";
+            return res;
         }
         return "<tt>" + className + "</tt>";
     }    
