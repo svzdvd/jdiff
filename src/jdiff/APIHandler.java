@@ -139,7 +139,8 @@ class APIHandler extends DefaultHandler {
             XMLToAPI.addParam(paramName, paramType);
         } else if (localName.compareTo("exception") == 0) {
             String paramName = attributes.getValue("name");
-            XMLToAPI.addException(paramName, currentElement);
+            String paramType = attributes.getValue("type");
+            XMLToAPI.addException(paramName, paramType, currentElement);
         } else if (localName.compareTo("doc") == 0) {
             inDoc = true;
             currentText = null;

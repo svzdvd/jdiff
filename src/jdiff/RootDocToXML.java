@@ -160,6 +160,7 @@ public class RootDocToXML {
             xsdFile.println();
             xsdFile.println("<xsd:complexType name=\"exceptionType\">");
             xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"type\" type=\"xsd:string\"/>");
             xsdFile.println("</xsd:complexType>");
             xsdFile.println();
             xsdFile.println("<xsd:complexType name=\"methodType\">");
@@ -480,7 +481,9 @@ public class RootDocToXML {
         for (int i = 0; i < cd.length; i++) {
             String exceptionName = cd[i].name();
             if (trace) System.out.println("PROCESSING EXCEPTION: " + exceptionName);
-            outputFile.println("      <exception name=\"" + exceptionName + "\"/>");
+            outputFile.print("      <exception name=\"" + exceptionName + "\" type=\"");
+            emitType(cd[i]);
+            outputFile.println("\"/>");
         }//for
     }//processExceptions()
     
@@ -575,6 +578,8 @@ public class RootDocToXML {
      * @param type A Type object.
      */
     public void emitType(Type type) {
+	if (type == null)
+	    return;
         String name = type.qualifiedTypeName();
         if (name.startsWith("<<ambiguous>>"))
             name = name.substring(13);

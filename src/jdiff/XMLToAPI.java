@@ -338,19 +338,24 @@ public class XMLToAPI {
      * Called by the XML parser.
      *
      * @param name The name of the parameter.
+     * @param type The type of the parameter. 
+     *             May be null in JDiff1.0.8 and earlier versions.
      * @param currElement Name of the current element.
      */
-    public static void addException(String name, String currElement) {
+    public static void addException(String name, String type, String currElement) {
+	String exceptionId = type;
+	if (type == null || !showExceptionTypes)
+	    exceptionId = name;
         if (currElement.compareTo("method") == 0) {
             if (api_.currMethod_.exceptions_.compareTo("no exceptions") == 0)
-                api_.currMethod_.exceptions_ = name;
+                api_.currMethod_.exceptions_ = exceptionId;
             else
-                api_.currMethod_.exceptions_ += ", " + name;
+                api_.currMethod_.exceptions_ += ", " + exceptionId;
         } else {
             if (api_.currCtor_.exceptions_.compareTo("no exceptions") == 0)
-                api_.currCtor_.exceptions_ = name;
+                api_.currCtor_.exceptions_ = exceptionId;
             else
-                api_.currCtor_.exceptions_ += ", " + name;
+                api_.currCtor_.exceptions_ += ", " + exceptionId;
         }
     }
 
@@ -360,4 +365,12 @@ public class XMLToAPI {
      * the XML, it should not need validating. 
      */
     public static boolean validateXML = false;
+
+    /** 
+     * If set, then store and display the whole qualified name of exceptions.
+     * If not set, then store and display just the name of the exception, 
+     * which is shorter, but may not detect when an exception changes class,
+     * but retains the same name.
+     */
+    private static boolean showExceptionTypes = true;
 }  
