@@ -340,7 +340,7 @@ class Diff {
                     diffFile.println("</TD>");
                     diffFile.println("  <TD BGCOLOR=\"" + HTMLReportGenerator.bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">");
                     diffFile.println("  <A HREF=\"" + "../" + HTMLReportGenerator.reportFileName + HTMLReportGenerator.reportFileExt + "\" TARGET=\"_top\"><B>FRAMES</B></A>  &nbsp;");
-                    diffFile.println("  &nbsp;<A HREF=\"" + diffFileName + HTMLReportGenerator.reportFileExt + "\" TARGET=\"_top\"><B>NO FRAMES</B></A></FONT></TD>");
+                    diffFile.println("  &nbsp;<A HREF=\"" + diffFileName + currPkgName + HTMLReportGenerator.reportFileExt + "\" TARGET=\"_top\"><B>NO FRAMES</B></A></FONT></TD>");
                     diffFile.println("</TR>");
                     
                     diffFile.println("</TABLE>");
@@ -383,6 +383,8 @@ class Diff {
             // Now add the documentation difference
             diffFile.println(diffOutput.text_);
         } // while (iter.hasNext())
+        if (currPkgName != null)
+            closeDiffFile(); // Close the existing file
     }
 
     /** 
