@@ -14,6 +14,7 @@ Added feature request 476201 (Need more statistics) by creating the
 -stats option which generates a statistics page in the report.
 Added feature request 476202 (Port to JDK1.4)
 Improved merging of additions and removals into changes for methods.
+Better display of elements which start with underscores in indexes
 
 1.0.2
 Added scripts for non-Windows platforms

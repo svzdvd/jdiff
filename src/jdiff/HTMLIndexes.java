@@ -417,7 +417,10 @@ public class HTMLIndexes {
             res = sw;
             // Add the named anchor for this new letter
             h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
-            h_.writeText("<br><font size=\"+2\">" + sw + "</font>&nbsp;");
+            if (sw == '_')
+                h_.writeText("<br><b>underscore</b>&nbsp;");
+            else
+                h_.writeText("<br><font size=\"+2\">" + Character.toUpperCase(sw) + "</font>&nbsp;");
             generateLetterIndex(classNames, sw, false);
         }
         // Deal with displaying duplicate indexes
@@ -513,7 +516,10 @@ public class HTMLIndexes {
             res = sw;
             // Add the named anchor for this new letter
             h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
-            h_.writeText("<br><font size=\"+2\">" + Character.toUpperCase(sw) + "</font>&nbsp;");
+            if (sw == '_')
+                h_.writeText("<br><b>underscore</b>&nbsp;");
+            else
+                h_.writeText("<br><font size=\"+2\">" + Character.toUpperCase(sw) + "</font>&nbsp;");
             generateLetterIndex(ctorNames, sw, false);
         }
         // Deal with displaying duplicate indexes
@@ -607,7 +613,10 @@ public class HTMLIndexes {
             res = sw;
             // Add the named anchor for this new letter
             h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
-            h_.writeText("<br><font size=\"+2\">" + Character.toUpperCase(sw) + "</font>&nbsp;");
+            if (sw == '_')
+                h_.writeText("<br><b>underscore</b>&nbsp;");
+            else
+                h_.writeText("<br><font size=\"+2\">" + Character.toUpperCase(sw) + "</font>&nbsp;");
             generateLetterIndex(methNames, sw, false);
         }
         // Deal with displaying duplicate indexes
@@ -716,7 +725,10 @@ public class HTMLIndexes {
             res = sw;
             // Add the named anchor for this new letter
             h_.writeText("<A NAME=\"" + Character.toUpperCase(res) + "\">");
-            h_.writeText("<br><font size=\"+2\">" + Character.toUpperCase(sw) + "</font>&nbsp;");
+            if (sw == '_')
+                h_.writeText("<br><b>underscore</b>&nbsp;");
+            else
+                h_.writeText("<br><font size=\"+2\">" + Character.toUpperCase(sw) + "</font>&nbsp;");
             generateLetterIndex(fieldNames, sw, false);
         }
         // Deal with displaying duplicate indexes
