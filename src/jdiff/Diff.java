@@ -155,7 +155,7 @@ class Diff {
         diffFile.println("<blockquote>");
         writeDiffs(oldDocWords, newDocWords, script);
         diffFile.println("</blockquote>");
-        diffFile.println("<hr width=\"50%\">");
+        diffFile.println("<hr align=\"left\" width=\"50%\">");
     }
 
     /** 
