@@ -399,6 +399,7 @@ public class Comments {
         outputFile.println("<!-- will cause the same text to appear at each place in the report, but -->");
         outputFile.println("<!-- will be converted to separate comments when the comments file is used. -->");
         outputFile.println("<!-- HTML tags in the text field will appear in the report. -->");
+        outputFile.println("<!-- You also need to close p HTML elements, used for paragraphs - see the top-level documentation. -->");
     }
 
     /**

@@ -484,9 +484,19 @@ be automatically incorporated into a new version of this file when the
 report is next generated. Search the file for the identifier for the
 particular removal, addition or change, using the package name, class
 name and member name to find the identifier. Alternatively, look at
-the HTML source of a report and note the identifier near the intended
-place for the comment. Add the desired text between the &lt;text>
-elements. 
+the HTML source of a report and note the identifier (an HTML named anchor) 
+near the intended place for the comment.  
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+Adding links to comments can be accomplished in two ways.
+To link to a class, use the package and class name, e.g.  <nobr>{@link
+packagename.classname}.</nobr> To link to a specific constructor,
+method or field section of the class' HTML page, use an explicit HTML
+&lt;a> link.  e.g. 
+<nobr>&lt;a href="packagename.classname.html#methodname">link&lt;a></nobr>. 
+The specific HTML named anchor can be found by looking at the HTML
+source of a report.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>

@@ -1855,7 +1855,7 @@ public class HTMLReportGenerator {
         } else {
             int idx = comment.indexOf("@first");
             if (idx == -1) {
-                reportFile.println("  <TD VALIGN=\"TOP\">" + comment + "</TD>");
+                reportFile.println("  <TD VALIGN=\"TOP\">" + Comments.convertAtLinks(comment, "", null, null) + "</TD>");
             } else {
                 reportFile.print("  <TD VALIGN=\"TOP\">" + comment.substring(0, idx));
                 if (possibleComment != null && 
