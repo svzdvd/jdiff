@@ -42,6 +42,12 @@ DESIGN
 Short Term:
 ----------
 
+Write and test jdiff csh script
+
+Create bin dir for main scripts
+
+Update docs for jdiff scripts
+
 Test @value changes
 
 Use -linksource in tests with J2SE1.4. (Source info is now in the XML)
