@@ -49,6 +49,8 @@ DESIGN
 Short Term:
 ----------
 
+Refactor code in Diff.java to avoid duplication
+
 Check where the user comments file is being generated to
 
 Should JDiff check for changes in @value values?

@@ -385,11 +385,13 @@ public class RootDocToXML {
         outputFile.println("<!-- (" + JDiff.jDiffLocation + ") -->");
         outputFile.println("<!-- on " + new Date() + " -->");
         outputFile.println();
+/* No need for this any longer, since doc block text is in an CDATA element
         outputFile.println("<!-- XML Schema is used, but XHTML transitional DTD is needed for nbsp -->");
         outputFile.println("<!-- entity definitions etc.-->");
         outputFile.println("<!DOCTYPE api");
         outputFile.println("     PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"");
         outputFile.println("     \"" + baseURI + "/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
+*/
         outputFile.println("<api");
         outputFile.println("  xmlns:xsi='" + baseURI + "/2000/10/XMLSchema-instance'");
         outputFile.println("  xsi:noNamespaceSchemaLocation='api.xsd'");
