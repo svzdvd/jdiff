@@ -306,7 +306,10 @@ public class Comments {
         // Extract the identifier from the filename by removing the suffix
         int idx = filename.lastIndexOf('.');
         String apiIdentifier = filename.substring(0, idx);
-        // And also remove "user_comments_for_"
+        // Also remove the output directory and directory separator if present
+        if (HTMLReportGenerator.outputDir != null)
+            apiIdentifier = apiIdentifier.substring(HTMLReportGenerator.outputDir.length()+1);
+        // Also remove "user_comments_for_"
         apiIdentifier = apiIdentifier.substring(18);
         outputFile.println("  name=\"" + apiIdentifier + "\"");
         outputFile.println("  jdversion=\"" + JDiff.version + "\">");
