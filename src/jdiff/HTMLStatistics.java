@@ -90,7 +90,7 @@ public class HTMLStatistics {
 
             h_.writeText("<h3>Sections</h3>");
             h_.writeText("<a href=\"#packages\">Packages</a> sorted by percentage difference<br>");
-            h_.writeText("<a href=\"#classes\">Classes</a> sorted by percentage difference<br>");
+            h_.writeText("<a href=\"#classes\">Classes and <i>Interfaces</i></a> sorted by percentage difference<br>");
             h_.writeText("<a href=\"#numbers\">Differences</a> by number and type<br>");
 
             h_.writeText("<hr>");
@@ -100,7 +100,7 @@ public class HTMLStatistics {
 
             h_.writeText("<hr>");
             h_.writeText("<a name=\"classes\"></a>");
-            h_.writeText("<h2>Classes Sorted By Percentage Difference</h2>");
+            h_.writeText("<h2>Classes and <i>Interfaces</i> Sorted By Percentage Difference</h2>");
             emitClassesByDiff(apiDiff);
 
             h_.writeText("<hr>");
@@ -256,7 +256,7 @@ public class HTMLStatistics {
         h_.writeText("<TABLE BORDER=\"1\" WIDTH=\"100%\" cellspacing=\"0\" cellpadding=\"0\">");
         h_.writeText("<TR WIDTH=\"20%\">");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage<br>Difference</b></FONT></TD>");
-        h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Class</b></FONT></TD>");
+        h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Class or <i>Interface</i></b></FONT></TD>");
         h_.writeText("</TR>");
 
         int[] hist = new int[101];
@@ -402,7 +402,7 @@ public class HTMLStatistics {
         numChanged += numPackagesChanged;
 
         h_.writeText("<TR>");
-        h_.writeText("  <TD>Classes</TD>");
+        h_.writeText("  <TD>Classes and <i>Interfaces</i></TD>");
         h_.writeText("  <TD ALIGN=\"right\">" + numClassesRemoved + "</TD>");
         h_.writeText("  <TD ALIGN=\"right\">" + numClassesAdded + "</TD>");
         h_.writeText("  <TD ALIGN=\"right\">" + numClassesChanged + "</TD>");
