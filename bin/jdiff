@@ -1,0 +1,33 @@
+#!/bin/csh -fe
+
+# Set JAVA_HOME to the root of your local Java installation, e.g. /usr/jdk1.3
+if (${?JAVA_HOME} == 0) then
+    echo " " 
+    echo "Error:  The JAVA_HOME environment variable must be set before running this script."
+    echo  " " 
+    exit 1
+endif
+
+# Set JDIFF_INSTALL to the root of your local JDiff installation, 
+# e.g. $HOME/jdiff
+if (${?JDIFF_INSTALL} == 0) then
+    echo " " 
+    echo "Error:  The JDIFF_INSTALL environment variable must be set before running this script."
+    echo  " " 
+    exit 1
+endif
+
+# You should not need to change anything below this line.
+
+# This adds xerces.jar and ant.jar to the classpath, in case they are not 
+# there already.
+set CLASSPATH $JAVA_HOME/lib/tools.jar:$JDIFF_INSTALL/lib/xerces.jar:$JDIFF_INSTALL/lib/ant.jar:$JDIFF_INSTALL/lib/jdiff.jar:$CLASSPATH
+
+java -classpath %CLASSPATH% jdiff.JDiff $*
+
+# usage:
+#
+#   jdiff [-buildfile <XML configuration file>]
+#
+# e.g. jdiff   (uses the local build.xml file)
+# e.g. jdiff -buildfile $HOME/jdiff/examples/build.xml
