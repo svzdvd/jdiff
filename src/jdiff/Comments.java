@@ -393,7 +393,7 @@ public class Comments {
         outputFile.println("<!-- This file contains comments for a JDiff report. -->");
         outputFile.println("<!-- It is used only in generating the report, and does not need to ship with the final report. -->");
         outputFile.println();
-        outputFile.println("<!-- The id attribute in an identifier element identifiers the change as noted in the report. -->");
+        outputFile.println("<!-- The id attribute in an identifier element identifies the change as noted in the report. -->");
         outputFile.println("<!-- An id has the form package[.class[.[ctor|method|field].signature]], where [] indicates optional text. -->");
         outputFile.println("<!-- A comment element can have multiple identifier elements, which will -->");
         outputFile.println("<!-- will cause the same text to appear at each place in the report, but -->");
