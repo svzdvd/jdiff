@@ -1,8 +1,7 @@
 package jdiff;
 
 import com.sun.javadoc.*;
-import com.sun.tools.doclets.HtmlWriter;
-import com.sun.tools.doclets.standard.Standard;
+import com.sun.tools.javadoc.Main; // For running Javadoc programmatically
 
 import java.util.*;
 import java.text.SimpleDateFormat;
@@ -37,10 +36,10 @@ public class JDiff extends Doclet {
     protected boolean startGeneration(RootDoc newRoot) {
         long startTime = System.currentTimeMillis();
 
-        // Open the file where the XML representing the new API will be stored.
-        // and generate the XML for the new API into it.
+        // Open the file where the XML representing the API will be stored.
+        // and generate the XML for the API into it.
         if (writeXML) {
-            System.out.println("JDiff: writing the new API to file '" + RootDocToXML.outputFileName + "'...");
+            System.out.println("JDiff: writing the API to file '" + RootDocToXML.outputFileName + "'...");
             RootDocToXML.writeXML(newRoot);           
         }
 
@@ -144,6 +143,81 @@ public class JDiff extends Doclet {
     }
     
     /** 
+     * This method is only called when running JDiff as a standalone
+     * application. Since this calls Javadoc directly, the use of J2SE1.4 
+     * or later is implied.
+     */
+    public static void main(String[] args) {
+        // TODO the fixed arguments below work for the test cases only
+        // TODO echo out the arguments for ease of use
+        // Create three separate String[] argument objects for Javadoc
+        String[] oldJavaDocArgs = new String[13];
+        oldJavaDocArgs[0] = "-private";
+        oldJavaDocArgs[1] = "-excludeclass";
+        oldJavaDocArgs[2] = "private";
+        oldJavaDocArgs[3] = "-excludemember";
+        oldJavaDocArgs[4] = "private";
+        // JDiff arguments
+        oldJavaDocArgs[5] = "-apiname";
+        oldJavaDocArgs[6] = "Old Test API";
+        oldJavaDocArgs[7] = "-sourcepath";
+        oldJavaDocArgs[8] = "old";
+        oldJavaDocArgs[9] = "RemovedPackage";
+        oldJavaDocArgs[10] = "ChangedPackage";
+        oldJavaDocArgs[11] = "ChangedPackageDoc";
+        oldJavaDocArgs[12] = "ChangedPackageDoc2";
+
+        String[] newJavaDocArgs = new String[13];
+        newJavaDocArgs[0] = "-private";
+        newJavaDocArgs[1] = "-excludeclass";
+        newJavaDocArgs[2] = "private";
+        newJavaDocArgs[3] = "-excludemember";
+        newJavaDocArgs[4] = "private";
+        // JDiff arguments
+        newJavaDocArgs[5] = "-apiname";
+        newJavaDocArgs[6] = "New Test API";
+        newJavaDocArgs[7] = "-sourcepath";
+        newJavaDocArgs[8] = "new";
+        newJavaDocArgs[9] = "AddedPackage";
+        newJavaDocArgs[10] = "ChangedPackage";
+        newJavaDocArgs[11] = "ChangedPackageDoc";
+        newJavaDocArgs[12] = "ChangedPackageDoc2";
+
+        String[] diffJavaDocArgs = new String[12];
+        diffJavaDocArgs[0] = "-d";
+        diffJavaDocArgs[1] = "newdocs";
+        // JDiff arguments
+        diffJavaDocArgs[2] = "-stats";
+        diffJavaDocArgs[3] = "-oldapi";
+        diffJavaDocArgs[4] = "Old Test API";
+        diffJavaDocArgs[5] = "-newapi";
+        diffJavaDocArgs[6] = "New Test API";
+        diffJavaDocArgs[7] = "-javadocold";
+        diffJavaDocArgs[8] = "../../olddocs/";
+        diffJavaDocArgs[9] = "-javadocnew";
+        diffJavaDocArgs[10] = "../../newdocs/";
+        diffJavaDocArgs[11] = "../lib/Null.java";
+
+        // First generate the XML for the old API
+        int rc = Main.execute("JDiff", "jdiff.JDiff", oldJavaDocArgs);
+        if (rc != 0)
+            return;
+
+        // Then generate the XML for the new API
+        int rc2 = Main.execute("JDiff", "jdiff.JDiff", newJavaDocArgs);
+        if (rc2 != 0)
+            return;
+
+        // Finally use the two XML files to generate the HTML report of 
+        // the differences between the two APIs.
+        JDiff.compareAPIs = false;
+        JDiff.writeXML = false;
+        int rc3 = Main.execute("JDiff", "jdiff.JDiff", diffJavaDocArgs);
+        if (rc3 != 0)
+            return;
+    }
+
+    /** 
      * The name of the file where the XML representing the old API is
      * stored. 
      */
@@ -177,6 +251,6 @@ public class JDiff extends Doclet {
     static final String jDiffKeywords = "diff, jdiff, javadiff, java diff, java difference, API difference, API diff, Javadoc, doclet";
 
     /** The current JDiff version. */
-    static final String version = "1.0.5";
+    static final String version = "1.0.6";
 
 } //JDiff

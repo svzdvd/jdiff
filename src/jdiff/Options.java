@@ -135,11 +135,18 @@ public class Options {
         }
         
         ErrorHandler err = new ErrorHandler();
+        if (trace)
+            System.out.println("Command line arguments: "); 
         for (int i = 0; i < options.length; i++) {
             for (int j = 0; j < options[i].length; j++) {
                 Options.cmdOptions += " " + options[i][j];
+                if (trace)
+                    System.out.print(" " + options[i][j]); 
             }            
         }
+        if (trace)
+            System.out.println(); 
+
         for (int i = 0; i < options.length; i++) {
             if (options[i][0].toLowerCase().equals("-apiname")) {
                 if (options[i].length < 2) {
@@ -351,4 +358,7 @@ public class Options {
     
     /** All the options passed on the command line. Logged to XML. */
     public static String cmdOptions = "";
+
+    /** Set to enable increased logging verbosity for debugging. */
+    private static boolean trace = false;
 }

@@ -44,6 +44,10 @@ Short Term:
 
 Test @value changes
 
+Use -linksource in tests with J2SE1.4
+
+Add progress bars for the longer parts of the program?
+
 Compare new test results to old test results to check parent/child work
 
 Does not check when there is a change in the class in which a locally defined 
@@ -57,6 +61,8 @@ in J2SE1.2,
 so has no documentation at the Sun website. Same for J2SE1.4 with org.omg.CosNaming.BindingIteratorPOA.html. This is probably due to the issue now noted in the "Limitations" section in jdiff.html.
 
 Refactor code in Diff.java to avoid duplication
+
+Better setting of trace per module
 
 No longer need the lib/TR directory - files deleted
 
