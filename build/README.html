@@ -103,10 +103,13 @@ crontab when logged in as mdoar in /home/users/m/md/mdoar:
 /home/users/m/md/mdoar/nightly.sh contains:
 cd tarballs
 cvs -Q -d:pserver:anonymous@cvs1:/cvsroot/javadiff export -Dtomorrow jdiff
+if [ -d jdiff ]
+then
 echo "Tarball created on: " > jdiff/CREATED_ON
 echo `date` >> jdiff/CREATED_ON
 tar czf /home/groups/j/ja/javadiff/htdocs/jdiff/jdiff_latest.tar.gz jdiff
 rm -rf jdiff
+fi
 
 These are the CVS repository backups, only changed when something has changed:
 http://cvs.sourceforge.net/cvstarballs/javadiff-cvsroot.tar.bz2
