@@ -32,9 +32,7 @@ INPUTJAR2=$4
 # STEP ONE. Generate Javadoc for the old API from the jar - no text
 mkdir -p output/olddocs
 cd output/olddocs
-echo java -cp $INPUTJAR1:$CLASSDOC:$JAVA_HOME/lib/tools.jar:$CLASSPATH classdoc -docpath $INPUTJAR1
-
-exit
+java -cp $INPUTJAR1:$CLASSDOC:$JAVA_HOME/lib/tools.jar:$CLASSPATH classdoc -docpath $INPUTJAR1
 
 cd ../..
 
