@@ -162,7 +162,7 @@ class Diff {
      * Convert the string to an array of strings, but don't break HTML tags up.
      */
     static String[] parseDoc(String doc) {
-        String delimiters = " .,;:?!(){}[]\"'~@#$%^&*+=_-|\\<>";
+        String delimiters = " .,;:?!(){}[]\"'~@#$%^&*+=_-|\\<>/";
         StringTokenizer st = new StringTokenizer(doc, delimiters, true);
         List docList = new ArrayList();
         boolean inTag = false;
@@ -171,8 +171,18 @@ class Diff {
             String tok = st.nextToken();
             if (!inTag) {
                 if (tok.compareTo("<") == 0) {
-                    inTag = true;
                     tag = tok;
+                    if (st.hasMoreTokens()) {
+                        // See if this really is a tag
+                        tok = st.nextToken();
+                        char ch = tok.charAt(0);
+                        if (Character.isLetter(ch) || ch == '/') {
+                            inTag = true;
+                            tag += tok;
+                        }
+                    }
+                    if (!inTag)
+                      docList.add(tag);
                 } else { 
                     docList.add(tok);
                 }
@@ -186,7 +196,12 @@ class Diff {
                     tag += tok;
                 }
             }
-        }     
+        }   
+        if (inTag) {
+            // An unterminated tag, or more likely, < used instead of &lt;
+            // There are no nested tags such as <a <b>> in HTML
+            docList.add(tag);
+        }
         String[] docWords = new String[docList.size()];
         docWords = (String[])docList.toArray(docWords);
         return docWords;
@@ -302,33 +317,43 @@ class Diff {
                     if (!oldDocWords[i].startsWith("<") && 
                         !oldDocWords[i].endsWith(">")) {
                         if (!inStrike) {
-                            diffFile.print("<strike>");
+                            if (deleteEffect == 0)
+                                diffFile.print("<strike>");
+                            else if (deleteEffect == 1)
+                                diffFile.print("<span style=\"background: #FFCCCC\">");
                             inStrike = true;
                         }
                         diffFile.print(oldDocWords[i]);
                     }
                 }
                 if (inStrike) {
-                    diffFile.print("</strike>");
+                    if (deleteEffect == 0)
+                        diffFile.print("</strike>");
+                    else if (deleteEffect == 1)
+                        diffFile.print("</span>");
                 }
             }
-            // Emit the inserted words in red, but do not emphasis new HTML tags
+            // Emit the inserted words, but do not emphasis new HTML tags
             if (inserts != 0) {
                 boolean inEmph = false;
                 for (int i = first1; i <= last1; i++) {
                     if (!newDocWords[i].startsWith("<") && 
                         !newDocWords[i].endsWith(">")) {
                         if (!inEmph) {
-//                            diffFile.print("<font color=\"red\">");
-                            diffFile.print("<span style=\"background: #FFFF00\">");
+                            if (insertEffect == 0)
+                                diffFile.print("<font color=\"red\">");
+                            else if (insertEffect == 1)
+                                diffFile.print("<span style=\"background: #FFFF00\">");
                             inEmph = true;
                         }
                     }
                     diffFile.print(newDocWords[i]);
                 }
                 if (inEmph) {
-//                    diffFile.print("</font>");
-                    diffFile.print("</span>");
+                    if (insertEffect == 0)
+                        diffFile.print("</font>");
+                    else if (insertEffect == 1)
+                        diffFile.print("</span>");
                 }
             }
         } //for (; hunk != null; hunk = hunk.link)
@@ -355,6 +380,20 @@ class Diff {
      * Default is false.
      */
     public static boolean noDocDiffs = false;
+
+    /** 
+     * Define the type of emphasis for deleted words.
+     * 0 strikes the words through.
+     * 1 outlines the words in light grey.
+     */
+    public static int deleteEffect = 0;
+
+    /** 
+     * Define the type of emphasis for inserted words.
+     * 0 colors the words red.
+     * 1 outlines the words in yellow, like a highlighter.
+     */
+    public static int insertEffect = 1;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;
