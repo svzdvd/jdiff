@@ -51,6 +51,8 @@ Short Term:
 
 Refactor code in Diff.java to avoid duplication
 
+No longer need the lib/TR directory - files deleted
+
 Check where the user comments file is being generated to
 
 Should JDiff check for changes in @value values?
