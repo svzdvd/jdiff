@@ -488,7 +488,6 @@ public class JDiffAntTask {
 	private String javadoc;
 
 	public void setJavadoc(String value) {
-	    System.out.println("*** in here with "+ value);
 	    javadoc = value;
 	}
 
