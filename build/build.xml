@@ -1,0 +1,78 @@
+<!-- An ANT build file for JDiff -->
+
+<project name="jdiff" default="jdiff" basedir=".">
+
+<description>
+This build file will build JDiff.
+</description>
+
+<target name="usage">
+  <echo message="usage: ant jdiff"/>
+</target>
+ 
+<!-- ======================================================= -->
+<!-- Properties used when generating Javadoc and JDiff output. -->
+<!-- You must change some of these for this build file to work. -->
+<!-- ======================================================= -->
+<target name="init">
+  <property name="app.name" value="JDiff"/>
+  <!-- Change this to where JDiff is installed locally -->
+  <property name="JDIFF_ROOT" value="c:\jdiff"/>
+
+  <!-- NOTE: Change backslashes to forward slashes for non-Windows -->
+  <!-- systems. -->
+
+  <!-- Values used for the old API -->
+  <property name="SRC" value="${JDIFF_ROOT}\src"/>
+  <property name="DST" value="${SRC}"/>
+
+  <path id="class.path">
+    <pathelement location="${JDIFF_ROOT}\lib\xerces.jar"/>
+  </path>
+  
+  <property name="debug" value="true"/>
+  <property name="build.compiler"  value="javac1.3"/>    
+</target>
+
+<!-- ======================================================= -->
+<!-- Run all the steps used to build JDiff -->
+<!-- ======================================================= -->
+<target name="jdiff" depends="compile_jdiff,jar_jdiff"/>
+  
+<!-- ======================================================= -->
+<!-- Clean up various files and directories                  -->
+<!-- ======================================================= -->
+<target	name="clean" depends="init">
+  <delete
+    includeEmptyDirs="true"
+    verbose="true">
+    <fileset dir="${SRC}" includes="**/*.class,**/*~"/>
+  </delete>
+</target>
+ 	
+<!-- ======================================================= -->
+<!-- Compile all JDiff source files                          -->
+<!-- ======================================================= -->
+<target name="compile_jdiff" depends="init">
+<javac	
+  srcdir="${SRC}"
+  destdir="${DST}"
+  debug="${debug}"
+  includeJavaRuntime="yes">
+  <classpath>
+    <path refid="class.path"/>
+  </classpath>
+</javac>
+</target>	
+	
+<!-- ======================================================= -->
+<!-- Create JDiff.jar                                        -->
+<!-- ======================================================= -->
+<target name="jar_jdiff" depends="init">
+<jar 
+  jarfile="${JDIFF_ROOT}\lib\jdiff.jar" 
+  basedir="${DST}"
+  includes="*jdiff\.class"/>
+</target>	
+	
+</project>
