@@ -62,7 +62,7 @@ public class HTMLStatistics {
             
             // Links for frames and no frames
             h_.writeText("<TR>");
-            h_.writeText("  <TD BGCOLOR=\"" + h_.bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">");
+            h_.writeText("  <TD BGCOLOR=\"" + h_.bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\"></FONT>");
             h_.writeText("</TD>");
             h_.writeText("  <TD BGCOLOR=\"" + h_.bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">");
             h_.writeText("  <A HREF=\"" + "../" + h_.reportFileName + h_.reportFileExt + "\" TARGET=\"_top\"><B>FRAMES</B></A>  &nbsp;");
@@ -271,7 +271,7 @@ public class HTMLStatistics {
                 h_.writeText("<TR>");
                 h_.writeText("  <TD ALIGN=\"center\">" + i + "</TD>");
                 h_.writeText("  <TD>" + (hist[i]/total) + "</TD>");
-                h_.writeText("  <TD><img src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
+                h_.writeText("  <TD><img alt=\"|\" src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
                 h_.writeText("</TR>");
             }
         }
