@@ -14,6 +14,9 @@ changed class, but kept the same name, the change was not detected. The
 qualified name is now used. See the troubleshooting section for how to use the 
 simple names if the entries in reports are too large.
 
+Tested with J2SE1.4.1.
+Minor HTML formatting fixes.
+
 1.0.8 - 31st July 2002
 Completed feature request 543260 (add an option to emit XML in another 
 directory) - thanks to Martin Bosak for these changes.
