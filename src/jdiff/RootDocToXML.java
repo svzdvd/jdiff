@@ -230,7 +230,7 @@ public class RootDocToXML {
         // Deal with classes which have no package
         ClassDoc[] cd = root.specifiedClasses();
         if (cd != null && cd.length != 0) {
-            String pkgName = "anon";
+            String pkgName = "anonymous";
             outputFile.println("<package name=\"" + pkgName + "\">");
             List classList = new LinkedList(Arrays.asList(cd));
             Collections.sort(classList);

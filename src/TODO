@@ -4,17 +4,11 @@
 
 For 1.0.6
 
-BUG 494135: Using classdoc to compare jar files suggests that the handling of
-classes with no packages is not correct. Temporarily disabled.
-
-Reread all docs
-
 Regenerate reports with correct JDK versions
 
-Unix scripts need chmod +x and dos2unix to work?
+Unix scripts need chmod +x and dos2unix to work? Test on Unix.
 
 Populate the lib\2001 directory and check validation works from behind firewalls. 
-Add a version option
 
 Need to label files in CVS, also for jdiff1.0.5?
 

@@ -2,7 +2,7 @@
 <HTML>
 <HEAD>
 <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
-<TITLE>JDiff - An HTML Report of API Differences</TITLE>
+<TITLE>JDiff User Documentation</TITLE>
 </HEAD>
 <BODY BGCOLOR="#ffffff">
 <table width="100%">
@@ -16,7 +16,7 @@ width="88" height="31" border="0" alt="JDiff Logo"></A></td>
 
 
 <center>
-<H1>JDiff - An HTML Report of API Differences</H1><br>
+<H1>JDiff User Documentation</H1><br>
 </center>
 
 <BLOCKQUOTE>
@@ -30,14 +30,9 @@ source code does when executed.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>
-It's great for reporting what has changed between two releases of your
-product! 
-<a href="http://javadiff.sourceforge.net/jdiff/jdkchanges/changes.html">
-<b>Take a look at the output from comparing J2SE1.2 and J2SE1.3</b></a>,
-and the  
-<a href="http://javadiff.sourceforge.net/jdiff/jdkchanges2/changes.html">
-<b>differences between J2SE1.3 and J2SE1.4B3</b></a>. 
-You can download the <a href="http://sourceforge.net/projects/javadiff/">latest version from here</a>.
+<b>Sample Output:</b> see the <a
+href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/~checkout~/javadiff/jdiff/index.html#sampleoutput">Main
+Index page</a> for sample output.
 </BLOCKQUOTE>
 
 <HR>
@@ -64,9 +59,6 @@ and Warning Messages</B></A></P></LI>
 <BLOCKQUOTE>
 There is a <a href="http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/~checkout~/javadiff/jdiff/examples/README.html?rev=HEAD&content-type=text/html">complete example</a> of how
 to use JDiff in the <code>examples</code> directory.
-There is also an example of the results of using JDiff to 
-<a href="http://javadiff.sourceforge.net/jdiff/jdkchanges/changes.html">compare the public 
-APIs of J2SE1.2 and J2SE1.3</a>.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>
@@ -113,7 +105,7 @@ No Windows registry
 
 <BLOCKQUOTE>
 There are two different ways to run JDiff. The first way is to use the
-<code>jdiff</code> script and an XML configuration file. The format of
+<code>jdiff</code> script in the <code>bin</code> directory and an XML configuration file. The format of
 the XML configuration file is the same one which 
 <a href="http://jakarta.apache.org/ant">ANT</a> uses, and it can be
 used as an ANT build file if you already use ANT. If you don't use
@@ -123,7 +115,7 @@ look for a local configuration file named <code>build.xml</code>.
 </BLOCKQUOTE>
 
 <PRE STYLE="margin-left: 1cm; margin-right: 1cm; margin-bottom:0.5cm">
-jdiff [-buildfile &lt;configuration filename&gt;]
+jdiff [-version] [-buildfile &lt;configuration filename&gt;]
 </PRE>
 
 <BLOCKQUOTE>
@@ -152,6 +144,7 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-stats]
  [-windowtitle &lt;<i>text</i>>]
  [-doctitle &lt;<i>HTML text</i>>]
+ [-version]
  [-help]
 </PRE>
 
@@ -362,9 +355,15 @@ the output to the given directory.
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-version</code></DT> 
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  Display the version of JDiff.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
   <code>-help</code></DT> 
   <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
-  Display the usage summary and version.
+  Display the usage summary for JDiff.
   </DD>
 </DL>
 
@@ -460,11 +459,20 @@ Windows 2000 1.1 and Windows NT 4.0SP5.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>
-You need to have <code>xerces.jar</code> (used for XML parsing) from the Apache
+You need to have an XML parser such as 
+<code>xerces.jar</code> (used for XML parsing) from the Apache
 project on your classpath. The version tested with was Xerces 1.4.2.
 The file <code>xerces.jar</code> is included in this release, or
 alternatively it can be downloaded from
 <a href="http://www.apache.org">www.apache.org</a>.
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+To use an XML configuration file for JDiff, you need
+<code>ant.jar</code> from the Apache project on your classpath.
+The file <code>ant.jar</code> is included in this release.
+ANT is a general-purpose build tool and can be found 
+<a href="http://jakarta.apache.org/ant">here</a>.
 </BLOCKQUOTE>
 
 <hr>
@@ -506,7 +514,8 @@ alternatively it can be downloaded from
     <code>java.net.NoRouteToHostException: Operation timed out</code>.</TD>
     <TD VALIGN="top">The validation portion of loading the XML file
     currently requires the ability to make an HTTP connection. Check
-    your network and try again, or see the next suggestion.</TD>
+    your network and try again, or see the <code>-baseURI</code>
+    option and the next suggestion.</TD>
   </TR>
 
   <TR>
@@ -534,7 +543,7 @@ alternatively it can be downloaded from
   <TR>
     <TD VALIGN="top">JDiff fails to handle <code>assert</code> in J2SE1.4</TD>
     <TD VALIGN="top">Be sure to use the <code>-source 1.4</code> argument to
-    Javadoc to handle assertions present in J2SE v 1.4 source code.
+    Javadoc to handle assertions present in J2SE1.4 source code.
     </TD>
   </TR>
 
@@ -812,7 +821,7 @@ details.
 
 <p align="center">
 <font size="-1">
-Copyright &copy; 2001 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
+Copyright &copy; 2001-2002 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
 <a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.6.
 </font>
 </p>

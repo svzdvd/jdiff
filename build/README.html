@@ -11,20 +11,38 @@ Building and Running JDiff
 <H1>Building and Running JDiff</H1>
 </center>
 
+<H2>ANT Build Files</H2>
 <p>
-JDiff comes with a set of Windows batch files to compile JDiff and run
+JDiff comes with a set of <a href="http://jakarta.apache.org/ant">ANT</a> build
+files; one in the <code>build</code> directory, one in the 
+<code>test</code> directory, and one
+in the <code>examples</code> directory. To build JDiff using ANT,
+install ANT, change to the <code>build</code> directory and type:
+
+<p>
+<code>&lt;ANT install directory&gt;\bin\ant </code>
+
+<p>
+For the tests and examples, change to the appropriate directory and
+type the same command as above.
+
+<H2>Windows Batch Files and Unix Shell Scripts</H2>
+<p>
+JDiff also comes with a set of Windows batch files and Unix shell scripts 
+to compile JDiff and run
 the unit tests,
 These are in the directory "build". 
 Make sure you are in the <code>build</code> directory and have set the
 environment variable <code>JAVA_HOME</code> to the root of your
 current J2SE (JDK) installation.
-and then execute one of the following scripts. Do inspect the output
+Then execute one of the following scripts. Do inspect the output
 carefully for failures, since batch files do not stop at failure, by default.
+Change blackslashes to forward slashes for Unix.
 
 <ul>
 <li>To build JDiff from source, type: <code>.\makejdiff</code></li>
 
-<li>To build JDiff tests from source, type: <code>.\maketests</code></li>
+<li>To build the JDiff tests from source, type: <code>.\maketests</code></li>
 
 <li>To run JDiff tests, type: <code>.\runtests</code><br>
 Note that a warning about "a method no longer being deprecated" is an
@@ -42,6 +60,12 @@ is located.
 
 <li>To generate a report showing the differences between the two J2SE
 versions, type: <code>.\diffJDK</code></li>
+
+<li>To create XML for the J2SE1.4 API, type: <code>.\jdk14toXML</code></li>
+
+<li>To generate a report showing the differences between J2SE1.3 and
+J2SE1.4, 
+type: <code>.\diffJDK14</code></li>
 </ul>
 
 <p>Running <code>prepare_release</code> will clean all the directories and
@@ -54,6 +78,13 @@ example. This uses the <code>classdoc</code> Java application from
 RootDoc object for any doclet from a JAR file. It is also a good place
 to see how RootDoc objects can be constructed for any language, not
 just Java.
+
+<p align="center">
+<font size="-1">
+Copyright &copy; 2001-2002 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
+<a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.6.
+</font>
+</p>
 
 </BODY>
 </HTML>

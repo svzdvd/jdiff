@@ -68,11 +68,11 @@ This build file will build JDiff.
 <!-- ======================================================= -->
 <!-- Create JDiff.jar                                        -->
 <!-- ======================================================= -->
-<target name="jar_jdiff" depends="init">
+<target name="jar_jdiff" depends="compile_jdiff">
 <jar 
   jarfile="${JDIFF_ROOT}\lib\jdiff.jar" 
   basedir="${DST}"
-  includes="*jdiff\.class"/>
+  includes="*jdiff\*.class"/>
 </target>	
 	
 </project>

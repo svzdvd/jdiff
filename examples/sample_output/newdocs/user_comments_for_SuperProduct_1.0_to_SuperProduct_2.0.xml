@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="no"?>
 <comments
-  xmlns:xsi='http://www.w3.org/2000/10/XMLSchema-instance'
+  xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
   xsi:noNamespaceSchemaLocation='comments.xsd'
   name="SuperProduct_1.0_to_SuperProduct_2.0"
   jdversion="1.0.6">

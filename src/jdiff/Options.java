@@ -47,11 +47,11 @@ public class Options {
         if (opt.equals("-skipclass")) return 2;
         if (opt.equals("-execdepth")) return 2;
         if (opt.equals("-help"))      return 1;
+        if (opt.equals("-version"))      return 1;
         if (opt.equals("-package"))   return 1;
         if (opt.equals("-protected")) return 1;
         if (opt.equals("-public"))    return 1;
         if (opt.equals("-private"))   return 1;
-        if (opt.equals("-help"))      return 1;
         if (opt.equals("-sourcepath")) return 2;
         
         // Options to control JDiff
@@ -331,6 +331,10 @@ public class Options {
                     HTMLReportGenerator.windowTitle = options[i][1];
                 }
                 continue;
+            }
+            if (options[i][0].toLowerCase().equals("-version")) {
+                System.out.println("JDiff version: " + JDiff.version);
+                System.exit(0);
             }
             if (options[i][0].toLowerCase().equals("-help")) {
                 usage();
