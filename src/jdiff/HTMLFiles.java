@@ -53,8 +53,8 @@ public class HTMLFiles {
             String allDiffsLink = h_.reportFileName + "/alldiffs_index_all" + h_.reportFileExt;
             String csnLink = h_.reportFileName + "/" + h_.reportFileName + "-summary" + h_.reportFileExt;
 
-            h_.writeText("    <FRAME SRC=\"" + tlfLink + " \" SCROLLING=\"no\" NAME=\"topleftframe\">");
-            h_.writeText("    <FRAME SRC=\"" + allDiffsLink + " \" SCROLLING=\"auto\" NAME=\"bottomleftframe\">");
+            h_.writeText("    <FRAME SRC=\"" + tlfLink + "\" SCROLLING=\"no\" NAME=\"topleftframe\">");
+            h_.writeText("    <FRAME SRC=\"" + allDiffsLink + "\" SCROLLING=\"auto\" NAME=\"bottomleftframe\">");
             h_.writeText("  </FRAMESET>");
             h_.writeText("  <FRAME SRC=\"" + csnLink + "\" SCROLLING=\"auto\" NAME=\"rightframe\">");
             h_.writeText("</FRAMESET>");
