@@ -491,12 +491,38 @@ near the intended place for the comment.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>
-Adding links to comments can be accomplished in two ways.
+Adding links to comments can be accomplished in two ways: with the {@link} Javadoc tag, or by using HTML links directly.
+
+<ul>
+
+<li>
 To link to a class, use the package and class name, e.g.  <nobr>{@link
-packagename.classname}.</nobr> To link to a specific constructor,
-method or field section of the class' HTML page, use an explicit HTML
-&lt;a> link.  e.g. 
-<nobr>&lt;a href="packagename.classname.html#methodname">link&lt;a></nobr>. 
+packagename.classname}.</nobr> 
+</li>
+
+<li>
+To link to a specific method in a class' HTML page, use the package, 
+class name, a pound sign, and then the method and parameters, or ()
+e.g.  <nobr>{@link packagename.classname#methodname(params)}.</nobr>
+</li>
+
+<li>
+To link to a specific constructor in a class' HTML page, use the package, 
+class name, a pound sign, and then the classname and parameters, or ()
+e.g.  <nobr>{@link packagename.classname#classname(params)}.</nobr>
+</li>
+
+<li>
+To link to a specific field in a class' HTML page, use the package, 
+class name, a pound sign, and then the name of the field
+e.g.  <nobr>{@link packagename.classname#fieldname}.</nobr>
+</li>
+
+</ul>
+
+Alternatively, you can use an explicit HTML
+&lt;a> element.  e.g. 
+<nobr>&lt;a href="packagename.classname.html#methodname">link text&lt;a></nobr>. 
 The specific HTML named anchor can be found by looking at the HTML
 source of a report.
 </BLOCKQUOTE>

@@ -3,8 +3,9 @@
 #875516 Some HTML elements in user comments were being processed incorrectly. 
 Thanks to Jojo Dijamco for pointing this bug out.
 
-#875470 @link tags were not exanded in user comments. Thanks to Brian Duff 
-for the bug and the fix. 
+#875470 @link tags were not exanded in user comments. 
+#877437 Other issues with @link in user comments.
+Many thanks to Brian Duff for these bugs and their fixes.
 
 #815039 If the only changes in a class are in native or sync method changes, 
 and showAllChanges is not used, then no change has occurred. Thanks to 

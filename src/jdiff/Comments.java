@@ -214,72 +214,156 @@ public class Comments {
 
     /** 
      * Convert @link tags to HTML links. 
-     * Doesn't generate links to methods very well due to the difficulty of 
-     * generating the required but unspecified signature.
-     * It may not work with links to inner classes, and links from one
-     * package.html to another package.html file will not work.
-     * Links to named anchors and relative links also fail.
      */
     public static String convertAtLinks(String text, String currentElement, 
                                         PackageAPI pkg, ClassAPI cls) {
         if (text == null)
             return null;
-        String res = "";
-        StringTokenizer st = new StringTokenizer(text, " ,!?\r\n\t");
-        while (st.hasMoreTokens()) {
-            String tok = st.nextToken();
-            if (tok.compareTo("{@link") == 0) {
-                tok = st.nextToken();  // "com.foo.bar}" or "com.foo.bar baz}"
-                if (tok.endsWith("}.") || tok.endsWith("}")) {
-                    // No label in this link
-                    String name = tok.substring(0, tok.length()-1);
-                    // Can occur if the link ends }.
-                    if (name.endsWith("}"))
-                        name = name.substring(0, name.length()-1);
-                    String ref = name;
-                    if (ref.indexOf(".") == -1) {
-                        // Prepend the package and/or class name
-                        if (currentElement.compareTo("class") == 0 ||
-                            currentElement.compareTo("interface") == 0) {
-                            ref = pkg.name_ + "." + cls.name_ + "." + ref;
-                        } else if (currentElement.compareTo("package") == 0) {
-                            ref = pkg.name_ + "." + ref;
-                        }
-                    }
-                    ref = ref.replace('.', '/');
-                    res += " <A HREF=\"" + HTMLReportGenerator.newDocPrefix + 
-                        ref + ".html\" target=\"_top\">" + name + "</A>";
-                } else {
-                    // Expecting a label in this link
-                    String ref = tok;
-                    ref = ref.replace('.', '/');
-                    if (ref.indexOf(".") == -1) {
-                        // Prepend the package and/or class name
-                        if (currentElement.compareTo("class") == 0 ||
-                            currentElement.compareTo("interface") == 0) {
-                            ref = pkg.name_ + "." + cls.name_ + "." + ref;
-                        } else if (currentElement.compareTo("package") == 0) {
-                            ref = pkg.name_ + "." + ref;
-                        }
-                    }
-                    // Get the label
-                    if (st.hasMoreTokens()) {
-                        tok = st.nextToken();  // "baz}" or "baz}."
-                    } else {
-                        System.out.println("Warning: incorrectly formatted @link in text: " + text);
-                    }
-                    String name = tok.substring(0, tok.length()-1);
-                    // Can occur if the link ends }.
-                    if (name.endsWith("}"))
-                        name = name.substring(0, name.length()-1);
-                    res += " <A HREF=\"" + HTMLReportGenerator.newDocPrefix +
-                        ref + ".html\" target=\"_top\">" + name + "</A>";
-                }
-            } else {
-                res += " " + tok; // Changes whitespace only, trimmed later
-            }
+	
+        StringBuffer result = new StringBuffer();
+        
+        int state = -1;
+        
+        final int NORMAL_TEXT = -1;
+        final int IN_LINK = 1;
+        final int IN_LINK_IDENTIFIER = 2;
+        final int IN_LINK_IDENTIFIER_REFERENCE = 3;
+        final int IN_LINK_IDENTIFIER_REFERENCE_PARAMS = 6;
+        final int IN_LINK_LINKTEXT = 4;
+        final int END_OF_LINK = 5;
+
+        StringBuffer identifier = null;
+        StringBuffer identifierReference = null;
+        StringBuffer linkText = null;
+        
+        // Figure out relative reference if required.
+        String ref = "";
+        if (currentElement.compareTo("class") == 0 ||
+            currentElement.compareTo("interface") == 0) {
+	    ref = pkg.name_ + "." + cls.name_ + ".";
+        } else if (currentElement.compareTo("package") == 0) {
+	    ref = pkg.name_ + ".";
         }
-        return res.trim();
+        ref = ref.replace('.', '/');        
+        
+        for (int i=0; i < text.length(); i++) {
+	    char c = text.charAt( i);
+	    char nextChar = i < text.length()-1 ? text.charAt( i+1) : (char)-1;
+	    int remainingChars = text.length() - i;
+          
+	    switch (state) {
+	    case NORMAL_TEXT:
+		if (c == '{' && remainingChars >= 5) {
+		    if ("{@link".equals(text.substring(i, i + 6))) {
+			state = IN_LINK;
+			identifier = null;
+			identifierReference = null;
+			linkText = null;
+			i += 5;
+			continue;
+		    }
+		}
+		result.append( c);
+		break;
+	    case IN_LINK:
+		if (Character.isWhitespace(nextChar)) continue;
+		if (nextChar == '}') {
+		    // End of the link
+		    state = END_OF_LINK;
+		} else if (!Character.isWhitespace(nextChar)) {
+		    state = IN_LINK_IDENTIFIER;
+		}
+		break;
+            case IN_LINK_IDENTIFIER:
+		if (identifier == null) {
+		    identifier = new StringBuffer();
+		}
+            
+		if (c == '#') {
+		    // We have a reference.
+		    state = IN_LINK_IDENTIFIER_REFERENCE;
+		    // Don't append #
+		    continue;
+		} else if (Character.isWhitespace(c)) {
+		    // We hit some whitespace: the next character is the beginning
+		    // of the link text.
+		    state = IN_LINK_LINKTEXT;
+		    continue;
+		}
+		identifier.append(c);              
+		// Check for a } that ends the link.
+		if (nextChar == '}') {
+		    state = END_OF_LINK;
+		}
+		break;
+            case IN_LINK_IDENTIFIER_REFERENCE:
+		if (identifierReference == null) {
+		    identifierReference = new StringBuffer();
+		}
+		if (Character.isWhitespace(c)) {
+		    state = IN_LINK_LINKTEXT;
+		    continue;
+		}
+		identifierReference.append(c);
+              
+		if (c == '(') {
+		    state = IN_LINK_IDENTIFIER_REFERENCE_PARAMS;
+		}
+              
+		if (nextChar == '}') {
+		    state = END_OF_LINK;
+		}
+		break;
+            case IN_LINK_IDENTIFIER_REFERENCE_PARAMS:
+		// We're inside the parameters of a reference. Spaces are allowed.
+		if (c == ')') {
+		    state = IN_LINK_IDENTIFIER_REFERENCE;
+		}
+		identifierReference.append(c);
+		if (nextChar == '}') {
+		    state = END_OF_LINK;
+		}
+		break;
+            case IN_LINK_LINKTEXT:
+		if (linkText == null) linkText = new StringBuffer();
+              
+		linkText.append(c);
+              
+		if (nextChar == '}') {
+		    state = END_OF_LINK;
+		}
+		break;
+            case END_OF_LINK:
+		if (identifier != null) {
+		    result.append("<A HREF=\"");
+		    result.append(HTMLReportGenerator.newDocPrefix);
+		    result.append(ref);
+		    result.append(identifier.toString().replace('.', '/'));
+		    result.append(".html");
+		    if (identifierReference != null) {
+			result.append("#");
+			result.append(identifierReference);
+		    }
+		    result.append("\">");   // target=_top?
+                
+		    result.append("<TT>");
+		    if (linkText != null) {
+			result.append(linkText);
+		    } else {
+			result.append(identifier);
+			if (identifierReference != null) {
+			    result.append(".");
+			    result.append(identifierReference);
+			}
+		    }
+		    result.append("</TT>");
+		    result.append("</A>");
+		}
+		state = NORMAL_TEXT;
+		break;
+	    }
+        }
+        return result.toString();
     }
 
 //
