@@ -342,6 +342,7 @@ public class Options {
                     err.msg("No exclude tag specified after -excludetag option.");
                 } else { 
                     RootDocToXML.excludeTag = options[i][1];
+                    RootDocToXML.excludeTag = RootDocToXML.excludeTag.trim();
                     RootDocToXML.doExclude = true;
                 }
                 continue;

@@ -157,8 +157,8 @@ Provide an option to include the sub-totals with the statistics table?
 TESTS
 =====
 
-Check excludeTag with "@docset Internal" works, or however the tag value is 
-defined in J2SE1.4
+More checking of excludeTag with "@docset Internal" works, or however the tag 
+value is defined in J2SE1.4
 Test change from a class to an interface
 Test interfaces more
 Test very long names

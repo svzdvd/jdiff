@@ -365,7 +365,14 @@ the output to the given directory.
    The argument passed in with this causes
    JDiff to ignore program elements (packages, classes, constructors,
    methods, fields) which contain the given exclude tag in their comment blocks,
-   e.g. "@exclude", "@docset Internal".
+   e.g. " @exclude", " @docset Internal". The extra space in front of "@" is 
+   to stop Javadoc from expanding the name into a file containing commands on
+   the compile line. White space is trimmed off before the string is used.
+   
+   Another solution to passing "@" as part of an argument is to pass @foo,
+   and then create a file named <code>foo</code>, containing 
+   <code>-excludetag @exclude</code>.
+	      
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">

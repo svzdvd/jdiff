@@ -225,6 +225,11 @@ public class RootDocToXML {
         for (int i = 0; pd != null && i < pd.length; i++) {
             String pkgName = pd[i].name();
             
+            // Check for an exclude tag in the package doc block, but not
+	    // in the package.htm[l] file.
+            if (!shownElement(pd[i], null))
+                continue;
+
             if (trace) System.out.println("PROCESSING PACKAGE: " + pkgName);
             outputFile.println("<package name=\"" + pkgName + "\">");
 
@@ -614,18 +619,25 @@ public class RootDocToXML {
      *
      * @param ped The given program element.
      * @param visLevel The desired visibility level; "public", "protected",
-     *   "package" or "private".
+     *   "package" or "private". If null, only check for an exclude tag.
      * @return boolean Set if this element is shown.
      */
-    public boolean shownElement(ProgramElementDoc ped, String visLevel) {
+    public boolean shownElement(Doc doc, String visLevel) {
         // If a doc block contains @exclude or a similar such tag, 
         // then don't display it.
-        if (doExclude && excludeTag != null) {
-            String rct = ((Doc)ped).getRawCommentText();
-            int idx = rct.indexOf(excludeTag);
-            if (idx != -1)
+	if (doExclude && excludeTag != null && doc != null) {
+            String rct = doc.getRawCommentText();
+            if (rct != null && rct.indexOf(excludeTag) != -1) {
                 return false;
-        }
+	    }
+	}  
+	if (visLevel == null) {
+	    return true;
+	}
+	ProgramElementDoc ped = null;
+	if (doc instanceof ProgramElementDoc) {
+	    ped = (ProgramElementDoc)doc;
+	}
         if (visLevel.compareTo("private") == 0)
             return true;
         // Show all that is not private 

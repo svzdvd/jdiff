@@ -137,6 +137,7 @@ SuperProduct.
     <param name="-excludemember" value="private"/>
     <param name="-apiname" value="${NEW_API}"/>
     <param name="-baseURI" value="${BASE_URI}"/>
+    <param name="-excludetag" value=" @exclude"/>
   </doclet>
   <classpath>
     <path refid="class.path"/>    

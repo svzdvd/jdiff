@@ -1,3 +1,13 @@
+1.0.x
+Darren Carlton <darren@bea.com> pointed out that Javadoc
+package.html files may, in fact, be full HTML documents.
+This fix only solves the issue for package.html
+HTML, not the general issue of HTML comments.
+
+Jan Rueten-Budde <jan@rueten-budde.de> noted that the -excludetag
+option was not working for package-level documentation block,
+and that its documentation needed improvement.
+
 1.0.8 - 31st July 2002
 Completed feature request 543260 (add an option to emit XML in another 
 directory) - thanks to Martin Bosak for these changes.
