@@ -128,6 +128,14 @@ public class HTMLReportGenerator {
         h.emitAllBottomLeftFiles(packagesIndexName, classesIndexName, 
                             constructorsIndexName, methodsIndexName,
                             fieldsIndexName, allDiffsIndexName, apiDiff);
+
+        if (doStats) {
+            // The file for the statistical report.
+            String sf = fullReportFileName + JDiff.DIR_SEP + 
+                "jdiff_statistics" + reportFileExt;
+            HTMLStatistics stats = new HTMLStatistics(this);
+            stats.emitStatistics(sf, apiDiff);
+        }
     }   
 
     /** 
@@ -703,6 +711,10 @@ public class HTMLReportGenerator {
             reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + changesSummaryName + "\"><FONT CLASS=\"NavBarFont1\"><B>Overview</B></FONT></A>&nbsp;</TD>");
             reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"pkg_" + pkgName + reportFileExt + "\"><FONT CLASS=\"NavBarFont1\"><B>Package</B></FONT></A>&nbsp;</TD>");
             reportFile.println("      <TD BGCOLOR=\"#FFFFFF\" CLASS=\"NavBarCell1Rev\"> &nbsp;<FONT CLASS=\"NavBarFont1Rev\"><B>Class</B></FONT>&nbsp;</TD>");
+        }
+
+        if (doStats) {
+            reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"jdiff_statistics" + reportFileExt + "\"><FONT CLASS=\"NavBarFont1\"><B>Statistics</B></FONT></A>&nbsp;</TD>");
         }
 
         // Always have a link to the JDiff help file
@@ -1731,6 +1743,9 @@ public class HTMLReportGenerator {
      * generated documetnation for the old API. Not used yet.
      */
     public static String oldDocPrefix = null;
+
+    /** To generate statistical output, set this to true. */
+    public static boolean doStats = false;
 
     /** 
      * The destination directory for output files.

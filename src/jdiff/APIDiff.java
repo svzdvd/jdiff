@@ -15,7 +15,7 @@ public class APIDiff {
     /** Packages added in the new API. */
     public List packagesAdded = null; // PackageAPI[]
     /** Packages removed in the new API. */
-    public List packagesRemoved = null; //PackageAPI []
+    public List packagesRemoved = null; // PackageAPI[]
     /** Packages changed in the new API. */
     public List packagesChanged = null; // PackageDiff[]
 
@@ -23,6 +23,9 @@ public class APIDiff {
     public String oldAPIName_;
     /** Name of the old API. */
     public String newAPIName_;
+
+    /* The overall percentage difference between the two APIs. */
+    public double pdiff = 0.0;
 
     /** Default constructor. */
     public APIDiff() {

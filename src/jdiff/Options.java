@@ -81,6 +81,8 @@ public class Options {
         if (opt.equals("-retainnonprinting"))    return 1;
         // Option for the name of the exclude tag
         if (opt.equals("-excludetag"))    return 2;
+        // Generate statistical output
+        if (opt.equals("-stats"))    return 1;
 
         return 0;
     }//optionLength()
@@ -286,6 +288,10 @@ public class Options {
                 }
                 continue;
             }
+            if (options[i][0].toLowerCase().equals("-stats")) {
+                HTMLReportGenerator.doStats = true;
+                continue;
+            }
             if (options[i][0].toLowerCase().equals("-help")) {
                 usage();
                 System.exit(0);
@@ -301,6 +307,8 @@ public class Options {
 
     /** Display the arguments for JDiff. */
     public static void usage() {
+        System.err.println("JDiff version: " + JDiff.version);
+        System.err.println("");
         System.err.println("Valid JDiff arguments:");
         System.err.println("");
         System.err.println("  -apiname <Name of a version>");
@@ -323,6 +331,7 @@ public class Options {
         System.err.println("  -checkcomments Check that comments are sentences");
         System.err.println("  -stripnonprinting Remove non-printable characters from comments.");
         System.err.println("  -excludetag <tag> Define the JavaDoc tag which implies exclusion");
+        System.err.println("  -stats Generate statistical output");
         System.err.println("  -help       (generates this output)");
         System.err.println("");
         System.err.println("For more help, see jdiff.html");

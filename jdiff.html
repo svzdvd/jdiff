@@ -99,6 +99,7 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-checkcomments]
  [-retainnonprinting]
  [-excludetag <<i>exclude tag</i>>]
+ [-stats]
  [-help]
 </PRE>
 
@@ -267,6 +268,19 @@ NOTE: Either <code>-apiname</code>, or both <code>-oldapi</code> and
    JDiff to ignore program elements (packages, classes, constructors,
    methods, fields) which contain the given exclude tag in their comment blocks,
    e.g. "@exclude", "@docset Internal".
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-stats</code></DT> 
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  Generate an HTML page of statistical information about the
+  differences between the two APIs.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-help</code></DT> 
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  Display the usage summary and version.
   </DD>
 
 </DL>

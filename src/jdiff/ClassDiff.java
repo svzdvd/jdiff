@@ -54,6 +54,9 @@ class ClassDiff {
     /** Fields changed in the new API. */
     public List fieldsChanged = null;
 
+    /* The percentage difference for this class. */
+    public double pdiff = 0.0;
+
     /** Default constructor. */
     public ClassDiff(String name) {
         name_ = name;

@@ -19,6 +19,9 @@ class PackageDiff {
     /** Classes changed in the new API. */
     public List classesChanged = null;
 
+    /* The percentage difference for this package. */
+    public double pdiff = 0.0;
+
     /** Default constructor. */
     public PackageDiff(String name) {
         name_ = name;

@@ -93,6 +93,7 @@ public class APIComparator {
         if (differs == 0.0) {
             System.out.println("Warning: no difference between the APIs.");
         } else {
+            apiDiff.pdiff = differs;
             Double percentage = new Double(differs);
             System.out.println(" Approximately " + percentage.intValue() + "% difference between the APIs");
         }
@@ -175,6 +176,7 @@ public class APIComparator {
         }
         if (trace)
             System.out.println("Package " + pkgDiff.name_ + " had a difference of " + differs + "/" + denom.intValue());
+        pkgDiff.pdiff = 100.0 * differs/denom.doubleValue();
         return differs/denom.doubleValue();
     } // comparePackages()
 
@@ -269,13 +271,16 @@ public class APIComparator {
              newClass.fields_.size());
          if (denom.intValue() == 0) {
              // This is probably a placeholder interface
-             if (differsFlag)
+             if (differsFlag) {
+                 classDiff.pdiff = 100.0;
                  return 1.0;
-             else
+             } else {
                  return 0.0;
+             }
          }
          if (trace)
              System.out.println("  Class " + classDiff.name_ + " had a difference of " + differs + "/" + denom.intValue());
+         classDiff.pdiff = 100.0 * differs/denom.doubleValue();
          return differs/denom.doubleValue();
     } // compareClasses()
 
