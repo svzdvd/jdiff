@@ -36,7 +36,7 @@ project on your classpath. The version tested with was Xerces 1.4.2.
 This is included in this release, or can be downloaded from
 http://www.apache.org.
 
-JDiff is licensed under the GNU General Public License (GPL).
+JDiff is licensed under the Lesser GNU General Public License (LGPL).
 See the file LICENSE.txt.
 
 Many thanks to the reviewers at Sun and Vitria who gave feedback on early

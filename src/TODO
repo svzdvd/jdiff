@@ -2,6 +2,8 @@
 * JDiff Work Items *
 ********************
 
+1.0.3 - JDK1.4, statistics, Pete's bugs, more tests, license change, color diffs from Pete?
+
 KNOWN BUGS
 ==========
 
@@ -48,6 +50,9 @@ ableMemberDocImpl.java:141)
         at jdiff.Jdiff.start(Jdiff.java:28)
         at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
         at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.
+
+Update: 1.4 works but text seems more spread out in changed methods and are 
+there broken links?
 
 Does JavaDoc add () for links to methods with no arguments? Perhaps it does 
 now but did not wiuth JDK1.2 javadoc?
