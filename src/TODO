@@ -2,12 +2,6 @@
 * JDiff Work Items *
 ********************
 
-For the 1.0.6 release:
-
-Populate the lib\2001 directory and check validation works from behind firewalls. 
-
-Ship .gz and .tar?
-
 KNOWN BUGS
 ==========
 
@@ -52,6 +46,8 @@ correct place. Same with the Servlet report.
 
 Long Term:
 ---------
+
+Ship .gz and .tar?
 
 Better end of sentence detection for annotations - use the J2SE14 approach?
 
