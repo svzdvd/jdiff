@@ -3,7 +3,6 @@ java.awt
 java.awt.color
 java.awt.datatransfer
 java.awt.dnd
-java.awt.dnd.peer
 java.awt.event
 java.awt.font
 java.awt.geom

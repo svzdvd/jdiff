@@ -705,9 +705,20 @@ J2SE1.3, which is approximately 8%.
 <H2><A NAME="limitations"></A>LIMITATIONS</H2>
 <BLOCKQUOTE>
 <ol>
+<li>While Java is highly backward compatible, so that, for example,
+ the XML for a
+J2SE1.2 application can be generated using JDiff with J2SE1.3, there
+are a few cases where classes will appear in the XML of the API which are
+not present in the source code. These classes appear to be inserted by
+ <code>javac</code> or <code>javadoc</code>. An example of this is the class
+<code>java.awt.Robot</code>, which is inserted into the XML for
+J2SE1.2 if <code>javadoc</code> in J2SE1.3 is used, but not does not appear in
+ the XML if <code>javadoc</code> in J2SE1.2 is used.<br>
+To avoid these (rare) cases, it is recommended that you <i>use the same version
+of the J2SE that the application was written for</i>.</li>
 <li>JDiff does not tell you how two Javadoc web pages differ in layout, though
-it can tell you how the content has changed.</li>
-<li> Nor does it
+it can tell you how the content has changed.
+Nor does it
 compare what the methods in an API do; if JDiff could tell you what had changed about the way two
 versions of an API execute, the <a
 href="http://www.wikipedia.com/wiki.fcgi?action=browse&id=Halting_Problem&oldid=Halting_problem">Halting
@@ -745,7 +756,7 @@ details.
 <p align="center">
 <font size="-1">
 Copyright &copy; 2001 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
-<a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.5.
+<a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.6.
 </font>
 </p>
 
