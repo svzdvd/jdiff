@@ -348,8 +348,11 @@ public class HTMLIndexes {
             oldsw = emitIndexEntry(currIndex, oldsw, multipleMarker);
     }
     
-    /** Whether to log all missing @since tags or not. */
-    public static boolean logMissingSinces = true;
+    /** 
+     * Whether to log all missing @since tags to a file or not. 
+     * If false, just warn the user.
+     */
+    public static boolean logMissingSinces = false;
 
     /** The file used to output details of missing @since tags. */
     public static PrintWriter missingSincesFile = null;
