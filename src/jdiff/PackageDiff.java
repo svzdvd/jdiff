@@ -19,6 +19,11 @@ class PackageDiff {
     /** Classes changed in the new API. */
     public List classesChanged = null;
 
+    /** 
+     * A string describing the changes in documentation. 
+     */
+    public String documentationChange_ = null;
+
     /* The percentage difference for this package. */
     public double pdiff = 0.0;
 

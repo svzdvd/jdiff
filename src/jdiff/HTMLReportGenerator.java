@@ -237,6 +237,24 @@ public class HTMLReportGenerator {
                            pkgDiff.classesAdded.size() != 0,
                            pkgDiff.classesChanged.size() != 0);
 
+        // Report changes in documentation
+        if (reportDocChanges && pkgDiff.documentationChange_ != null) {
+            String pkgDocRef = pkgName + "/package-summary";
+            pkgDocRef = pkgDocRef.replace('.', '/');
+            String oldPkgRef = pkgDocRef;
+            String newPkgRef = pkgDocRef;
+            if (oldDocPrefix != null)
+                oldPkgRef = oldDocPrefix + oldPkgRef;
+            if (newDocPrefix != null)
+                newPkgRef = newDocPrefix + newPkgRef;
+            if (oldPkgRef != null) 
+                pkgDiff.documentationChange_ += "<A HREF=\"" + oldPkgRef +
+                    ".html\" target=\"_self\"><tt>old</tt></A> to ";
+            pkgDiff.documentationChange_ += "<A HREF=\"" + newPkgRef + 
+                ".html\" target=\"_self\"><tt>new</tt></A>. ";
+            writeText(pkgDiff.documentationChange_);
+        }
+
         // Report classes which were removed in the new API
         if (pkgDiff.classesRemoved.size() != 0) {
             // Determine the title for this section
@@ -416,6 +434,7 @@ public class HTMLReportGenerator {
                     ".html\" target=\"_self\"><tt>old</tt></A> to ";
             classDiff.documentationChange_ += "<A HREF=\"" + classRef + 
                 ".html\" target=\"_self\"><tt>new</tt></A>. ";
+            writeText(classDiff.documentationChange_);
         }
 
         if (classDiff.modifiersChange_ != null)
@@ -1018,6 +1037,8 @@ public class HTMLReportGenerator {
                                            MemberDiff memberDiff) {
         String fqName = pkgName + "." + className;
         String newSignature = memberDiff.newType_;
+        if (newSignature.compareTo("void") == 0)
+            newSignature = "";
         String commentID = fqName + ".ctor_changed(" + newSignature + ")";
         reportFile.println("<A NAME=\"" + commentID + "\"></A>"); // Named anchor
         reportFile.println("<TR BGCOLOR=\"" + bgcolor + "\" CLASS=\"TableRowColor\">");

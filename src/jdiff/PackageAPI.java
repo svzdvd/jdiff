@@ -31,6 +31,18 @@ class PackageAPI implements Comparable {
 
     /** Compare two PackageAPI objects by name. */
     public int compareTo(Object o) {
-        return name_.compareTo(((PackageAPI)o).name_);
+        PackageAPI oPackageAPI = (PackageAPI)o;
+        if (APIComparator.docChanged(doc_, oPackageAPI.doc_))
+            return -1;
+        return name_.compareTo(oPackageAPI.name_);
+    }
+
+    /** 
+     * Tests two packages, using just the package name, used by indexOf().
+     */
+    public boolean equals(Object o) {
+        if (name_.compareTo(((PackageAPI)o).name_) == 0)
+            return true;
+        return false;
     }
 }

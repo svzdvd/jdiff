@@ -49,6 +49,8 @@ class ConstructorAPI implements Comparable {
         comp = modifiers_.compareTo(constructorAPI.modifiers_);
         if (comp != 0)
             return comp;
+        if (APIComparator.docChanged(doc_, constructorAPI.doc_))
+            return -1;
         return 0;
     }
 

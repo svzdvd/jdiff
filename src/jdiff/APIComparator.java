@@ -38,12 +38,30 @@ public class APIComparator {
         Iterator iter = oldAPI.packages_.iterator();
         while (iter.hasNext()) {
             PackageAPI oldPkg = (PackageAPI)(iter.next());
+            // This search is looking for an *exact* match. This is true in
+            // all the *API classes.
             int idx = Collections.binarySearch(newAPI.packages_, oldPkg);
             if (idx < 0) {
-                if (trace)
-                    System.out.println("Package " + oldPkg.name_ + " was removed");
-                apiDiff.packagesRemoved.add(oldPkg);
-                differs += 1.0;
+                // If there an instance of a package with the same name 
+                // in both the old and new API, then treat it as changed,
+                // rather than removed and added. There will never be more than
+                // one instance of a package with the same name in an API.
+                int existsNew = newAPI.packages_.indexOf(oldPkg);
+                if (existsNew != -1) {
+                    // Package by the same name exists in both APIs
+                    // but there has been some or other change.
+                    differs += 2.0 * comparePackages(oldPkg, (PackageAPI)(newAPI.packages_.get(existsNew)));
+                }  else {
+                    if (trace)
+                        System.out.println("Package " + oldPkg.name_ + " was removed");
+                    apiDiff.packagesRemoved.add(oldPkg);
+                    differs += 1.0;
+                }
+            } else {
+                // The package exists unchanged in name or doc, but may 
+                // differ in classes and their members, so it still needs to 
+                // be compared.
+                differs += 2.0 * comparePackages(oldPkg, (PackageAPI)(newAPI.packages_.get(idx)));
             }
         } // while (iter.hasNext())
 
@@ -53,13 +71,19 @@ public class APIComparator {
             PackageAPI newPkg = (PackageAPI)(iter.next());
             int idx = Collections.binarySearch(oldAPI.packages_, newPkg);
             if (idx < 0) {
-                if (trace)
-                    System.out.println("Package " + newPkg.name_ + " was added");
-                apiDiff.packagesAdded.add(newPkg);
-                differs += 1.0;
+                // See comments above
+                int existsOld = oldAPI.packages_.indexOf(newPkg);
+                if (existsOld != -1) {
+                    // Don't mark a package as added or compare it 
+                    // if it was already marked as changed
+                } else {
+                    if (trace)
+                        System.out.println("Package " + newPkg.name_ + " was added");
+                    apiDiff.packagesAdded.add(newPkg);
+                    differs += 1.0;
+                }
             } else {
-                // Package exists in both APIs
-                differs += 2.0 * comparePackages((PackageAPI)(oldAPI.packages_.get(idx)), newPkg);
+                // It will already have been compared above.
             }
         } // while (iter.hasNext())
 
@@ -90,13 +114,12 @@ public class APIComparator {
             System.out.println("Top level changes: " + differs + "/" + denom.intValue());
         differs = (100.0 * differs)/denom.doubleValue();
 
-        if (differs == 0.0) {
-            System.out.println("Warning: no difference between the APIs.");
-        } else {
-            apiDiff.pdiff = differs;
-            Double percentage = new Double(differs);
-            System.out.println(" Approximately " + percentage.intValue() + "% difference between the APIs");
-        }
+        // Some differences such as documentation changes are not tracked in 
+        // the difference statistic, so a value of 0.0 does not mean that there
+        // were no differences between the APIs.
+        apiDiff.pdiff = differs;
+        Double percentage = new Double(differs);
+        System.out.println(" Approximately " + percentage.intValue() + "% difference between the APIs");
     }   
 
     /** 
@@ -127,8 +150,7 @@ public class APIComparator {
                 int existsNew = newPkg.classes_.indexOf(oldClass);
                 if (existsNew != -1) {
                     // Class by the same name exists in both packages
-                    // but there has been a change in modifiers. This will also
-                    // find all other changes between the classes.
+                    // but there has been some or other change.
                     differs += 2.0 * compareClasses(oldClass, (ClassAPI)(newPkg.classes_.get(existsNew)), pkgDiff);
                 }  else {
                     if (trace)
@@ -165,8 +187,15 @@ public class APIComparator {
             }
         } // while (iter.hasNext())
 
+        // Check if the only change was in documentation. Bug 472521.
+        boolean differsFlag = false;
+        if (docChanged(oldPkg.doc_, newPkg.doc_)) {
+            pkgDiff.documentationChange_ = "Documentation changed from ";
+            differsFlag = true;
+        }
+
         // Only add to the parent Diff object if some difference has been found
-        if (differs != 0.0) 
+        if (differs != 0.0 || differsFlag) 
             apiDiff.packagesChanged.add(pkgDiff);
         Long denom = new Long(oldPkg.classes_.size() + newPkg.classes_.size());
         // This should never be zero because a package always has classes?
@@ -270,9 +299,10 @@ public class APIComparator {
              newClass.ctors_.size() + newClass.methods_.size() + 
              newClass.fields_.size());
          if (denom.intValue() == 0) {
-             // This is probably a placeholder interface
+             // This is probably a placeholder interface, but documentation
+             // or modifiers etc may have changed
              if (differsFlag) {
-                 classDiff.pdiff = 100.0;
+                 classDiff.pdiff = 0.0; // 100.0 is too much
                  return 1.0;
              } else {
                  return 0.0;
@@ -664,7 +694,7 @@ public class APIComparator {
      * @return true if both are non-null and differ, 
      *              or if one is null and the other is not.
      */
-    public boolean docChanged(String oldDoc, String newDoc) {
+    public static boolean docChanged(String oldDoc, String newDoc) {
         if (!HTMLReportGenerator.reportDocChanges)
             return false; // Don't even count doc changes as changes
         if (oldDoc == null && newDoc != null)

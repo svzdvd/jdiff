@@ -60,11 +60,13 @@ class FieldAPI implements Comparable {
         comp = modifiers_.compareTo(oFieldAPI.modifiers_);
         if (comp != 0)
             return comp;
+        if (APIComparator.docChanged(doc_, oFieldAPI.doc_))
+            return -1;
         return 0;
     }
   
     /** 
-     * Tests two field, using just the field name, used by indexOf().
+     * Tests two fields, using just the field name, used by indexOf().
      */
     public boolean equals(Object o) {
         if (name_.compareTo(((FieldAPI)o).name_) == 0)

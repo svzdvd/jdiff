@@ -86,6 +86,8 @@ class MethodAPI implements Comparable {
         comp = getSignature().compareTo(oMethod.getSignature());
         if (comp != 0)
             return comp;
+        if (APIComparator.docChanged(doc_, oMethod.doc_))
+            return -1;
         return 0;
     }
   

@@ -72,6 +72,8 @@ class ClassAPI implements Comparable {
         comp = modifiers_.compareTo(oClassAPI.modifiers_);
         if (comp != 0)
             return comp;
+        if (APIComparator.docChanged(doc_, oClassAPI.doc_))
+            return -1;
         return 0;
     }  
 
