@@ -50,6 +50,8 @@ public class HTMLIndexes {
             emitBottomLeftFile(fieldsIndexName, apiDiff, indexType, "Field");
             emitBottomLeftFile(allDiffsIndexName, apiDiff, indexType, "All");
         }
+        if (missingSincesFile != null)
+            missingSincesFile.close();
     }
 
     /** 
@@ -346,6 +348,54 @@ public class HTMLIndexes {
             oldsw = emitIndexEntry(currIndex, oldsw, multipleMarker);
     }
     
+    public static PrintWriter missingSincesFile = null;
+    /** 
+     * Emit elements in the given iterator
+     * which are missing @since tags. 
+     */
+    public void emitMissingSinces(Iterator iter) {
+        if (missingSincesFile == null) {
+            String sinceFileName = h_.outputDir + JDiff.DIR_SEP + "missingSinces.txt";
+            try {
+                FileOutputStream fos = new FileOutputStream(sinceFileName);
+                missingSincesFile = new PrintWriter(fos);
+            } catch (IOException e) {
+                System.out.println("IO Error while attempting to create " + sinceFileName);
+                System.out.println("Error: " + e.getMessage());
+                System.exit(1);
+            }
+        }
+        while (iter.hasNext()) {
+            Index currIndex = (Index)(iter.next()); 
+            // Only display information about added elements
+            if (currIndex.changeType_ != 1) 
+                continue;
+            String programElementType = currIndex.ename_;
+            String details = null;
+            if (programElementType.compareTo("class") == 0) {
+                details = currIndex.pkgName_ + "." + currIndex.name_;
+                if (currIndex.isInterface_)
+                    details = details + " Interface";
+                else
+                    details = details + " Class";
+            } else if (programElementType.compareTo("constructor") == 0) {
+                details = currIndex.pkgName_ + "." + currIndex.name_ + " Constructor (" + currIndex.type_ + ")";
+            } else if (programElementType.compareTo("method") == 0) {
+                details = currIndex.pkgName_ + "." + currIndex.className_ + " " + "Method " + currIndex.name_ + "(" + currIndex.type_ + ")";
+            } else if (programElementType.compareTo("field") == 0) {
+                details = currIndex.pkgName_ + "." + currIndex.className_ + " " + "Field " + currIndex.name_;
+            } else {
+                System.out.println("Error: unknown program element type");
+                System.exit(3);
+            }
+            if (currIndex.doc_ == null || currIndex.doc_.indexOf("@since") != -1) {
+                missingSincesFile.println("OK: " + details);
+            } else {
+                missingSincesFile.println("MISSING @SINCE" + details);
+            }
+        }
+    }
+    
     /** 
      * Emit a single entry and the link to its file.
      *
@@ -395,7 +445,9 @@ public class HTMLIndexes {
             iterClass = pkgDiff.classesAdded.iterator();
             while ((indexType == 3 || indexType == 1) && iterClass.hasNext()) {
                 ClassAPI cls = (ClassAPI)(iterClass.next());
-                classNames.add(new Index(cls.name_, 1, pkgName, cls.isInterface_));
+                Index idx = new Index(cls.name_, 1, pkgName, cls.isInterface_);
+                idx.doc_ = cls.doc_; // Used for checking @since
+                classNames.add(idx);
             }
             iterClass = pkgDiff.classesChanged.iterator();
             while ((indexType == 3 || indexType == 2) && iterClass.hasNext()) {
@@ -406,6 +458,8 @@ public class HTMLIndexes {
         Collections.sort(classNames);
         emitIndexHeader("Classes", indexType, hasRemovals, hasAdditions, hasChanges);
         emitIndexEntries(classNames.iterator());
+        if (indexType == 1)
+            emitMissingSinces(classNames.iterator());
     }
 
     /** Emit an index entry for a class. */
@@ -491,7 +545,9 @@ public class HTMLIndexes {
                 iterCtor = classDiff.ctorsAdded.iterator();
                 while ((indexType == 3 || indexType == 1) && iterCtor.hasNext()) {
                     ConstructorAPI ctor = (ConstructorAPI)(iterCtor.next());
-                    ctorNames.add(new Index(className, 1, pkgName, ctor.type_));
+                    Index idx = new Index(className, 1, pkgName, ctor.type_);
+                    idx.doc_ = ctor.doc_; // Used for checking @since
+                    ctorNames.add(idx);
                 }
                 iterCtor = classDiff.ctorsChanged.iterator();
                 while ((indexType == 3 || indexType == 2) && iterCtor.hasNext()) {
@@ -503,6 +559,8 @@ public class HTMLIndexes {
         Collections.sort(ctorNames);
         emitIndexHeader("Constructors", indexType, hasRemovals, hasAdditions, hasChanges);
         emitIndexEntries(ctorNames.iterator());
+        if (indexType == 1)
+            emitMissingSinces(ctorNames.iterator());
     }
 
     /** Emit an index entry for a constructor. */
@@ -586,7 +644,9 @@ public class HTMLIndexes {
                 iterMeth = classDiff.methodsAdded.iterator();
                 while ((indexType == 3 || indexType == 1) && iterMeth.hasNext()) {
                     MethodAPI meth = (MethodAPI)(iterMeth.next());
-                    methNames.add(new Index(meth.name_, 1, pkgName, className, meth.getSignature()));
+                    Index idx = new Index(meth.name_, 1, pkgName, className, meth.getSignature());
+                    idx.doc_ = meth.doc_; // Used for checking @since
+                    methNames.add(idx);
                 }
                 iterMeth = classDiff.methodsChanged.iterator();
                 while ((indexType == 3 || indexType == 2) && iterMeth.hasNext()) {
@@ -598,7 +658,8 @@ public class HTMLIndexes {
         Collections.sort(methNames);
         emitIndexHeader("Methods", indexType, hasRemovals, hasAdditions, hasChanges);
         emitIndexEntries(methNames.iterator());
-
+        if (indexType == 1)
+            emitMissingSinces(methNames.iterator());
     }
 
     /** Emit an index entry for a method. */
@@ -699,7 +760,9 @@ public class HTMLIndexes {
                 iterField = classDiff.fieldsAdded.iterator();
                 while ((indexType == 3 || indexType == 1) && iterField.hasNext()) {
                     FieldAPI fld = (FieldAPI)(iterField.next());
-                    fieldNames.add(new Index(fld.name_, 1, pkgName, className, fld.type_, true));
+                    Index idx = new Index(fld.name_, 1, pkgName, className, fld.type_, true);
+                    idx.doc_ = fld.doc_; // Used for checking @since
+                    fieldNames.add(idx);
                 }
                 iterField = classDiff.fieldsChanged.iterator();
                 while ((indexType == 3 || indexType == 2) && iterField.hasNext()) {
@@ -711,6 +774,8 @@ public class HTMLIndexes {
         Collections.sort(fieldNames);
         emitIndexHeader("Fields", indexType, hasRemovals, hasAdditions, hasChanges);
         emitIndexEntries(fieldNames.iterator());
+        if (indexType == 1)
+            emitMissingSinces(fieldNames.iterator());
     }
 
     /** Emit an index entry for a field. */
@@ -935,6 +1000,9 @@ class Index implements Comparable {
     
     /** Set if this class is an interface. */
     public boolean isInterface_= false;
+    
+    /** The doc block of added elements, default is null. */
+    public String doc_ = null;
     
     /** 
      * The new member type. For methods, this is the signature.
