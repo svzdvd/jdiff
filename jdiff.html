@@ -597,6 +597,18 @@ ANT is a general-purpose build tool and can be found
   </TR>
 
   <TR>
+    <TD VALIGN="top">Using an XML parser other than Xerces</TD>
+    <TD VALIGN="top">Set the <code>org.xml.sax.driver</code> system property to
+     the name of the XML parser class which you wish to use. Setting a system 
+     property is usually done by passing <nobr><code>-Dname=value</code></nobr> to the JVM. 
+     To cause Javadoc to pass an argument to the underlying JVM, use 
+     <code>-J-Dname=value</code>. To pass an argument to Javadoc from within 
+     an ANT Javadoc task, use the <code>additionalparam</code> attribute, e.g. 
+     <nobr><code>additionalparam="-J-Dorg.xml.sax.driver=com.example.my.driver"</code><nobr>
+    </TD>
+  </TR>
+
+  <TR>
     <TD VALIGN="top">Comparing Jar files results in duplicate class
     changes being reported.</TD>
     <TD VALIGN="top">Be sure to use the <code>-packagesonly</code>
