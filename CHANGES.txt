@@ -1,3 +1,10 @@
+1.0.7 - February 2002
+Fixed feature request 510307 and bug 517383: duplicate comment
+ids. This only occurred when package-level documentation existed
+and also the last file scanned was an interface. 
+Fixed bug where comments for interfaces did not have @link tags
+expanded.
+
 1.0.6 - January 9th 2002
 Fixed bug 494135 (Compare classes which have no package).
 Fixed bug 494970 (HTML strike element in the index was not closed when

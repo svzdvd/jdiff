@@ -2,10 +2,6 @@
 
 <project name="jdiff" default="jdiff" basedir=".">
 
-<description>
-This build file will build JDiff.
-</description>
-
 <target name="usage">
   <echo message="usage: ant jdiff"/>
 </target>

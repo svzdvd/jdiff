@@ -165,22 +165,26 @@ class APIHandler extends DefaultHandler {
             addEndTagToText(localName);
         } else if (currentElement.compareTo("constructor") == 0 && 
                    localName.compareTo("constructor") == 0) {
-                currentElement = "class";            
+            currentElement = "class";
         } else if (currentElement.compareTo("method") == 0 && 
                    localName.compareTo("method") == 0) {
-                currentElement = "class";            
+            currentElement = "class";
         } else if (currentElement.compareTo("field") == 0 && 
                    localName.compareTo("field") == 0) {
-                currentElement = "class";            
-        } else if (currentElement.compareTo("class") == 0 && 
-                   localName.compareTo("class") == 0) {
-                currentElement = "package";            
-        } else if (currentElement.compareTo("interface") == 0 && 
-                   localName.compareTo("interface") == 0) {
-                currentElement = "package";            
+            currentElement = "class";
+        } else if (currentElement.compareTo("class") == 0 ||
+                   currentElement.compareTo("interface") == 0) {
+            // Feature request 510307 and bug 517383: duplicate comment ids.
+            // The end of a member element leaves the currentElement at the 
+            // "class" level, but the next class may in fact be an interface
+            // and so the currentElement here will be "interface".
+            if (localName.compareTo("class") == 0 || 
+                localName.compareTo("interface") == 0) {
+                currentElement = "package";
+            }
         }
     }
-    
+
     /** Called to process text. */
     public void characters(char[] ch, int start, int length) {
          if (inDoc) {
@@ -253,7 +257,7 @@ class APIHandler extends DefaultHandler {
             String ctOld = (String)(Comments.allPossibleComments.put(commentID, ct));
             if (ctOld != null) {
                 System.out.println("Error: duplicate comment id: " + commentID);
-// Bug 517383                System.exit(5);
+                System.exit(5);
             }
         }
     }
