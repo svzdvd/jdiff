@@ -120,6 +120,8 @@ public class APIComparator {
         apiDiff.pdiff = differs;
         Double percentage = new Double(differs);
         System.out.println(" Approximately " + percentage.intValue() + "% difference between the APIs");
+
+        Diff.closeDiffFile();
     }   
 
     /** 
@@ -190,7 +192,7 @@ public class APIComparator {
         // Check if the only change was in documentation. Bug 472521.
         boolean differsFlag = false;
         if (docChanged(oldPkg.doc_, newPkg.doc_)) {
-            pkgDiff.documentationChange_ = "Documentation changed from ";
+            pkgDiff.documentationChange_ = Diff.emitDocDiffs(oldPkg.doc_, newPkg.doc_, "pkg_" + oldPkg.name_);
             differsFlag = true;
         }
 
@@ -250,7 +252,7 @@ public class APIComparator {
         }
         // Track changes in documentation
         if (docChanged(oldClass.doc_, newClass.doc_)) {
-            classDiff.documentationChange_ = "Documentation changed from ";
+            classDiff.documentationChange_ = Diff.emitDocDiffs(oldClass.doc_, newClass.doc_, pkgDiff.name_ + "." + oldClass.name_);
             differsFlag = true;
         }
         // All other modifiers
@@ -348,7 +350,7 @@ public class APIComparator {
                     memberDiff.newExceptions_ = newCtor.exceptions_;
                     // Track changes in documentation
                     if (docChanged(oldCtor.doc_, newCtor.doc_)) {
-                        memberDiff.documentationChange_ = "Documentation changed from ";
+                        memberDiff.documentationChange_ = Diff.emitDocDiffs(oldCtor.doc_, newCtor.doc_, memberDiff.name_);
                     }
                     String modifiersChange = oldCtor.modifiers_.diff(newCtor.modifiers_);
                     if (modifiersChange != null && modifiersChange.indexOf("Change from deprecated to undeprecated") != -1) {
@@ -559,7 +561,7 @@ public class APIComparator {
 
         // Track changes in documentation
         if (docChanged(oldMethod.doc_, newMethod.doc_)) {
-            methodDiff.documentationChange_ = "Documentation changed from ";
+            methodDiff.documentationChange_ = Diff.emitDocDiffs(oldMethod.doc_, newMethod.doc_, oldMethod.name_);
             differs = true;
         }
 
@@ -642,7 +644,7 @@ public class APIComparator {
                     }
                     // Track changes in documentation
                     if (docChanged(oldField.doc_, newField.doc_)) {
-                        memberDiff.documentationChange_ = "Documentation changed from ";
+                        memberDiff.documentationChange_ = Diff.emitDocDiffs(oldField.doc_, newField.doc_, oldField.name_);
                         differs = true;
                     }
 

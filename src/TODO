@@ -64,6 +64,14 @@ DESIGN
 Short Term:
 ----------
 
+Doc diff identifiers are not yet unique
+
+Doc diff tokenization still needs some more work
+
+Break down the large doc changes HTML file into per-package change files.
+
+Break out subclasses in DiffMyers.java for jar files?
+
 Work with crimson XML parser
 
 More work on XML for standalone etc
@@ -183,6 +191,12 @@ REPORT PRESENTATION
 
 Add next, prev class etc links
 Better text demo of showing all private changes in APIs
+
+Fix the small size of old and new links
+
+Add ability to have no newjavadoc links either
+
+Better presentation of all the documentation changes - sorted?
 
 Avoid single letter indexes with just one entry on a new line
 If a return type has a [] in it, browser may break the line before the []
