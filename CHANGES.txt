@@ -1,3 +1,10 @@
+1.0.8 - August 2002
+Completed feature request 543260 (add an option to emit XML in another 
+directory) - thanks to Martin Bosak for these changes.
+Fixed bug 587072 (InvocationTargetException doing diff) by adding extra string 
+length checks when determining the first sentence of a comment.
+Added a top-level ANT build file.
+
 1.0.7 - June 24th 2002
 Completed feature request 561922 to make JDiff JAXP compliant. This
 change required xerces.jar to be added to the -docletpath values in
