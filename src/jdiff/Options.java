@@ -341,7 +341,7 @@ public class Options {
         System.err.println("  -javadocnew <location of existing Javadoc files for the new API>");
         System.err.println("  -javadocold <location of existing Javadoc files for the old API>");
         
-        System.err.println("  -baseURI <base> Use \"base\" as the base location of the various DTDs used by JDiff");
+        System.err.println("  -baseURI <base> Use \"base\" as the base location of the various DTDs and Schemas used by JDiff");
         System.err.println("  -excludeclass [public|protected|package|private] Exclude classes which are not public, protected etc");
         System.err.println("  -excludemember [public|protected|package|private] Exclude members which are not public, protected etc");
         

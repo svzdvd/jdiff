@@ -1016,8 +1016,8 @@ public class RootDocToXML {
     public static String excludeTag = null;
 
     /** 
-     * The base URI for locating necessary DTDs. By default, this is 
-     * "http://www.w3.org". A typical value to use local copies of DTD files
+     * The base URI for locating necessary DTDs and Schemas. By default, this 
+     * is "http://www.w3.org". A typical value to use local copies of DTD files
      * might be "file:///C:/jdiff/lib"
      */
     public static String baseURI = "http://www.w3.org";

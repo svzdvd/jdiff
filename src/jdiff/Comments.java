@@ -169,7 +169,7 @@ public class Comments {
 //
 
     /**
-     * Add the SingleComment object to the list od comments kept by this 
+     * Add the SingleComment object to the list of comments kept by this 
      * object. 
      */
     public void addComment(SingleComment comment) {

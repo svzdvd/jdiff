@@ -369,7 +369,7 @@ public class API {
      * Replace all instances of <p> with <p/>. Just for the small number
      * of HMTL tags which don't require a matching end tag.
      * Also make HTML conform to the simple HTML requirements such as 
-     * no double hypens. Double hypens are replaced by - and the character
+     * no double hyphens. Double hyphens are replaced by - and the character
      * entity for a hyphen.
      *
      * Cases where this fails and has to be corrected in the XML by hand: 
