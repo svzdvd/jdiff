@@ -40,6 +40,8 @@ DESIGN
 Short Term:
 ----------
 
+Synchronize option defaults with the article, e.g. doc changes
+
 Add title option to third pass for each different report
 
 Check validation works from behind firewalls. Populate the lib\2001 directory.
@@ -47,6 +49,8 @@ Check validation works from behind firewalls. Populate the lib\2001 directory.
 Document validation details, note minor change with <implements/>, that it is now a single tag
 
 Write and test jdiff example.xml usage
+
+Add a color square to indicate how much a package or class changed
 
 Gather all configuration variables into a single file
 
