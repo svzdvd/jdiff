@@ -98,7 +98,7 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-excludeclass <<i>exclusion level</i>>]
  [-excludemember <<i>exclusion level</i>>]
  [-nosuggest <<i>suggestion level</i>>]
- [-allsentences]
+ [-firstsentence]
  [-nodocchanges]
  [-checkcomments]
  [-retainnonprinting]
@@ -212,16 +212,13 @@ the output to the given directory.
    </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
-  <code>-allsentences</code></dt>
+  <code>-firstsentence</code></dt>
   <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
-   This argument causes JDiff to save all Javadoc comments as part of
+   This argument causes JDiff to save only the first sentence of each
+   Javadoc comment as part of
    the API. This is only necessary when the XML file representing the
    API is being generated. See <code>-nodocchanges</code> for how to 
-   prevent documentation changes being noted as differences.<br>
-
-   Sometimes the source code is the only documentation for a
-   project. The existence of this argument suggests that sometimes 
-   the documentation is also part of the source code. 
+   prevent any documentation changes being noted as differences.<br>
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
