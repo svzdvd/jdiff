@@ -22,6 +22,8 @@ install ANT, change to the <code>build</code> directory and type:
 <p>
 <code>&lt;ANT install directory&gt;\bin\ant </code>
 
+<p>You can also do the same thing in the top-level jdiff irectory, which will cause the unit tests to be run and the examples to be built, as well as building jdiff.jar.
+
 <p>
 For the tests and examples, change to the appropriate directory and
 type the same command as above.
@@ -77,6 +79,8 @@ example. This uses the <code>classdoc</code> Java application from
 RootDoc object for any doclet from a JAR file. It is also a good place
 to see how RootDoc objects can be constructed for any language, not
 just Java.
+
+<p>To find all packages, in order to create a list to be be passed to Javadoc, try<code>find java javax org -type d | sed "s,/,.,g</code>
 
 <p align="center">
 <font size="-1">
