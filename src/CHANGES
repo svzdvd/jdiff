@@ -1,0 +1,16 @@
+1.0.2
+Added scripts for non-Windows platforms
+Added support for emitting all documentation for an API to the XML, and then
+tracking changes in the documentation, with links to the old and new comments. 
+Added the option -allsentences to emit all documentation for an API.
+Added an option -nodocchanges to disable the comparison of documentation.
+
+1.0.1
+Fixed bug 469794.
+Added script to generate differences between jar files.
+Added documentation about use behind firewalls.
+Added notes for future work.
+
+1.0 
+First release of JDiff.
+

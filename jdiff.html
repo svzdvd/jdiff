@@ -1,0 +1,644 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+<TITLE>JDiff - An HTML Report of API Differences</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+<p align="right"><A href="http://sourceforge.net"> <IMG src="http://sourceforge.net/sflogo.php?group_id=37160" width="88" height="31" border="0" alt="SourceForge Logo"></A></p>
+
+<center>
+<H1>JDiff - An HTML Report of API Differences</H1><br>
+</center>
+
+<BLOCKQUOTE>
+<b>JDiff</b> is a JavaDoc <a href="http://java.sun.com/j2se/1.3/docs/tooldocs/javadoc/overview.html">doclet</a> which generates an HTML report of all the packages, classes,
+constructors, methods, and fields which have been
+removed, added or changed in any way when two APIs are compared. This
+is very useful for describing exactly what has changed between two
+releases of a product. Only the API (Application Programming
+Interface) of each version is compared. It does not compare what the
+source code does when executed, nor the JavaDoc-generated
+documentation pages.
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+It's great for reporting what has changed between two releases of your
+product! 
+<a href="http://javadiff.sourceforge.net/jdiff/jdkchanges/changes.html">
+<b>Take a look at the output from comparing JDK1.2 and JDK1.3</b></a>. 
+You can download the <a href="http://sourceforge.net/projects/javadiff/">latest version from here</a>.
+</BLOCKQUOTE>
+
+<HR>
+<H2>CONTENTS</H2>
+<UL>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#examples"><B>Examples</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#synopsis"><B>Synopsis</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#notes"><B>Notes</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#addingcomments"><B>Adding
+Comments to a Report</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#environment"><B>Environment</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#troubleshooting"><B>Troubleshooting</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#errorswarnings"><B>Errors
+and Warning Messages</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#differencestatistics"><B>Difference Statistics</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#limitations"><B>Limitations</B></A></P></LI>
+<LI><P STYLE="margin-bottom: 0cm"><A HREF="#furtherreading"><B>Further Reading</B></A></P></LI>
+</UL>
+<HR>
+
+<A NAME="examples"></A>
+<H2>EXAMPLES</H2>
+
+<BLOCKQUOTE>
+There is a <a href="examples/README.html">complete example</a> of how
+to use JDiff in the <code>examples</code> directory.
+There is also an example of the results of using JDiff to 
+<a href="http://javadiff.sourceforge.net/jdiff/jdkchanges/changes.html">compare the public 
+APIs of JDK1.2 and JDK1.3</a>.
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+The basic sequence of operations is to run JDiff on one set of source
+files to create an XML file which represents the API for that version
+of a product. Then JDiff is run again on another set of source
+files to create an XML file which represents the API for the next version
+of a product. Finally, JDiff compares the two APIs as represented in the
+XML files and generates an HTML report which describes the differences
+between the two APIs, together with comments describing the reasons
+for the differences.
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+The results are written into a file called <code>changes.html</code>, with more files in a directory called <code>changes</code>.
+ These files contain links to existing JavaDoc documentation. A CSS stylesheet is
+ also generated in the file <code>stylesheet-jdiff.css</code>. <i>These are the
+ only 
+ files which need to be shipped with a product to include a report
+ of what has changed since the previous release.</i>.
+</BLOCKQUOTE>
+
+<hr>
+
+<H2><A NAME="synopsis"></A>SYNOPSIS</H2>
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm; margin-bottom:0.5cm">
+java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
+ [-apiname <<i>API name</i>>]
+ [-oldapi <<i>name of old API</i>>]
+ [-newapi <<i>name of new API</i>>]
+ [-sourcepath <<i>source path</i>>]
+ [-javadocnew <<i>javadoc files location for the new API</i>>]
+ [-javadocold <<i>javadoc files location for the old API</i>>]
+ [-excludeclass <<i>exclusion level</i>>]
+ [-excludemember <<i>exclusion level</i>>]
+ [-nosuggest <<i>suggestion level</i>>]
+ [-checkcomments]
+ [-retainnonprinting]
+ [-excludetag <<i>exclude tag</i>>]
+ [-help]
+</PRE>
+
+<BLOCKQUOTE>
+NOTE: Either <code>-apiname</code>, or both <code>-oldapi</code> and
+<code>-newapi</code> must be used. All other arguments are optional.
+</BLOCKQUOTE>
+
+<P STYLE="margin-left: 1cm; margin-bottom: 0cm">The arguments for JDiff are:</P>
+<DL>
+<DL>
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-apiname</code> <<i>API name</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   Define the name which will be associated
+   with the specified API. If the name which is given here has space 
+   characters, they will be 
+   replaced by underscore characters. This name with no spaces is used as the name of the XML
+   file. It is also written into the XML file as an attribute of the top
+   element.
+   E.g. "SuperProduct 1.0" generates an XML file named 
+   "SuperProduct_1.0.xml".
+   The XML file is always generated in the current directory.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-oldapi</code> <<i>name of old API</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   The name of the old or previous version of an
+   API or product, e.g. "SuperProduct 1.0", which is to be one of the
+   APIs compared.
+   This name is the name which was given to <code>-apiname</code> when
+   the XML file was generated.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-newapi</code> <<i>name of old API</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   The name of the new or later version of an
+   API or product, e.g. "SuperProduct 2.0", which is to be one of the
+   APIs compared.
+   This name is the name which was given to <code>-apiname</code> when
+   the XML file was generated.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-sourcepath</code> <<i>source path</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   Define the path to the set of Java source
+   files (the API)
+   to be scanned, e.g. <code>examples/SuperProduct1.0</code>. The
+   slashes in this argument should match the local architecture.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-javadocnew</code> <<i>javadoc files location for the new API</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   The location of existing JavaDoc files
+   for the new API, e.g. "http://java.sun.com/j2se/<b>1.3</b>/docs/api/" for the
+   public documentation for JDK1.3. The default value is "../", which implies
+   that the documentation directory generated by Javadoc is at the same level as
+   the "changes.html" file generated by JDiff. Slashes are always
+   forward in the argument, since this is an HTML link. The argument
+   should also always end in a forward slash. If a relative value is
+   given, it should be relative to files in the "changes" directory
+   generated by JDiff.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-javadocold</code> <<i>javadoc files location for the old API</i>></DT>
+    <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm"> The location of existing 
+      JavaDoc files for the old API, e.g. "http://java.sun.com/j2se/<b>1.2</b>/docs/API/" 
+      for the public documentation for JDK1.3. The default value is null, which 
+      results in no links to JavaDoc-generated documentation for the previous 
+      release. Slashes are always forward in the argument, since this is an HTML 
+      link. The argument should also always end in a forward slash. If a relative 
+      value is given, it should be relative to files in the "changes" directory 
+      generated by JDiff. </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-excludeclass</code> <<i>exclusion level</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   This can be set to "public",
+   "protected", "package", or "private". If it is set to "protected", only
+   classes which are public or protected will be shown. If it is set to
+   "public", then only public classes are shown. The default is
+   "protected". If this is changed, the JavaDoc <code>-private</code>
+   argument must also be passed to JavaDoc.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-excludemember</code> <<i>exclusion level</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   This can be set to "public",
+   "protected", "package", or "private". If it is set to "protected", only
+   members (constructors, methods and fields) which are public or protected will be shown. If it is set to
+   "public", then only public members are shown. The default is
+   "protected".
+   If this is changed, the JavaDoc <code>-private</code>
+   argument must also be passed to JavaDoc.
+   </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-nosuggest</code> <<i>suggestion level</i>></dt>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   This can be set to "all", "remove", "add",
+   or "change". The effect of setting this to "all" is to stop comments
+   for any changes at all being suggested. Any comments which are to
+   appear in the report must then be written by the user (see <a href="#addingcomments">below</a>). 
+   If it is set to "change", then
+   comments will not be suggested for changes, but will be suggested for
+   removals and additions. The default is that comments are suggested for
+   all possible places. 
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-checkcomments</code></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   If this argument is used, JDiff
+   will warn the user when the report is generated if there are comments
+   which do not end in a period, question mark or exclamation mark. 
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-retainnonprinting</code></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   Retain non-printable characters
+   in comments. By default, JDiff removes non-printable characters
+   from comments which it uses. 
+   This should only really be necessary if the first line of a
+   comment has used explicit Unicode character escape sequences which
+   cannot be printed, or more importantly for JDiff, read in from XML.
+   If this option is used, JDiff may fail to read in an XML
+   file, and exit with an error message about "an invalid XML character (Unicode:
+   0x....)" on a certain line in the file. Turning off this option does
+   make creating large XML files a little faster.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-excludetag <<i>exclude tag</i>></code></DT> 
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   The argument passed in with this causes
+   JDiff to ignore program elements (packages, classes, constructors,
+   methods, fields) which contain the given exclude tag in their comment blocks,
+   e.g. "@exclude", "@docset Internal".
+  </DD>
+
+</DL>
+</DL>
+
+<hr>
+
+<H2><A NAME="notes"></A>NOTES</H2>
+<BLOCKQUOTE>
+<ul>
+<li>Interfaces appear in <i>italics</i>, just as in JavaDoc documentation.</li>
+<li>When a package or class appears in <b>bold</b>, it has been added in
+the new version or API.</li>
+<li>When a package or class appears <strike>struck through</strike>, it has been removed in
+the new version or API.</li>
+<li>When a constructor is added, two entries are added to the "All
+Differences" index: one for the addition of a new constructor, and
+one for the change of the class. The constructor entry has
+"constructor" after it.</li>
+<li>There are some complex changes which can occur between versions, for example, when two or more methods with the same name change simultaneously, or when a method or field is moved into or from a superclass. 
+In these cases, the change will be seen as a removal and an addition, rather than as a change. Unexpected removals or additions are often part of one of these type of changes.</li>
+<li>It is quite often useful to change the memory parameters for
+JavaDoc, e.g. pass in <code>-J-Xmx128m</code> to JavaDoc.</li>
+<li>On a P3 450MHz machine, to scan all of the JDK <code>Java</code> 
+and <code>javax</code> packages and generate XML takes about 2 minutes
+per version. To generate a report from the XML files takes about 30s</li>
+<li>The <code>api.xsd</code> template describes the format of the XML
+for the APIs, and the <code>comments.xsd</code> template describes the format
+of the XML for the comments. The API template is independent of any
+related work at Sun, but the intention is to adopt whatever becomes
+the <i>de facto</i> standard in the future, whilst retaining backward
+compatibility.</li>
+<li>Comments in the comments XML file do get reordered during
+regeneration. This is harmless.</li>
+</ul>
+</BLOCKQUOTE>
+
+<hr>
+
+<H2><A NAME="addingcomments"></A>ADDING COMMENTS TO A REPORT</H2>
+
+<BLOCKQUOTE>
+Comments can be added to a report by using a text editor to add text
+to the "user_comments_X_to_Y.xml" file, where "X" and "Y" are the
+names of the two APIs being compared. This file is automatically regenerated
+each time the report is generated. Comments which become unused are
+moved to the end of the file and placed inside XML comments. 
+</BLOCKQUOTE>
+
+<BLOCKQUOTE> The text which is added can be HTML text if necessary, but if the 
+  HTML is incorrect, JDiff may fail to read the comments file and exit. Note that 
+  because this HTML is stored in an XML document, single tags are not permitted. 
+  For example, most browsers permit HTML which looks like "&lt;p>Here is some 
+  text.", with no closing tag. XML requires that either a closing tag exists ("&lt;/p>"), 
+  or that the single tag is closed, e.g. "&lt;p/>Here is some text.". </BLOCKQUOTE>
+
+<BLOCKQUOTE>
+To write comments for a particular removal, addition or change in the
+JDiff-generated report, edit the comments XML file. Your changes will
+be automatically incorporated into a new version of this file when the
+report is next generated. Search the file for the identifier for the
+particular removal, addition or change, using the package name, class
+name and member name to find the identifier. Alternatively, look at
+the HTML source of a report and note the identifier near the intended
+place for the comment. Add the desired text between the &lt;text>
+elements. 
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+Sometimes you may want to have the same comment text appear in
+multiple places in the report. You can do this by having multiple
+&lt;identifier> elements in a single &lt;comment> element. This
+grouping does not persist after the comments file is regenerated.
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+The first sentence from a comment in the source code for an element is
+available in the comments XML file by using the @first tag. This tag
+will be replaced (once) in the comments in the report by the first
+sentence from the appropriate JavaDoc comment.
+</BLOCKQUOTE>
+
+<br><hr><br>
+
+<H2><A NAME="environment"></A>ENVIRONMENT</H2>
+
+<BLOCKQUOTE>
+The JDiff doclet has been tested with JDK1.2 and JDK1.3 on
+Windows 2000 1.1 and Windows NT 4.0SP6. It does not work with JDK1.4 yet.
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+You need to have <code>xerces.jar</code> (used for XML parsing) from the Apache
+project on your classpath. The version tested with was Xerces 1.4.2.
+The file <code>xerces.jar</code> is included in this release, or
+alternatively it can be downloaded from
+<a href="http://www.apache.org">www.apache.org</a>.
+</BLOCKQUOTE>
+
+<hr>
+
+<H2><A NAME="troubleshooting"></A>TROUBLESHOOTING</H2>
+<!-- Change table to an easier format to read. Add more entries. -->
+<BLOCKQUOTE>
+<TABLE border="1">
+  <TR>
+    <TD VALIGN="top" align="center"><b>PROBLEM</b></TD>
+    <TD VALIGN="top" align="center"><b>POSSIBLE SOLUTION</b></TD>
+  </TR>
+
+  <TR>
+    <TD VALIGN="top">No changes are seen in the report.</TD>
+    <TD VALIGN="top">By default, JavaDoc and JDiff only show public
+    and protected classes and members..</TD>
+  </TR>
+
+  <TR>
+    <TD VALIGN="top">No changes seen for package and private classes.</TD>
+    <TD VALIGN="top">Enable both the correct JavaDoc visibility level
+    (-public, -protected, -package, -private) and the correct JDiff
+    visibility level (-excludeclass, -excludemember).</TD>
+  </TR>
+
+  <TR>
+    <TD VALIGN="top">No comments were inserted for packages.</TD>
+    <TD VALIGN="top">You need to use the <code>-sourcepath</code> argument to
+    locate the source code files, so that
+    JDiff can deduce where the <code>package.html</code> file with
+    comments about the package may be. If no <code>package.html</code>
+    file exists or can be found, then no comments can be suggested
+    for packages. Of course, comments can still be 
+    <a href="#addingcomments">added by hand</a>.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">JDiff takes a long time to load XML, or throws 
+    <code>java.net.NoRouteToHostException: Operation timed out</code>.</TD>
+    <TD VALIGN="top">The validation portion of loading the XML file
+    currently requires the ability to make an HTTP connection. Check
+    your network and try again, or see the next suggestion.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">From behind a firewall, 
+    JDiff fails to load one of the XML files.</TD>
+    <TD VALIGN="top">Use the following settings to tell the Java2 VM
+    that you are behind a firewall:<br>
+    <code><nobr>java -DproxySet=true -DproxyHost=PROXYSERVER -DproxyPort=PORT</nobr></code><br>
+    where <code>PROXYSERVER</code> is the hostname or IP address of
+    your proxy server, and <code>PORT</code> is the port number of the 
+    proxy server. 
+</TD>
+  </TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<hr>
+
+<H2><A NAME="errorswarnings"></A>ERRORS AND WARNING MESSAGES</H2>
+
+<BLOCKQUOTE>
+The warnings and error messages which can be generated by JDiff are as
+follows:
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<TABLE border="1">
+  <TR>
+    <TD VALIGN="top" align="center" width="25%"><b>ERROR MESSAGE</b></TD>
+    <TD VALIGN="top" align="center"><b>POSSIBLE CAUSE</b></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: unknown element type.</TD>
+    <TD VALIGN="top">The XML file contains an element tag which the
+    current version of JDiff cannot recognize. This may occur if an
+    older version of JDiff is used with XML files generated by a newer
+    version.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: IO Error while attempting to create <i>X</i>.</TD>
+    <TD VALIGN="top">Java was unable to open a file for writing. May
+    occur if the user does not have write permission for the current 
+    directory.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: no identifier found in the comments XML file.</TD>
+    <TD VALIGN="top">The XML file for the comments for the report must
+    contain an identifier to indicate which report of differing APIs 
+    these comments are written for.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: unknown program element type.</TD>
+    <TD VALIGN="top">Internal JDiff error.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: could not create the subdirectory <i>X</i>.</TD>
+    <TD VALIGN="top">Java was unable to create a directory. May
+    occur if the user does not have write or execute permission for the current 
+    directory.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: file <i>X</i> does not exist for the [old|new] API.</TD>
+    <TD VALIGN="top">The XML files corresponding to the names given to
+    <code>-oldapi</code> and <code>-newapi</code> are not in the
+    current directory. This may bee because they have not yet been
+    generated, or were generated elsewhere.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: no API identifier found in the XML file <i>X</i>.</TD>
+    <TD VALIGN="top">The given XML file does not have an identifier in
+    it, probably due to manual modification.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Error: no packages found in the APIs.</TD>
+    <TD VALIGN="top">JDiff was unable to find any packages in the
+    arguments given to JavaDoc.</TD>
+  </TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+<TABLE border="1">
+  <TR>
+    <TD VALIGN="top" align="center" width="25%"><b>WARNING MESSAGE</b></TD>
+    <TD VALIGN="top" align="center"><b>POSSIBLE CAUSE</b></TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: illegal string  found in text. Ignoring the comment.</TD>
+    <TD VALIGN="top">The suggested comments from JavaDoc are stored in 
+    XML files in a CDATA element, which permits every string except .</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: no difference between the APIs.</TD>
+    <TD VALIGN="top">There was no difference between the APIs. You are
+    probably comparing two identical XML files.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: no classes found in the package <i>X</i>.</TD>
+    <TD VALIGN="top">A package without classes was encountered.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: change from deprecated to undeprecated for class <i>X</i>.</TD>
+    <TD VALIGN="top">A class changed from being deprecated to being
+    undeprecated in the next release. This is usually either poor
+    software design or a misplaced @deprecated JavaDoc tag.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: change from deprecated to undeprecated
+    for a constructor in class <i>X</i>.</TD>
+    <TD VALIGN="top">A constructor changed from being deprecated to being
+    undeprecated in the next release. This is usually either poor
+    software design or a misplaced @deprecated JavaDoc tag.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: change from deprecated to undeprecated for method <i>X</i>.</TD>
+    <TD VALIGN="top">A method changed from being deprecated to being
+    undeprecated in the next release. This is usually either poor
+    software design or a misplaced @deprecated JavaDoc tag.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: text of comment does not end in a period.</TD>
+    <TD VALIGN="top">Generated when the <code>-checkcomments</code> is
+    used. The suggested comment does not end in a period, question mark or exclamation mark.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: <i>N</i> identical ids in the existing comments file. Using the first instance.</TD>
+    <TD VALIGN="top">The comments file contains comment for multiple
+    places in the report, but <i>N</i> of the identifiers for the comment
+    are non-unique.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: incorrectly formatted @link in text.</TD>
+    <TD VALIGN="top">JDiff was unable to parse the @link in the
+    suggested comment.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: comment <i>com.acme.sp</i> is no longer used.</TD>
+    <TD VALIGN="top">The comment in the comments file intended for the
+    given element is no longer needed, since the element is no longer
+    part of the changes between the APIs. The comment will be moved to
+    the end of the comments file and preserved, but not used.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: API identifier in the comments XML file differs from the name of the file.</TD>
+    <TD VALIGN="top">The comments file keeps track of which APIs it is
+    to be used for, and has detected a mismatch with the names of the
+    current APIs.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: warning: multiple @deprecated tags found in comments for <i>X</i>. Using the first one only.</TD>
+    <TD VALIGN="top">A comment with more than one @deprecated tag was
+    encountered in the source code. This is considered poor JavaDoc.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: @ tag seen in comment.</TD>
+    <TD VALIGN="top">An @ tag other than @link has somehow made its
+    way into a suggested comment. This should not occur, but can be
+    remedied by editing the comments file to use a different comment.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: API identifier in the XML file <i>X</i> differs from the name of the file <i>Y</i>.</TD>
+      <TD VALIGN="top">The name given to <code>-apiname</code> when the XML file 
+        is generated is embedded in the XML file as a top-level attribute. This 
+        warning suggests that the XML file has been modified by hand, but that 
+        report generation should proceed using the new API identifier.</TD>
+  </TR>
+</TABLE>
+</BLOCKQUOTE>
+
+<hr>
+
+<H2><A NAME="differencestatistics"></A>DIFFERENCE STATISTICS</H2>
+<BLOCKQUOTE>
+During the generation of a report, JDiff also reports a percentage
+difference between the two APIs being compared, e.g. "Approximately
+10% difference between the APIs". This statistic is calculated in the
+following way:
+
+<pre> 
+Percentage change = 100 * (added + removed + 2*changed)
+                    -----------------------------------
+                    sum of public elements in BOTH APIs
+</pre> 
+
+So if there are 15 packages in the old API, and 2 of these are removed,
+and 17 packages in the new API, 1 of which is newly added, and only 3
+of which have changed, then the simple percentage difference would be:
+
+<pre>
+100 * (1 + 2 + 2*3)/ (15 + 17) = 28%
+</pre>
+
+A change of 100% means that there are no packages in common between
+the two APIs. A change of 0% indicates that nothing changed between
+the two APIs. This formula is applied recursively in JDiff for classes
+and their members. That is, the value for the number of packages
+changed is not an integer, but instead is the value obtained by
+applying the same formula to the all the classes in the changed
+packages, and then to all the members of the changed classes.
+ This results in a lower, but more accurate, percentage difference.
+The percentage difference value does not appear anywhere in the HTML
+report files generated by JDiff.
+The test suite for JDiff v1.0 had a difference value of approximately 63%. 
+A real-world value is the value for the differences between JDK1.2 and
+JDK1.3, which is approximately 8%.
+</BLOCKQUOTE>
+
+<hr>
+
+<H2><A NAME="limitations"></A>LIMITATIONS</H2>
+<BLOCKQUOTE>
+<ol>
+<li>JDiff does not tell you how two web pages differ. Nor does it
+compare the contents of JavaDoc web pages. So if you change the text
+in comments
+between versions, don't expect to see the changes appear in JDiff output.</li>
+<li>If JDiff could tell you what had changed about the way two
+versions of an API execute, the <a
+href="http://www.wikipedia.com/wiki.fcgi?action=browse&id=Halting_Problem&oldid=Halting_problem">Halting
+Problem</a> would be solved, and our lives would be very different.</li>
+</ol>
+</BLOCKQUOTE>
+
+<hr>
+
+<H2><A NAME="furtherreading"></A>FURTHER READING</H2>
+<BLOCKQUOTE>
+<UL>
+  <LI><A HREF="http://java.sun.com/j2se/javadoc/index.html">JavaDoc
+	Tool homepage</A> for information about using JavaDoc to
+	document APIs.</LI>
+  <LI><A HREF="http://java.sun.com/j2se/1.3/docs/tooldocs/javadoc/overview.html">Doclet
+	documentation</A> from Java.</LI>
+  <LI><A HREF="http://java.sun.com/j2se/1.3/docs/tooldocs/javadoc/doclet/index.html">The
+	Doclet
+	API</A> for details on the doclet API.</LI>
+  <LI><A HREF="http://java.sun.com/j2se/javadoc/faq.html#doclets">Third-party
+	doclets</a> as listed by Java.</LI>
+  <LI><A HREF="http://www.doclet.com">Third-party
+	doclets</a> as listed by others.</LI>
+</UL>
+
+This is the JDiff JavaDoc doclet, and is unrelated to the project
+"JDiff", which is a visual file comparison utility written in Java, and can be
+found <a href="http://jdiff.sourceforge.net/" target="_top">here</a>.
+
+</BLOCKQUOTE>
+
+<hr>
+<center>
+This software comes with absolutely NO WARRANTY. See the GPL in the file <a href="LICENSE.txt">LICENSE.txt</a> for
+details.
+</center>
+
+<p align="center">
+<font size="-1">
+Copyright &copy; 2001 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
+<a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.
+</font>
+</p>
+
+</BODY>
+</HTML>

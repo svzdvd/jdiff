@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Frameset//EN""http://www.w3.org/TR/REC-html40/frameset.dtd">
+<HTML>
+<HEAD>
+<TITLE>
+Building and Running JDiff
+</TITLE>
+</HEAD>
+<BODY>
+
+<center>
+<H1>Building and Running JDiff</H1>
+</center>
+
+<p>
+JDiff comes with a set of Windows batch files to compile JDiff and run
+the unit tests,
+These are in the directory "build". 
+Make sure you are in the <code>build</code> directory and have set the
+environment variable <code>JAVA_HOME</code> to the root of your
+current JDK installation.
+and then execute one of the following scripts. Do inspect the output
+carefully for failures, since batch files do not stop at failure, by default.
+
+<ul>
+<li>To build JDiff from source, type: <code>.\makejdiff</code></li>
+
+<li>To build JDiff tests from source, type: <code>.\maketests</code></li>
+
+<li>To run JDiff tests, type: <code>.\runtests</code><br>
+Note that a warning about "a method no longer being deprecated" is an
+expected part of the output when running this batch file.</li>
+</ul>
+
+<p>The following scripts assume you have source code for each JDK
+locally and have edited the scripts to indicate where the source code
+is located.
+
+<ul>
+<li>To create XML for the JDK1.2 API, type: <code>.\jdk12toXML</code></li>
+
+<li>To create XML for the JDK1.3 API, type: <code>.\jdk13toXML</code></li>
+
+<li>To generate a report showing the differences between the two JDK
+versions, type: <code>.\diffJDK</code></li>
+</ul>
+
+<p>Running <code>makeship</code> will clean all the directories and
+prepare the JAR file and ZIP file for shipping JDiff. Be warned that
+it will remove all generated XML files.
+
+</BODY>
+</HTML>

@@ -1,0 +1,174 @@
+******************** 
+* JDiff Work Items *
+********************
+
+KNOWN BUGS
+==========
+
+BUG: Still have an issue with Unicode: 0xfc in java.lang.String.toUpperCase 
+comments "Fahrvergn" not being treated as valid XML. Workaround is that 
+-firstsentence has been temporarily renamed -allsentences and reversed in 
+meaning.
+
+BUG: Using classdoc to compare jar files suggests that the handling of
+classes with no packages is not correct. Temporarily disabled.
+
+BUG: Handling of @link tags in the first sentence of comments is not as 
+general as it should be.
+
+MINOR BUG: @links to methods may not be expanded properly if we don't have the 
+signature in the @link. This only happens once (at invoke) in JDK1.2/1.3, 
+and the link goes to the right page, just not the right named anchor. 
+Pretty rare.
+
+MINOR BUG: Possibly simply due to the method being at the end of the HTML page. createGenericUpdateEventBody method in BW seems to not have the correct named anchor ref: perhaps it's the spaces? The link still works, just doesn't go the named anchor.
+<A NAME="com.vitria.jct.JctLib.createGenericUpdateEventBody_changed(com.vitria.fc.meta.DataInterfaceDef, java.lang.String, java.lang.Object[])"></A>
+<A HREF="com.vitria.jct.JctLib.html#
+         com.vitria.jct.JctLib.createGenericUpdateEventBody_changed(com.vitria.fc.meta.DataInterfaceDef, java.lang.String, java.lang.Object[])"
+
+HTML BUG: HTML Validator reports lots of tag nesting issues with nobr
+
+XML BUG: Fix validation of XML
+
+GENERAL BUG: Debug problems with JDK1.4
+Jdiff: writing the new API to file 'BusinessWare_3.1.xml'...
+javadoc: In doclet class jdiff.Jdiff,  method start has thrown an exceptio
+n java.lang.reflect.InvocationTargetException
+java.lang.ClassCastException: com.sun.tools.javac.v8.code.Type$ErrorType
+        at com.sun.tools.javadoc.ClassDocImpl.<init>(ClassDocImpl.java:111)
+        at com.sun.tools.javadoc.ClassDocImpl.<init>(ClassDocImpl.java:134)
+        at com.sun.tools.javadoc.DocEnv.getClassDoc(DocEnv.java:388)
+        at com.sun.tools.javadoc.ExecutableMemberDocImpl.thrownExceptions(Execut
+ableMemberDocImpl.java:141)
+        at jdiff.RootDocToXML.processMethods(RootDocToXML.java:272)
+        at jdiff.RootDocToXML.processClasses(RootDocToXML.java:122)
+        at jdiff.RootDocToXML.processPackages(RootDocToXML.java:80)
+        at jdiff.RootDocToXML.writeXML(RootDocToXML.java:37)
+        at jdiff.Jdiff.startGeneration(Jdiff.java:46)
+        at jdiff.Jdiff.start(Jdiff.java:28)
+        at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+        at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.
+
+Does JavaDoc add () for links to methods with no arguments? Perhaps it does 
+now but did not wiuth JDK1.2 javadoc?
+
+Unix scripts need chmod +x and dos2unix to work
+
+Need to update Synopsis section for new arguments
+
+DESIGN
+======
+
+Short Term:
+----------
+
+Add support for XML parser use behind firewalls with no connection out at all.
+
+Support inherited exclusion in RootDocToXML.java
+
+Long Term:
+---------
+
+Add an index for all documentation changes
+Could generate a set of frames with differences highlighted (use Sun "standard" for diffs?).
+@first may no longer work? retest it.
+
+The comment data in the deprecated attribute should really be in a CDATA 
+section to avoid having to hide the HTML tags. But his would mean that the 
+attribute deprecated would become an element and be harder to parse 
+the text out.
+
+Add ability to specify the location of the generated XML file?
+Add a "jdiff_" prefix to all generated HTML files to clearly distinguish them
+from Javadoc generated files?
+Good to add support for Notes - force altered classes etc recorded in user_comments.xml to appear
+Break HTMLReportGenerator up into two files
+Should have added new class to ClassDiff etc? Tidy up where possible.
+Constructor params should be elements?
+Add base classes to *API and *Diff classes
+Define accessor methods for _ vars
+Use a modifiers field instead of separate modifiers in XML to save space?
+Could do more checking for changed constructors in the first pass - check for the same type.
+Add a name_ field to the ConstructorAPI class? Or a common superclass?
+Could use dynamic frames (Javascript) to return from non-frames to the same page in a frame instead of the top page.
+
+Optional links to the old classes are useful when old API documentation is on 
+the web. This has been added but the links to the old docs are not used in
+ member changes.
+
+The final comparison call to JavaDoc could be a separate Java program, but it 
+seems more obvious to use JavaDoc there too. Also provides the future ability 
+to scan the current product at the same time as comparing it, reducing three 
+steps to two.
+
+TESTS
+=====
+
+Check excludeTag with "@docset Internal" works
+Test change from a class to an interface
+Test interfaces more
+Test very long names
+Test changes in deprecation at a class level
+Test @first
+Test @link with all different formats
+Test comments, multiple ids and the warning of multiple identical ids
+Test that identifiers with spaces work
+Test classes with no packages
+Check that the comments file tests correctly for the correct APIs
+Test case of a package and a class having the same name
+Test case of moving a method into a superclass and vice versa
+Test that just changing the documentation creates a change
+
+DOCUMENTATION, BUILD AND EXAMPLES
+=================================
+
+Examples:
+---------
+
+Add more changes
+
+Documentation:
+-------------
+
+Write makefiles
+Example of writing your own comments for the report
+
+Developers' notes: TODO is must, OPTION is maybe
+
+Tracking changes in where an inherited method is implemented
+Can this be caught be checking parents during mergechange? Perhaps, but 
+MethodAPI does not have references to the class it belongs to, nor do classes 
+have references to their parents, just the name of the superclass or 
+interface. Just doc it.
+Doug wrote:
+ I notice this under All Differences:
+ 
+  <strike>addCellEditorListener</strike>(CellEditorListener) 
+javax.swing.DefaultCellEditor
+  
+ This was quite confusing to me.  First, there's no link, so it
+ appears to me that this method was removed, which I thought odd.  
+ When I look deeper at it, the method was actually *moved* to 
+ and now inherits from AbstractCellEditor, so it's a bit 
+ literal to say it's been removed, though I understand why.
+ Now, I believe TopBlend is not smart enough to make this 
+ distinction either, but if you were able to add a "moved"
+ category, you'd be doing a great service.  If that's not coming, 
+ Help should clearly document this so people can interpret the
+ results clearly.
+ 
+REPORT PRESENTATION
+===================
+
+Add next, prev class etc links
+Better text demo of showing all private changes in APIs
+
+Better colors, by tiling a background?
+
+Avoid single letter indexes with just one entry on a new line
+If a return type has a [] in it, browser may break the line before the []
+Maybe the table should be name and a row under it for the description , to stop cramped names and descriptions?
+
+MISCELLANEOUS
+=============
+
