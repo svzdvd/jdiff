@@ -5,7 +5,9 @@
 KNOWN BUGS
 ==========
 
-BUG: Still have an issue with Unicode: 0xfc in java.lang.String.toUpperCase 
+BUG 482207: standalone with a firewall
+
+BUG 482194: Still have an issue with Unicode: 0xfc in java.lang.String.toUpperCase 
 comments "Fahrvergn" not being treated as valid XML. Workaround is that 
 -firstsentence has been temporarily renamed -allsentences and reversed in 
 meaning.
@@ -46,8 +48,6 @@ DESIGN
 Short Term:
 ----------
 
-Add "Text Change" link to all navigation bars
-
 Break out subclasses in DiffMyers.java for jar files?
 
 Work with crimson XML parser
@@ -60,8 +60,6 @@ Support inherited exclusion in RootDocToXML.java
 
 Could tidy up the doc diffs page more - group classes together?
 
-Could add an index to changed documentation
-
 Handle @docroot doc tags in Javadoc1.4
 
 Unix scripts need chmod +x and dos2unix to work
@@ -71,10 +69,6 @@ now but did not with J2SE1.2 javadoc?
 
 Long Term:
 ---------
-
-Add an index for all documentation changes
-Could generate a set of frames with differences highlighted (use Sun "standard" for diffs?).
-@first may no longer work? retest it.
 
 Add support for differences for other languages - create base classes, 
 generalize XML.
@@ -88,22 +82,25 @@ attribute deprecated would become an element and be harder to parse
 the text out.
 
 Add ability to specify the location of the generated XML file?
+
 Add a "jdiff_" prefix to all generated HTML files to clearly distinguish them
 from Javadoc generated files?
-Good to add support for Notes - force altered classes etc recorded in user_comments.xml to appear
-Break HTMLReportGenerator up into two files
-Should have added new class to ClassDiff etc? Tidy up where possible.
-Constructor params should be elements?
-Add base classes to *API and *Diff classes
-Define accessor methods for _ vars
-Use a modifiers field instead of separate modifiers in XML to save space?
-Could do more checking for changed constructors in the first pass - check for the same type.
-Add a name_ field to the ConstructorAPI class? Or a common superclass?
-Could use dynamic frames (Javascript) to return from non-frames to the same page in a frame instead of the top page.
 
-Optional links to the old classes are useful when old API documentation is on 
-the web. This has been added but the links to the old docs are not used in
- member changes.
+Good to add support for Notes - force altered classes etc recorded in user_comments.xml to appear
+
+Break HTMLReportGenerator up into two files
+
+Should have added new class to ClassDiff etc? Tidy up where possible.
+
+Constructor params should be elements?
+
+Define accessor methods for _ vars
+
+Use a modifiers field instead of separate modifiers in XML to save space?
+
+Could do more checking for changed constructors in the first pass - check for the same type.
+
+Add a name_ field to the ConstructorAPI class? Or a common superclass?
 
 The final comparison call to Javadoc could be a separate Java program, but it 
 seems more obvious to use Javadoc there too. Also provides the future ability 
@@ -142,7 +139,8 @@ Add more changes
 Documentation:
 -------------
 
-Write makefiles
+Write makefiles and ANT files?
+
 Example of writing your own comments for the report
 
 Developers' notes: TODO is must, OPTION is maybe
@@ -188,5 +186,3 @@ Maybe the table should be name and a row under it for the description , to stop 
 
 MISCELLANEOUS
 =============
-
-Add META keywords to all HTML

@@ -1,7 +1,11 @@
 1.0.5.
+TODO standalone execution support
+TODO non-English character support
 Added links to previous and next packages and classes.
+Added top-level index file for all documentation differences.
 Added links from documentation difference pages to classes, in
 addition to the existing links to constructors, methods and fields.
+Added META tags to generated HTML.
 Corrected somes uses of JDK/J2SE and the capitalization of Javadoc.
 
 1.0.4
