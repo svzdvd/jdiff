@@ -821,14 +821,21 @@ public class RootDocToXML {
             FileInputStream f = new FileInputStream(filename);
             BufferedReader d = new BufferedReader(new InputStreamReader(f));
             String str = d.readLine();
-            while(str != null) {
-                if (str.startsWith("<body") || 
-                    str.startsWith("<BODY") || 
-                    str.startsWith("</body>") || 
-                    str.startsWith("</BODY>") ) {
-                    str = d.readLine();
-                    continue; // Ignore these lines
-                }
+ 	    // Ignore everything except the lines between <body> elements
+	    boolean inBody = false;
+	    while(str != null) {
+                if (!inBody) {
+		    if (str.toLowerCase().trim().startsWith("<body>")) {
+			inBody = true;
+		    }
+		    str = d.readLine(); // Get the next line
+		    continue; // Ignore the line
+		} else {
+		    if (str.toLowerCase().trim().startsWith("</body>")) {
+			inBody = false;
+			continue; // Ignore the line
+		    }
+		}
                 if (rct == null)
                     rct = str + "\n";
                 else
