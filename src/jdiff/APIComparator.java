@@ -579,11 +579,13 @@ public class APIComparator {
             differs = true;
         if (inh == 1) {
             methodDiff.addModifiersChange("Method was locally defined, but is now inherited from " + linkToClass(newMethod.inheritedFrom_, true) + ".");
+            methodDiff.inheritedFrom_ = newMethod.inheritedFrom_;
         } else if (inh == 2) {
             methodDiff.addModifiersChange("Method was inherited from " + linkToClass(oldMethod.inheritedFrom_, false) + ", but is now defined locally.");
         } else if (inh == 3) {
             methodDiff.addModifiersChange("Method was inherited from " + 
                                           linkToClass(oldMethod.inheritedFrom_, false) + ", and is now inherited from " + linkToClass(newMethod.inheritedFrom_, true) + ".");
+            methodDiff.inheritedFrom_ = newMethod.inheritedFrom_;
         }
         // Abstract or not
         if (oldMethod.isAbstract_ != newMethod.isAbstract_) {
@@ -703,11 +705,13 @@ public class APIComparator {
                         if (inh != 0)
                             differs = true;
                         if (inh == 1) {
-                            memberDiff.addModifiersChange("Field was locally defined, but is inherited from " + linkToClass(newField.inheritedFrom_, true) + ".");
+                            memberDiff.addModifiersChange("Field was locally defined, but is now inherited from " + linkToClass(newField.inheritedFrom_, true) + ".");
+                            memberDiff.inheritedFrom_ = newField.inheritedFrom_;
                         } else if (inh == 2) {
                             memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField.inheritedFrom_, false) + ", but is now defined locally.");
                         } else if (inh == 3) {
                             memberDiff.addModifiersChange("Field was inherited from " + linkToClass(oldField.inheritedFrom_, false) + ", and is now inherited from " + linkToClass(newField.inheritedFrom_, true) + ".");
+                            memberDiff.inheritedFrom_ = newField.inheritedFrom_;
                         }
                         // Transient or not
                         if (oldField.isTransient_ != newField.isTransient_) {

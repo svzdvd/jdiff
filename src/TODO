@@ -13,8 +13,6 @@ BUG Work with crimson XML parser?
 Other Bugs
 ----------
 
-BUG: javax.swing.JFileChooser.html has duplicate accessibleContext fields
-
 BUG: Using classdoc to compare jar files suggests that the handling of
 classes with no packages is not correct. Temporarily disabled.
 
@@ -61,14 +59,10 @@ Short Term:
 
 linkToClass() could actually link to a member now it is using Javadoc pages
 
-Get the comments for elements moved to their parents
-
 Compare new test results to old test results to check parent/child work
 
 Does not check when there is a change in the class in which a locally defined 
 method is overriding another method.
-
-Process the Xenu link checker output
 
 Is a change in inheritance for a method or field really equivalent to one
 add and one delete in all cases?

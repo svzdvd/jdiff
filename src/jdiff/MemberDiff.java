@@ -50,6 +50,12 @@ class MemberDiff {
      */
     public String modifiersChange_ = null;
 
+    /**
+     * The class name where the new member is defined.
+     * Null if no change in inheritance. 
+     */
+    public String inheritedFrom_ = null;
+
     /** Default constructor. */
     public MemberDiff(String name) {
         name_ = name;

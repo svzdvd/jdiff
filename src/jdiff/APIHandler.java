@@ -212,7 +212,6 @@ class APIHandler extends DefaultHandler {
         // the format used in the report generator to look up comments in the
         // the existingComments object.
         String commentID = null;
-        String alternateMethodCommentID = null;
         // Add this comment to the current API element.
         if (currentElement.compareTo("package") == 0) {
             api_.currPkg_.doc_ = currentText;
@@ -234,9 +233,6 @@ class APIHandler extends DefaultHandler {
             commentID = api_.currPkg_.name_ + "." + api_.currClass_.name_ +
                 "." + api_.currMethod_.name_ + "_changed(" + 
                 api_.currMethod_.getSignature() + ")";
-            alternateMethodCommentID = api_.currPkg_.name_ + "." + 
-                api_.currClass_.name_ + "." + api_.currMethod_.name_ + 
-                "_added(" + api_.currMethod_.getSignature() + ")";
         } else if (currentElement.compareTo("field") == 0) {
             api_.currField_.doc_ = currentText;
             commentID = api_.currPkg_.name_ + "." + api_.currClass_.name_ +
@@ -256,16 +252,6 @@ class APIHandler extends DefaultHandler {
             if (ctOld != null) {
                 System.out.println("Error: duplicate comment id: " + commentID);
                 System.exit(5);
-            }
-            // Also make the same text available for the case where a method
-            // is moved into its parent class
-            if (alternateMethodCommentID != null) {
-                ctOld = (String)(Comments.allPossibleComments.put(alternateMethodCommentID, ct));
-                if (ctOld != null) {
-                    System.out.println("Error: duplicate comment id: " + alternateMethodCommentID);
-                    System.exit(5);
-                }
-                alternateMethodCommentID = null;
             }
         }
     }

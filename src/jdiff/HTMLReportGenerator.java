@@ -1358,7 +1358,8 @@ public class HTMLReportGenerator {
             int parentIdx = memberDiff.modifiersChange_.indexOf("now inherited from");
             if (parentIdx != -1) {
                 // Change the commentID to pick up the appropriate method
-                // TODO
+                commentID = memberDiff.inheritedFrom_ + "." + memberName + 
+                    "_changed(" + newSignature + ")";
             }
         }
         emitComment(commentID, null, 2);
@@ -1489,7 +1490,8 @@ public class HTMLReportGenerator {
         if (memberDiff.modifiersChange_ != null) {
             int parentIdx = memberDiff.modifiersChange_.indexOf("now inherited from");
             if (parentIdx != -1) {
-                // TODO
+                // Change the commentID to pick up the appropriate method
+                commentID = memberDiff.inheritedFrom_ + "." + memberName;
             }
         }
         emitComment(commentID, null, 2);
