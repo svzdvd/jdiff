@@ -13,7 +13,7 @@ set JDIFF_HOME=C:\jdiff
 REM Change this to point to wherever classdoc is installed locally
 REM e.g. C:\myDir\classdoc.jar. By default, it is in the lib directory.
 set CLASSDOC=%JDIFF_HOME%\lib\classdoc.jar
-set JDIFF=%JDIFF_HOME%\lib\jdiff.jar
+set JDIFF=%JDIFF_HOME%\lib\jdiff.jar;%JDIFF_HOME%\lib\xerces.jar
 
 REM The first (old) jar to be scanned
 set INPUTNAME1=%1

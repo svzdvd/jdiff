@@ -8,25 +8,22 @@
  
 <!-- ======================================================= -->
 <!-- Properties used when generating Javadoc and JDiff output. -->
-<!-- You must change some of these for this build file to work. -->
 <!-- ======================================================= -->
 <target name="init">
   <property name="app.name" value="JDiff"/>
-  <!-- Change this to where JDiff is installed locally -->
-  <property name="JDIFF_ROOT" value="c:\jdiff"/>
+  <!-- Root of the JDiff hierarchy of directories -->
+  <property name="JDIFF_HOME" value=".."/>
 
-  <!-- NOTE: Change backslashes to forward slashes for non-Windows -->
-  <!-- systems. -->
-
-  <!-- Values used for the old API -->
-  <property name="SRC" value="${JDIFF_ROOT}\src"/>
+  <!-- Source .java files for JDiff -->
+  <property name="SRC" value="${JDIFF_HOME}/src"/>
   <property name="DST" value="${SRC}"/>
 
   <path id="class.path">
-    <pathelement location="${JDIFF_ROOT}\lib\xerces.jar"/>
+    <pathelement location="${JDIFF_HOME}/lib/xerces.jar"/>
   </path>
   
   <property name="debug" value="true"/>
+  <!-- Also works with javac1.4 -->
   <property name="build.compiler"  value="javac1.3"/>    
 </target>
 
@@ -66,9 +63,9 @@
 <!-- ======================================================= -->
 <target name="jar_jdiff" depends="compile_jdiff">
 <jar 
-  jarfile="${JDIFF_ROOT}\lib\jdiff.jar" 
+  jarfile="${JDIFF_HOME}/lib/jdiff.jar" 
   basedir="${DST}"
-  includes="*jdiff\*.class"/>
+  includes="*jdiff/*.class"/>
 </target>	
 	
 </project>

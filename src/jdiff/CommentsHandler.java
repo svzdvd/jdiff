@@ -56,6 +56,9 @@ class CommentsHandler extends DefaultHandler {
 
     public void startElement(java.lang.String uri, java.lang.String localName,
                              java.lang.String qName, Attributes attributes) {
+	// The change to JAXP compliance produced this change.
+	if (localName.equals(""))
+	    localName = qName;
         if (localName.compareTo("comments") == 0) {
             String commentsName = attributes.getValue("name");
             String version = attributes.getValue("jdversion"); // Not used yet
@@ -95,6 +98,8 @@ class CommentsHandler extends DefaultHandler {
     
     public void endElement(java.lang.String uri, java.lang.String localName, 
                            java.lang.String qName) {
+	if (localName.equals(""))
+	    localName = qName;
         if (localName.compareTo("text") == 0) {
             inText = false;
             addTextToComments();

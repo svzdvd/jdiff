@@ -71,6 +71,9 @@ class APIHandler extends DefaultHandler {
     /** Called when a new element is started. */
     public void startElement(java.lang.String uri, java.lang.String localName,
                              java.lang.String qName, Attributes attributes) {
+	 // The change to JAXP compliance produced this change.
+	if (localName.equals(""))
+	    localName = qName;
         if (localName.compareTo("api") == 0) {
             String apiName = attributes.getValue("name");
             String version = attributes.getValue("jdversion"); // Not used yet
@@ -154,6 +157,8 @@ class APIHandler extends DefaultHandler {
     /** Called when the end of an element is reached. */
     public void endElement(java.lang.String uri, java.lang.String localName, 
                            java.lang.String qName) {
+	if (localName.equals(""))
+	    localName = qName;
         // Deal with the end of doc blocks
         if (localName.compareTo("doc") == 0) {
             inDoc = false;

@@ -55,6 +55,9 @@ since Javadoc does so.
 476310. There are some cases where a doc change is the only change. 
 Should this really count towards the API % change?
 
+Create an ANT script instead of prepare_release.bat
+
+Create a top-level ANT script.
 
 Long Term:
 ---------

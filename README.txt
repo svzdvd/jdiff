@@ -33,8 +33,9 @@ SYSTEM REQUIREMENTS:
 JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4.
 
 You need to have xerces.jar (used for XML parsing) from the Apache
-project on your classpath. The version tested with was Xerces 1.4.2.
-This file is included in this release, or can be downloaded from
+project on your classpath, and also on the doclet path parameter for
+Javadoc. The version tested with was Xerces 1.4.2 and later.
+This file is included in this release, or may be downloaded from
 http://www.apache.org.
 
 JDiff is licensed under the Lesser GNU General Public License (LGPL).

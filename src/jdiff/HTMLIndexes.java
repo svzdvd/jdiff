@@ -352,7 +352,7 @@ public class HTMLIndexes {
      * Whether to log all missing @since tags to a file or not. 
      * If false, just warn the user.
      */
-    public static boolean logMissingSinces = false;
+    public static boolean logMissingSinces = true;
 
     /** The file used to output details of missing @since tags. */
     public static PrintWriter missingSincesFile = null;

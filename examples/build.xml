@@ -25,35 +25,33 @@ http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
 <!-- ======================================================= -->
 <target name="init">
   <property name="app.name" value="JDiff Examples"/>
-  <!-- Change this to where JDiff is installed locally -->
-  <property name="JDIFF_HOME" value="c:\jdiff"/>
+  <!-- Root of the JDiff hierarchy of directories -->
+  <property name="JDIFF_HOME" value=".."/>
   <!-- The location of the source code for the APIs to be compared -->
-  <property name="PROJECTBASE" value="c:\jdiff\examples"/>
-
-  <!-- NOTE: Change backslashes to forward slashes for non-Windows -->
-  <!-- systems. -->
+  <property name="PROJECTBASE" value="${JDIFF_HOME}/examples"/>
 
   <!-- Values used for the old API -->
-  <property name="OLD_SRC" value="${PROJECTBASE}\SuperProduct1.0"/>
+  <property name="OLD_SRC" value="${PROJECTBASE}/SuperProduct1.0"/>
   <property name="OLD_PACKAGES" value="com.acme.*"/>
-  <property name="OLD_DOCS" value="${PROJECTBASE}\sample_output\olddocs\"/>
+  <property name="OLD_DOCS" value="${PROJECTBASE}/sample_output/olddocs/"/>
   <property name="OLD_API"  value="SuperProduct 1.0"/>
   <property name="OLD_API_TITLE" value="SuperProduct 1.0 API Documentation"/>
 
   <!-- Values used for the new API -->
-  <property name="NEW_SRC" value="${PROJECTBASE}\SuperProduct2.0"/>
+  <property name="NEW_SRC" value="${PROJECTBASE}/SuperProduct2.0"/>
   <property name="NEW_PACKAGES" value="com.acme.*"/>
-  <property name="NEW_DOCS" value="${PROJECTBASE}\sample_output\newdocs\"/>  
+  <property name="NEW_DOCS" value="${PROJECTBASE}/sample_output/newdocs/"/>  
   <property name="NEW_API"  value="SuperProduct 2.0"/>
   <property name="NEW_API_TITLE" value="SuperProduct 2.0 API Documentation"/>
 
   <path id="class.path">
-    <pathelement location="${JDIFF_HOME}\lib\xerces.jar"/>
+    <pathelement location="${JDIFF_HOME}/lib/xerces.jar"/>
   </path>
   <property name="BASE_URI" value="http://www.w3.org"/>
   
   <property name="debug" value="true"/>
-  <property name="build.compiler"  value="classic"/>    
+  <!-- classic, javac13 and JDK1.4 should all work -->
+  <property name="build.compiler"  value="javac13"/>
 </target>
 
 <!-- ======================================================= -->
@@ -114,7 +112,7 @@ http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
   sourcepath="${OLD_SRC}"
   packagenames="${OLD_PACKAGES}">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_HOME}\lib\jdiff.jar">
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-apiname" value="${OLD_API}"/>
     <param name="-baseURI" value="${BASE_URI}"/>
   </doclet>
@@ -133,7 +131,7 @@ http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
   sourcepath="${NEW_SRC}"
   packagenames="${NEW_PACKAGES}">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_HOME}\lib\jdiff.jar">
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-apiname" value="${NEW_API}"/>
     <param name="-baseURI" value="${BASE_URI}"/>
   </doclet>
@@ -153,14 +151,17 @@ http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
   private="yes"
   sourcepath="${JDIFF}"
   destdir="${NEW_DOCS}"
-  packagenames="${JDIFF_HOME}\lib\Null.java">
+  packagenames="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_HOME}\lib\jdiff.jar">
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-stats"/>
     <param name="-oldapi" value="${OLD_API}"/>
     <param name="-newapi" value="${NEW_API}"/>
-    <param name="-javadocold" value="${OLD_DOCS}"/>
-    <param name="-javadocnew" value="${NEW_DOCS}"/>
+    <!-- We could use a file:/// prefix to refer to Javadoc files, or -->
+    <!-- we could make them relative to the changes directory.        -->
+    <!-- Remember to add a trailing forward slash.                    -->
+    <param name="-javadocold" value="../../olddocs/"/>
+    <param name="-javadocnew" value="../"/>
   </doclet>
   <classpath>
     <path refid="class.path"/>    
@@ -168,8 +169,8 @@ http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
 </javadoc>	
   <!-- Copy two image files. black.gif is only needed because -stats was -->
   <!-- used -->
-  <copy file="${JDIFF_HOME}\lib\background.gif" todir="${NEW_DOCS}"/>
-  <copy file="${JDIFF_HOME}\lib\black.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_HOME}/lib/background.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_HOME}/lib/black.gif" todir="${NEW_DOCS}"/>
 </target>
 
 <!-- ======================================================= -->
@@ -178,7 +179,7 @@ http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
 <target	name="clean" depends="init">
   <delete
     includeEmptyDirs="true">
-    <fileset dir="${PROJECTBASE}\sample_output" 
+    <fileset dir="${PROJECTBASE}/sample_output" 
       includes="**/*.xml,**/*.class,**/*.html,**/*.css,**/*.gif"/>
   </delete>
 </target>

@@ -1,4 +1,7 @@
-1.0.7 - June 2002
+1.0.7 - June 24th 2002
+Completed feature request 561922 to make JDiff JAXP compliant. This
+change required xerces.jar to be added to the -docletpath values in
+build scripts.
 Fixed feature request 510307 and bug 517383: duplicate comment
 ids. This only occurred when package-level documentation existed
 and also the last file scanned was an interface. 
@@ -7,10 +10,13 @@ expanded.
 Fixed bug 547422 by adding a note about other ANT Javadoc task
 properties to the example build.xml file.
 Removed some left-over Windows variable notation from csh files (patch
-565921)
+565921) and made the ANT build.xml files less platform-dependent.
+Added more comments in the ANT build.xml files about the -javadocold
+and -javadocnew arguments, and how to make sure that links to shipped Javadoc
+documentation are relative, and not absolute.
 Created KNOWN_LIMITATIONS.txt file to document issues which are
 unlikely to be fixed soon.
-Renamed JDIFF_INSTALL local variable to JDIFF_HOME in jdiff scripts,
+Renamed JDIFF_INSTALL local variable to JDIFF_HOME in Jdiff build scripts,
 since this seems to be more like ANT (patch 566022).
 
 1.0.6 - January 9th 2002

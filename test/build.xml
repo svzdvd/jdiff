@@ -16,39 +16,34 @@ SuperProduct.
  
 <!-- ======================================================= -->
 <!-- Properties used when generating Javadoc and JDiff output. -->
-<!-- You must change some of these for this build file to work. -->
 <!-- ======================================================= -->
 <target name="init">
   <property name="app.name" value="JDiff Tests"/>
-  <!-- Change this to where JDiff is installed locally -->
-  <property name="JDIFF_HOME" value="c:\jdiff"/>
-  <!-- The location of the source code for the APIs to be compared -->
-  <property name="PROJECTBASE" value="c:\jdiff\test"/>
-
-  <!-- NOTE: Change backslashes to forward slashes for non-Windows -->
-  <!-- systems. -->
+  <!-- Root of the JDiff hierarchy of directories -->
+  <property name="JDIFF_HOME" value="C:/jdiff"/>
+  <property name="PROJECTBASE" value="${JDIFF_HOME}/test"/>
 
   <!-- Values used for the old API -->
-  <property name="OLD_SRC" value="${PROJECTBASE}\old"/>
+  <property name="OLD_SRC" value="${PROJECTBASE}/old"/>
   <property name="OLD_PACKAGES" value="RemovedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2"/>
   <property name="OLD_CLASSES" value="NoPackage,NoPackageRemoved"/>
-  <property name="OLD_DOCS" value="${PROJECTBASE}\olddocs\"/>
+  <property name="OLD_DOCS" value="${PROJECTBASE}/olddocs/"/>
   <property name="OLD_API"  value="Old Test API"/>
   <property name="OLD_API_TITLE" value="JDiff Test Old API"/>
 
   <!-- Values used for the new API -->
-  <property name="NEW_SRC" value="${PROJECTBASE}\new"/>
+  <property name="NEW_SRC" value="${PROJECTBASE}/new"/>
   <property name="NEW_PACKAGES" value="AddedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2"/>
   <property name="NEW_CLASSES" value="NoPackage,NoPackageAdded"/>
-  <property name="NEW_DOCS" value="${PROJECTBASE}\newdocs\"/>
+  <property name="NEW_DOCS" value="${PROJECTBASE}/newdocs/"/>
   <property name="NEW_API"  value="New Test API"/>
   <property name="NEW_API_TITLE" value="JDiff Test New API"/>
 
   <!-- Values used for a second report with some changed paramters -->
-  <property name="NEW_DOCS2" value="${PROJECTBASE}\newdocs2\"/>
+  <property name="NEW_DOCS2" value="${PROJECTBASE}/newdocs2/"/>
 
   <path id="class.path">
-    <pathelement location="${JDIFF_HOME}\lib\xerces.jar"/>
+    <pathelement location="${JDIFF_HOME}/lib/xerces.jar"/>
   </path>
   <property name="BASE_URI" value="http://www.w3.org"/>
   
@@ -115,7 +110,7 @@ SuperProduct.
   sourcepath="${OLD_SRC}"
   packagenames="${OLD_PACKAGES},${OLD_CLASSES}">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_HOME}\lib\jdiff.jar">
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-excludeclass" value="private"/>
     <param name="-excludemember" value="private"/>
     <param name="-apiname" value="${OLD_API}"/>
@@ -136,7 +131,7 @@ SuperProduct.
   sourcepath="${NEW_SRC}"
   packagenames="${NEW_PACKAGES},${NEW_CLASSES}">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_HOME}\lib\jdiff.jar">
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-excludeclass" value="private"/>
     <param name="-excludemember" value="private"/>
     <param name="-apiname" value="${NEW_API}"/>
@@ -158,20 +153,23 @@ SuperProduct.
   private="yes"
   sourcepath="${JDIFF}"
   destdir="${NEW_DOCS}"
-  packagenames="${JDIFF_HOME}\lib\Null.java">
+  packagenames="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_HOME}\lib\jdiff.jar">
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-oldapi" value="${OLD_API}"/>
     <param name="-newapi" value="${NEW_API}"/>
-    <param name="-javadocold" value="${OLD_DOCS}"/>
-    <param name="-javadocnew" value="${NEW_DOCS}"/>
+    <!-- We could use a file:/// prefix to refer to Javadoc files, or -->
+    <!-- we could make them relative to the changes directory.        -->
+    <!-- Remember to add a trailing forward slash.                    -->
+    <param name="-javadocold" value="../../olddocs/"/>
+    <param name="-javadocnew" value="../"/>
   </doclet>
   <classpath>
     <path refid="class.path"/>    
   </classpath>
 </javadoc>	
   <!-- Copy one image file. -->
-  <copy file="${JDIFF_HOME}\lib\background.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_HOME}/lib/background.gif" todir="${NEW_DOCS}"/>
 </target>
 
 <!-- Generate another HTML report comparing the old and new APIs, but -->
@@ -182,15 +180,18 @@ SuperProduct.
   private="yes"
   sourcepath="${JDIFF}"
   destdir="${NEW_DOCS2}"
-  packagenames="${JDIFF_HOME}\lib\Null.java">
+  packagenames="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"
-    path="${JDIFF_HOME}\lib\jdiff.jar">
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-docchanges"/>
     <param name="-stats"/>
     <param name="-oldapi" value="${OLD_API}"/>
     <param name="-newapi" value="${NEW_API}"/>
-    <param name="-javadocold" value="${OLD_DOCS}"/>
-    <param name="-javadocnew" value="${NEW_DOCS}"/>
+    <!-- We could use a file:/// prefix to refer to Javadoc files, or -->
+    <!-- we could make them relative to the changes directory.        -->
+    <!-- Remember to add a trailing forward slash.                    -->
+    <param name="-javadocold" value="file:///${OLD_DOCS}"/>
+    <param name="-javadocnew" value="file:///${NEW_DOCS}"/>
   </doclet>
   <classpath>
     <path refid="class.path"/>    
@@ -198,25 +199,12 @@ SuperProduct.
 </javadoc>	
   <!-- Copy two image files. black.gif is only needed because -stats was -->
   <!-- used -->
-  <copy file="${JDIFF_HOME}\lib\background.gif" todir="${NEW_DOCS}"/>
-  <copy file="${JDIFF_HOME}\lib\black.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_HOME}/lib/background.gif" todir="${NEW_DOCS2}"/>
+  <copy file="${JDIFF_HOME}/lib/black.gif" todir="${NEW_DOCS2}"/>
 </target>
 
 <!-- ======================================================= -->
-<!-- Clean up various files and directories                  -->
-<!-- ======================================================= -->
-<target	name="clean" depends="init">
-  <delete
-    includeEmptyDirs="true">
-    <fileset dir="${PROJECTBASE}" includes="*API.xml"/>
-    <fileset dir="${OLD_DOCS}" includes="**/*.*"/>
-    <fileset dir="${NEW_DOCS}" includes="**/*.*"/>
-    <fileset dir="${NEW_DOCS2}" includes="**/*.*"/>
-  </delete>
-</target>
- 	
-<!-- ======================================================= -->
-<!-- Compile all files in the old API                        -->
+<!-- Compile all files in the old API to check they compile  -->
 <!-- ======================================================= -->
 <target name="compile_old" depends="init">
 <javac	
@@ -230,7 +218,7 @@ SuperProduct.
 </target>	
 	
 <!-- ======================================================= -->
-<!-- Compile all files in the new API                        -->
+<!-- Compile all files in the new API to check they compile  -->
 <!-- ======================================================= -->
 <target name="compile_new" depends="init">
 <javac	
@@ -243,4 +231,17 @@ SuperProduct.
 </javac>
 </target>	
 	
+<!-- ======================================================= -->
+<!-- Clean up various files and directories                  -->
+<!-- ======================================================= -->
+<target	name="clean" depends="init">
+  <delete
+    includeEmptyDirs="true">
+    <fileset dir="${PROJECTBASE}" includes="*API.xml"/>
+    <fileset dir="${OLD_DOCS}" includes="**/*"/>
+    <fileset dir="${NEW_DOCS}" includes="**/*"/>
+    <fileset dir="${NEW_DOCS2}" includes="**/*"/>
+  </delete>
+</target>
+ 	
 </project>

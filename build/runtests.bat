@@ -1,3 +1,5 @@
+REM Create the Javadoc and XML for two Java APIs, and then compare them.
+
 cd ..\test
 
 REM Make sure we can find xerces.jar
@@ -23,21 +25,21 @@ javadoc -private -sourcepath ..\new -doctitle "JDiff Test New API" -windowtitle 
 cd ..
 
 REM Generate XML for the old API. 
-javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "Old Test API" -sourcepath old %OLDPKGS% %OLDCLASSES%
+javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\lib\jdiff.jar;..\lib\xerces.jar -apiname "Old Test API" -sourcepath old %OLDPKGS% %OLDCLASSES%
 
 REM Generate XML for the new API. 
-javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "New Test API" -sourcepath new %NEWPKGS% %NEWCLASSES%
+javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\lib\jdiff.jar;..\lib\xerces.jar -apiname "New Test API" -sourcepath new %NEWPKGS% %NEWCLASSES%
 REM This version uses local copies of the DTD files.
-REM javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "New Test API" -baseURI "file:///C:/jdiff/lib" -sourcepath new %NEWPKGS% %NEWCLASSES%
+REM javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\lib\jdiff.jar;..\lib\xerces.jar -apiname "New Test API" -baseURI "file:///C:/jdiff/lib" -sourcepath new %NEWPKGS% %NEWCLASSES%
 
 REM Generate an HTML report comparing the old and new APIs
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\lib\jdiff.jar;..\lib\xerces.jar -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
 copy ..\lib\background.gif newdocs
 
 REM Generate another HTML report comparing the old and new APIs, but including 
 REM changes in documentation by using -docchanges and statistics using -stats
 mkdir newdocs2
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs2 -docchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\lib\jdiff.jar;..\lib\xerces.jar -d newdocs2 -docchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
 copy ..\lib\background.gif newdocs2
 copy ..\lib\black.gif newdocs2\black.gif
 

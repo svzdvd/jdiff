@@ -1,3 +1,5 @@
+REM Check that the test code compiles cleanly.
+
 cd ..\test
 
 REM Build the old API

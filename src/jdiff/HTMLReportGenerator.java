@@ -1942,7 +1942,7 @@ public class HTMLReportGenerator {
 
     /** 
      * Define the prefix for HTML links to the existing set of Javadoc-
-     * generated documetnation for the new API. E.g. For J2SE1.3, use
+     * generated documentation for the new API. E.g. For J2SE1.3.x, use
      * "http://java.sun.com/j2se/1.3/docs/api/"
      */
     public static String newDocPrefix = "../";

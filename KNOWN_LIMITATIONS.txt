@@ -1,7 +1,13 @@
-JDiff 1.0.7
+
+				JDiff 1.0.7
 
 Known limitations, features and bugs which aren't likely to get fixed
-soon. The number which follows is the SourceForge bug id.
+soon are listed here. There is another list of smaller gripes in src/TODO.
+If you need one of these items to be fixed, submit a patch to the
+patches page at javadiff.sourceforge.net, or contact Matt Doar at 
+doar@pobox.com.
+
+The number which follows each entry is the SourceForge bug identifier.
 
 1) HTML comments are also included in the diff between
 documentation. (510309).
@@ -12,7 +18,7 @@ general as it should be. See convertAtLinks() comments.
 5) There is no -d option to redirect the generated XML output, or to
 indicate where to read the API XML files in from. This was a
 deliberate simplification, but is inconvenient on OS's which do not
-support soft links.
+support soft links (543260).
 6) strictfp and strict modifiers are not checked for between
 APIs (547422).
 7) An ANT task specifically for JDiff, as opposed to using the ANT

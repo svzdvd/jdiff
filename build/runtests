@@ -1,5 +1,7 @@
 #!/bin/csh -f
 
+# Create the Javadoc and XML for two Java APIs, and then compare them.
+
 cd ../test
 
 # Make sure we can find xerces.jar
@@ -22,19 +24,19 @@ javadoc -private -sourcepath ../new -doctitle "JDiff Test New API" -windowtitle 
 cd ..
 
 # Generate XML for the old API.
-javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -apiname "Old Test API" -sourcepath old $OLDPKGS
+javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../lib/jdiff.jar:../lib/xerces.jar -apiname "Old Test API" -sourcepath old $OLDPKGS
 
 # Generate XML for the new API
-javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -apiname "New Test API" -baseURI "file:///$HOME/jdiff/lib" -sourcepath new $NEWPKGS
+javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ../lib/jdiff.jar:../lib/xerces.jar -apiname "New Test API" -baseURI "file:///$HOME/jdiff/lib" -sourcepath new $NEWPKGS
 
 # Generate HTML report comparing the old and new APIs
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ../lib/Null.java
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../lib/jdiff.jar:../lib/xerces.jar -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ../lib/Null.java
 cp ../lib/background.gif newdocs
 
 # Generate another HTML report comparing the old and new APIs, but including 
 # changes in documentation by using -docchanges and statistics using -stats
 mkdir newdocs2
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs2 -docchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ../lib/Null.java
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../lib/jdiff.jar:../lib/xerces.jar -d newdocs2 -docchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ../lib/Null.java
 cp ../lib/background.gif newdocs2
 cp ../lib/black.gif newdocs2/black.gif
 
