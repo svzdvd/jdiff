@@ -32,7 +32,7 @@ JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4B3.
 
 You need to have xerces.jar (used for XML parsing) from the Apache
 project on your classpath. The version tested with was Xerces 1.4.2.
-This is included in this release, or can be downloaded from
+This file is included in this release, or can be downloaded from
 http://www.apache.org.
 
 JDiff is licensed under the Lesser GNU General Public License (LGPL).
