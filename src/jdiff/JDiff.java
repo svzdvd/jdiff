@@ -83,6 +83,8 @@ public class JDiff extends Doclet {
             suffix = newFileName.lastIndexOf('.');
             commentsFileName += "_to_" + newFileName.substring(0, suffix) + ".xml";
             commentsFileName = commentsFileName.replace(' ', '_');
+            if (HTMLReportGenerator.outputDir != null)
+                commentsFileName = HTMLReportGenerator.outputDir + DIR_SEP + commentsFileName;
             System.out.println("JDiff: reading the comments in from file '" + commentsFileName + "'...");
             Comments existingComments = Comments.readFile(commentsFileName);
             if (existingComments == null)

@@ -108,6 +108,11 @@ NOTE: Either <code>-apiname</code>, or both <code>-oldapi</code> and
 <code>-newapi</code> must be used. All other arguments are optional.
 </BLOCKQUOTE>
 
+<BLOCKQUOTE>
+The <code>-d directory</code> argument works just as with JavaDoc, redirecting
+the output to the given directory. 
+</BLOCKQUOTE>
+
 <P STYLE="margin-left: 1cm; margin-bottom: 0cm">The arguments for JDiff are:</P>
 <DL>
 <DL>
@@ -326,7 +331,11 @@ regeneration. This is harmless.</li>
 Comments can be added to a report by using a text editor to add text
 to the "user_comments_X_to_Y.xml" file, where "X" and "Y" are the
 names of the two APIs being compared. This file is automatically regenerated
-each time the report is generated. Comments which become unused are
+each time the report is generated. 
+If the <code>-d directory</code> argument is used, the user comments XML
+file also appears, and is expected, in the named directory.
+
+<p>Comments which become unused are
 moved to the end of the file and placed inside XML comments. 
 </BLOCKQUOTE>
 
