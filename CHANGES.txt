@@ -1,4 +1,8 @@
-1.0.x - not released
+1.0.10 - not yet released
+
+#815039 If the only changes in a class are in native or sync method changes, 
+and showAllChanges is not used, then no change has occurred. Thanks to 
+C. Le Goff for finding this bug and providing the fix.
 
 Updated copyright notices to 2003.
 
