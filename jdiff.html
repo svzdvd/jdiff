@@ -442,6 +442,13 @@ default, it generates Javadoc reports for both versions too. The Ant JDiff task 
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>
+Note: The Ant JDiff task needs Ant 1.6.1 to work correctly.
+Using Ant 1.5 will produce the error:
+<pre>Error: two projects are needed, one &lt;old> and one &lt;new></pre>
+
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
 If you are comparing two large projects, it is recommended that you
 instead use the Ant Javadoc task as shown in
 <nobr><code>jdiff/examples/build.xml</code></nobr>. This will permit you to
