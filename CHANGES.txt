@@ -1,3 +1,9 @@
+1.0.4
+Added feature request #472605 with the documentation differences page,
+which shows specific changes in JavaDoc documentation as inserts and deletes.
+Improved the end of sentence checking in doc blocks.
+Added graphics of the statistics histograms.
+
 1.0.3
 Fixed bugs in tracking package and class-level documentation changes.
 Fixed bugs in tracking documentation changes at the constructor,

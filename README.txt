@@ -28,7 +28,7 @@ http://sourceforge.net/projects/javadiff/
 
 SYSTEM REQUIREMENTS:
 
-JDiff has been tested with JDK1.2, JDK1.3 and JDK1.4B2.
+JDiff has been tested with JDK1.2, JDK1.3 and JDK1.4B3.
 
 You need to have xerces.jar (used for XML parsing) from the Apache
 project on your classpath. The version tested with was Xerces 1.4.2.
