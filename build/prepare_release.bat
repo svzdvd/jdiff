@@ -42,7 +42,7 @@ del SuperProduct2.0\com\acme\spextra\*.class
 
 cd ..\test
 copy ..\src\*.xsd .
-rm -rf *.xml newdocs olddocs changes* stylesheet*
+rm -rf *.xml newdocs newdocs2 olddocs changes* stylesheet*
 
 del old\RemovedPackage\*~
 del old\ChangedPackage\*~

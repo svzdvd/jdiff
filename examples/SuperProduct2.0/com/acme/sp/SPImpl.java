@@ -5,7 +5,7 @@ import java.lang.*;
 /**
  * This class is the interface for accessing an SP object.
  */
-public class SPImpl extends SP {
+public class SPImpl implements SP {
 
     /** Default constructor. */
     private SPImpl() {
