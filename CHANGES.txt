@@ -1,6 +1,8 @@
 1.0.5.
-TODO standalone execution support
-TODO non-English character support
+TODO Fixed bug 482207 (Unable to run javadiff behind a firewall)
+Fixed bug 482194 (Missing support for iso-8859-1 charset), which also
+caused the option -allsentences to be renamed -firstsentence and
+reversed in sense.
 Added links to previous and next packages and classes.
 Added top-level index file for all documentation differences.
 Added links from documentation difference pages to classes, in

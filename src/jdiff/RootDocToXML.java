@@ -804,10 +804,9 @@ public class RootDocToXML {
     /** 
      * If set, then save the entire contents of a doc block comment in the 
      * API file. If not set, then just save the first sentence. Default is 
-     * that this is not set, since some documentation may have characters 
-     * which the XML parser does not treat as valid XML.
+     * that this is set.
      */
-    public static boolean saveAllDocs = false;
+    public static boolean saveAllDocs = true;
 
     /** 
      * If set, exclude program elements marked with whatever the exclude tag

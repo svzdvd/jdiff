@@ -10,12 +10,7 @@ Bugs for JDiff1.0.5
 
 BUG 482207: Add support for XML parser use behind firewalls with no connection out at all.
 
-BUG 482194: Still have an issue with Unicode: 0xfc in java.lang.String.toUpperCase 
-comments "Fahrvergn" not being treated as valid XML. Workaround is that 
--firstsentence has been temporarily renamed -allsentences and reversed in 
-meaning.
-
-BUG Work with crimson XML parser
+BUG Work with crimson XML parser?
 
 Other Bugs
 ----------

@@ -216,7 +216,20 @@ public class HTMLFiles {
             
             h_.writeText("<BLOCKQUOTE>");
             h_.writeText("<H3>Class</H3>");        
-            h_.writeText("This is highlight you are looking at the changed class or interface.");        
+            h_.writeText("This is highlighted when you are looking at the changed class or interface.");        
+            h_.writeText("</BLOCKQUOTE>");
+            
+            h_.writeText("<BLOCKQUOTE>");
+            h_.writeText("<H3>Text Changes</H3>");        
+            h_.writeText("This is a link to the top-level index of all documentation changes for the current package or class. ");        
+            h_.writeText("If it is not active, then there are no documentation changes for the current package or class. ");        
+            h_.writeText("This can be removed using the <code>-nodocchanges</code> option.");        
+            h_.writeText("</BLOCKQUOTE>");
+            
+            h_.writeText("<BLOCKQUOTE>");
+            h_.writeText("<H3>Statistics</H3>");        
+            h_.writeText("This is a link to a page which shows statistics about the changes between the two APIs.");        
+            h_.writeText("This can be removed by not using the <code>-stats</code> option.");        
             h_.writeText("</BLOCKQUOTE>");
             
             h_.writeText("<BLOCKQUOTE>");
@@ -224,6 +237,11 @@ public class HTMLFiles {
             h_.writeText("A link to this Help page for JDiff.");
             h_.writeText("</BLOCKQUOTE>");
 
+            h_.writeText("<BLOCKQUOTE>");
+            h_.writeText("<H3>Prev/Next</H3>");        
+            h_.writeText("These links take you to the previous  and next changed package or class.");        
+            h_.writeText("</BLOCKQUOTE>");
+            
             h_.writeText("<BLOCKQUOTE>");
             h_.writeText("<H3>Frames/No Frames</H3>");        
             h_.writeText("These links show and hide the HTML frames. All pages are available with or without frames.");        
