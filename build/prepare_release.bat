@@ -5,12 +5,9 @@ REM to the root of the current Java installation
 cd C:\jdiff
 
 del *~
-del jdiff.jar
-rm -rf jdkchanges
 
 cd build
 del *~
-del jdiff.jar
 del *.xml
 
 cd ..\src

@@ -1,7 +1,9 @@
+#!/bin/csh -f
+
 cd ../test
 
 # Make sure we can find xerces.jar
-set CLASSPATH ../lib/xerces.jar:$CLASSPATH
+setenv CLASSPATH ../lib/xerces.jar:$CLASSPATH
 
 echo These are the packages in each version of the API
 setenv OLDPKGS 'RemovedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2'
