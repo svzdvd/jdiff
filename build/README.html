@@ -96,6 +96,20 @@ export CVS_RSH=ssh
 ssh -l mdoar javadiff.sourceforge.net 
 scp jdkchanges.zip mdoar@javadiff.sourceforge.net:/home/groups/j/ja/javadiff/htdocs/ 
 scp jdkchanges.zip mdoar@jdiff.sourceforge.net:/home/groups/j/jd/jdiff/htdocs/ 
+
+crontab when logged in as mdoar in /home/users/m/md/mdoar:
+0 1 * * * /home/users/m/md/mdoar/nightly.sh > /dev/null
+
+/home/users/m/md/mdoar/nightly.sh contains:
+cd tarballs
+cvs -Q -d:pserver:anonymous@cvs1:/cvsroot/javadiff export -Dtomorrow jdiff
+echo "Tarball created on: " > jdiff/CREATED_ON
+echo `date` >> jdiff/CREATED_ON
+tar czf /home/groups/j/ja/javadiff/htdocs/jdiff/jdiff_latest.tar.gz jdiff
+rm -rf jdiff
+
+These are the CVS repository backups, only changed when something has changed:
+http://cvs.sourceforge.net/cvstarballs/javadiff-cvsroot.tar.bz2
 -->
 </BODY>
 </HTML>
