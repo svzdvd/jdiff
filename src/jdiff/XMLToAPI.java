@@ -81,13 +81,11 @@ public class XMLToAPI {
 
         // Add the inherited methods and fields to each class
         addInheritedElements();
-//        api_.dump(); //DEBUG
         return api_;
     } //readFile()
 
     /** 
-     * Add the inherited methods and fields to each class.
-     * TODO check visibility of each element
+     * Add the inherited methods and fields to each class in turn.
      */
     public static void addInheritedElements() {
         Iterator iter = api_.packages_.iterator();
@@ -119,6 +117,10 @@ public class XMLToAPI {
      * Add all the inherited methods and fields in the second class to 
      * the first class, marking them as inherited from the second class.
      *
+     * Only elements at the specified visibility level or
+     * higher appear in the XML file. All that remains to be tested for
+     * a private element, which is never inherited.
+     *
      * If the parent class inherits any classes or interfaces, call this
      * method recursively with those parents.
      */
@@ -128,16 +130,24 @@ public class XMLToAPI {
             Iterator iter = parent.methods_.iterator();
             while (iter.hasNext()) {
                 MethodAPI m = new MethodAPI((MethodAPI)(iter.next()));
-                m.inheritedFrom_ = fqParentName;
-                child.methods_.add(m);
+                if (m.inheritedFrom_ == null &&
+                    m.modifiers_.visibility != null && 
+                    m.modifiers_.visibility.compareTo("private") != 0) {
+                    m.inheritedFrom_ = fqParentName;
+                    child.methods_.add(m);
+                }
             }            
         }
         if (parent.fields_.size() != 0) {
             Iterator iter = parent.fields_.iterator();
             while (iter.hasNext()) {
                 FieldAPI f = new FieldAPI((FieldAPI)(iter.next()));
-                f.inheritedFrom_ = fqParentName;
-                child.fields_.add(f);
+                if (f.inheritedFrom_ == null &&
+                    f.modifiers_.visibility != null && 
+                    f.modifiers_.visibility.compareTo("private") != 0) {
+                    f.inheritedFrom_ = fqParentName;
+                    child.fields_.add(f);
+                }
             }            
         }
 

@@ -49,6 +49,9 @@ DESIGN
 Short Term:
 ----------
 
+Is a change in inheritance for a method or field really equivalent to one
+add and one delete in all cases?
+
 Refactor code in Diff.java to avoid duplication
 
 No longer need the lib/TR directory - files deleted
@@ -126,6 +129,7 @@ Check that the comments file tests correctly for the correct APIs
 Test case of a package and a class having the same name
 Test case of moving a method into a superclass and vice versa
 Test nested class definitions more closely
+Test moving methods and fields from one superclass to another
 
 DOCUMENTATION, BUILD AND EXAMPLES
 =================================

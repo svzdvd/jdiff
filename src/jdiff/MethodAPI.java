@@ -23,8 +23,8 @@ class MethodAPI implements Comparable {
 
     /** 
      * The fully qualified name of the class or interface this method is
-     * inherited from. If this is null, then the method is defined in this 
-     * class or interface.
+     * inherited from. If this is null, then the method is defined locally
+     * in this class or interface.
      */
     public String inheritedFrom_ = null;
 

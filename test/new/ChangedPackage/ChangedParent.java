@@ -14,7 +14,13 @@ public class ChangedParent {
     public void MovingMethod1() {
     }
 
-    /** NEW This field moves to its parent. */
-    public void MovingField1() {
+    /** NEW This is a new method in the parent. */
+    public void NewParentMethod() {
     }
+
+    /** NEW This field moves to its parent. */
+    public int MovingField1;
+
+    /** NEW This is a new field in the parent. */
+    public char NewParentField;
 }

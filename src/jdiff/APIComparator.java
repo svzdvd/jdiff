@@ -312,10 +312,12 @@ public class APIComparator {
             classDiff.fieldsRemoved.size() + classDiff.fieldsAdded.size() +
             classDiff.fieldsChanged.size();
          Long denom = new Long(
-             oldClass.ctors_.size() + oldClass.methods_.size() + 
-             oldClass.fields_.size() +
-             newClass.ctors_.size() + newClass.methods_.size() + 
-             newClass.fields_.size());
+             oldClass.ctors_.size() + 
+             numLocalMethods(oldClass.methods_) + 
+             numLocalFields(oldClass.fields_) +
+             newClass.ctors_.size() + 
+             numLocalMethods(newClass.methods_) + 
+             numLocalFields(newClass.fields_));
          if (denom.intValue() == 0) {
              // This is probably a placeholder interface, but documentation
              // or modifiers etc may have changed
@@ -436,8 +438,8 @@ public class APIComparator {
     public boolean compareAllMethods(ClassAPI oldClass, ClassAPI newClass, ClassDiff classDiff) {
         if (trace)
             System.out.println("    Comparing methods: #old " + 
-                               oldClass.methods_.size() + ", #new " 
-                               + newClass.methods_.size());
+                               oldClass.methods_.size() + ", #new " +
+                               newClass.methods_.size());
         boolean differs = false;
         
         Collections.sort(oldClass.methods_);
@@ -477,19 +479,26 @@ public class APIComparator {
 
                 if (startOld != -1 && startOld == endOld && 
                     startNew != -1 && startNew == endNew) {
+                    MethodAPI newMethod = (MethodAPI)(newClass.methods_.get(startNew));
                     // Only one method with that name exists in both packages,
                     // so it is valid to compare the two methods. We know it 
                     // has changed, because the binarySearch did not find it.
-                    compareMethods(oldMethod, (MethodAPI)(newClass.methods_.get(startNew)), classDiff);
-                } else {
+                    if (oldMethod.inheritedFrom_ == null || 
+                        newMethod.inheritedFrom_ == null) {
+                        // We also know that at least one of the methods is 
+                        // locally defined.
+                        compareMethods(oldMethod, newMethod, classDiff);
+                        differs = true;
+                    }
+                } else if (oldMethod.inheritedFrom_ == null) {
+                    // Only concerned with locally defined methods
                     if (trace)
                         System.out.println("    Method " + oldMethod.name_ + 
                                            "(" + oldMethod.getSignature() + 
                                            ") was removed");
                     classDiff.methodsRemoved.add(oldMethod);
+                    differs = true;
                 }
-                // Whether the method was removed or changed, differs is true.
-                differs = true;
             }
         } // while (iter.hasNext())
 
@@ -497,6 +506,9 @@ public class APIComparator {
         iter = newClass.methods_.iterator();
         while (iter.hasNext()) {
             MethodAPI newMethod = (MethodAPI)(iter.next());
+            // Only concerned with locally defined methods
+            if (newMethod.inheritedFrom_ != null)
+                continue;
             int idx = -1;
             MethodAPI[] methodArr = new MethodAPI[oldClass.methods_.size()];
             methodArr = (MethodAPI[])oldClass.methods_.toArray(methodArr);
@@ -671,69 +683,73 @@ public class APIComparator {
                 // one instance of a field with the same name in a class.
                 int existsNew = newClass.fields_.indexOf(oldField);
                 if (existsNew != -1) {
-                    MemberDiff memberDiff = new MemberDiff(oldField.name_);
-                    memberDiff.oldType_ = oldField.type_;
                     FieldAPI newField = (FieldAPI)(newClass.fields_.get(existsNew));
-                    memberDiff.newType_ = newField.type_;
-                    // Changes in inheritance
-                    int inh = changedInheritance(oldField.inheritedFrom_, newField.inheritedFrom_);
-                    if (inh != 0)
+                    if (oldField.inheritedFrom_ == null || 
+                        newField.inheritedFrom_ == null) {
+                        // We also know that one of the fields is locally defined.
+                        MemberDiff memberDiff = new MemberDiff(oldField.name_);
+                        memberDiff.oldType_ = oldField.type_;
+                        memberDiff.newType_ = newField.type_;
+                        // Changes in inheritance
+                        int inh = changedInheritance(oldField.inheritedFrom_, newField.inheritedFrom_);
+                        if (inh != 0)
+                            differs = true;
+                        if (inh == 1) {
+                            memberDiff.addModifiersChange("Field was locally defined, but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
+                        } else if (inh == 2) {
+                            memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined locally.");
+                        } else if (inh == 3) {
+                            memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
+                        }
+                        // Transient or not
+                        if (oldField.isTransient_ != newField.isTransient_) {
+                            String changeText = "";
+                            if (oldField.isTransient_)
+                                changeText += "Changed from transient to non-transient.";
+                            else
+                                changeText += "Changed from non-transient to transient.";
+                            memberDiff.addModifiersChange(changeText);
+                            differs = true;
+                        }
+                        // Volatile or not
+                        if (oldField.isVolatile_ != newField.isVolatile_) {
+                            String changeText = "";
+                            if (oldField.isVolatile_)
+                                changeText += "Changed from volatile to non-volatile.";
+                            else
+                                changeText += "Changed from non-volatile to volatile.";
+                            memberDiff.addModifiersChange(changeText);
+                            differs = true;
+                        }
+                        // Track changes in documentation
+                        if (docChanged(oldField.doc_, newField.doc_)) {
+                            String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                            String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
+                            String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + newField.name_ + "\" class=\"hiddenlink\">";
+                            String id = pkgDiff.name_ + "." + classDiff.name_ + ".field." + newField.name_;
+                            String title = link1 + "Class <b>" + classDiff.name_ + "</b></a>, " +
+                                link2 + HTMLReportGenerator.simpleName(memberDiff.newType_) + " <b>" + newField.name_ + "</b></a>";
+                            memberDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, oldField.doc_, newField.doc_, id, title);
+                            differs = true;
+                        }
+                        
+                        // Other differences
+                        String modifiersChange = oldField.modifiers_.diff(newField.modifiers_);
+                        memberDiff.addModifiersChange(modifiersChange);
+                        if (modifiersChange != null && modifiersChange.indexOf("Change from deprecated to undeprecated") != -1) {
+                            System.out.println("JDiff: warning: change from deprecated to undeprecated for class " + newClass.name_ + ", field " + newField.name_);
+                        }
+                        if (trace)
+                            System.out.println("    Field " + newField.name_ + " was changed");
+                        classDiff.fieldsChanged.add(memberDiff);
                         differs = true;
-                    if (inh == 1) {
-                        memberDiff.addModifiersChange("Field was locally defined, but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
-                    } else if (inh == 2) {
-                        memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined locally.");
-                    } else if (inh == 3) {
-                        memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
                     }
-                    // Transient or not
-                    if (oldField.isTransient_ != newField.isTransient_) {
-                        String changeText = "";
-                        if (oldField.isTransient_)
-                            changeText += "Changed from transient to non-transient.";
-                        else
-                            changeText += "Changed from non-transient to transient.";
-                        memberDiff.addModifiersChange(changeText);
-                        differs = true;
-                    }
-                    // Volatile or not
-                    if (oldField.isVolatile_ != newField.isVolatile_) {
-                        String changeText = "";
-                        if (oldField.isVolatile_)
-                            changeText += "Changed from volatile to non-volatile.";
-                        else
-                            changeText += "Changed from non-volatile to volatile.";
-                        memberDiff.addModifiersChange(changeText);
-                        differs = true;
-                    }
-                    // Track changes in documentation
-                    if (docChanged(oldField.doc_, newField.doc_)) {
-                        String fqName = pkgDiff.name_ + "." + classDiff.name_;
-                        String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
-                        String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + newField.name_ + "\" class=\"hiddenlink\">";
-                        String id = pkgDiff.name_ + "." + classDiff.name_ + ".field." + newField.name_;
-                        String title = link1 + "Class <b>" + classDiff.name_ + "</b></a>, " +
-                            link2 + HTMLReportGenerator.simpleName(memberDiff.newType_) + " <b>" + newField.name_ + "</b></a>";
-                        memberDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, oldField.doc_, newField.doc_, id, title);
-                        differs = true;
-                    }
-
-                    // Other differences
-                    String modifiersChange = oldField.modifiers_.diff(newField.modifiers_);
-                    memberDiff.addModifiersChange(modifiersChange);
-                    if (modifiersChange != null && modifiersChange.indexOf("Change from deprecated to undeprecated") != -1) {
-                        System.out.println("JDiff: warning: change from deprecated to undeprecated for class " + newClass.name_ + ", field " + newField.name_);
-                    }
-                    if (trace)
-                        System.out.println("    Field " + newField.name_ + " was changed");
-                    classDiff.fieldsChanged.add(memberDiff);
-                } else {
+                } else if (oldField.inheritedFrom_ == null) {
                     if (trace)
                         System.out.println("    Field " + oldField.name_ + " was removed");
                     classDiff.fieldsRemoved.add(oldField);
+                    differs = true;
                 }
-                // Whether the field was removed or changed, differs is true.
-                differs = true;
             }
         } // while (iter.hasNext())
 
@@ -741,6 +757,9 @@ public class APIComparator {
         iter = newClass.fields_.iterator();
         while (iter.hasNext()) {
             FieldAPI newField = (FieldAPI)(iter.next());
+            // Only concerned with locally defined fields
+            if (newField.inheritedFrom_ != null)
+                continue;
             int idx = Collections.binarySearch(oldClass.fields_, newField);
             if (idx < 0) {
                 // See comments above
@@ -810,6 +829,34 @@ public class APIComparator {
         return "<a href=\"" + className + 
             HTMLReportGenerator.reportFileExt + "\">" + name + "</a>";
     }    
+
+    /** 
+     * Return the number of methods which are locally defined.
+     */
+    public int numLocalMethods(List methods) {
+        int res = 0;
+        Iterator iter = methods.iterator();
+        while (iter.hasNext()) {
+            MethodAPI m = (MethodAPI)(iter.next());
+            if (m.inheritedFrom_ == null) 
+                res++;
+        }
+        return res;
+    }
+
+    /** 
+     * Return the number of fields which are locally defined.
+     */
+    public int numLocalFields(List fields) {
+        int res = 0;
+        Iterator iter = fields.iterator();
+        while (iter.hasNext()) {
+            FieldAPI f = (FieldAPI)(iter.next());
+            if (f.inheritedFrom_ == null) 
+                res++;
+        }
+        return res;
+    }
 
     /** Set to enable increased logging verbosity for debugging. */
     private boolean trace = false;

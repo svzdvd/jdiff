@@ -31,7 +31,7 @@ public class HTMLIndexes {
         
         // indexType values: 0 = removals only, 1 = additions only, 
         // 2 = changes only. 3 = all differences. Run all differences
-        // first for all prgram element types so we know whether there
+        // first for all program element types so we know whether there
         // are any removals etc for the allDiffs index.
         emitBottomLeftFile(packagesIndexName, apiDiff, 3, "Package");
         emitBottomLeftFile(classesIndexName, apiDiff, 3, "Class");
@@ -182,7 +182,7 @@ public class HTMLIndexes {
 
         h_.writeText("  <tr>");
         h_.writeText("  <td bgcolor=\"#FFFFFF\">");
-        h_.writeText("  <FONT SIZE=\"-2\">");
+        h_.writeText("  <FONT SIZE=\"-1\">");
         if (hasRemovals) {
           if (indexType == 0) {
             h_.writeText("<b>Removals</b>");
@@ -198,7 +198,7 @@ public class HTMLIndexes {
 
         h_.writeText("  <tr>");
         h_.writeText("  <td bgcolor=\"#FFFFFF\">");
-        h_.writeText("  <FONT SIZE=\"-2\">");
+        h_.writeText("  <FONT SIZE=\"-1\">");
         if (hasAdditions) {
           if (indexType == 1) {
             h_.writeText("<b>Additions</b>");
@@ -214,7 +214,7 @@ public class HTMLIndexes {
 
         h_.writeText("  <tr>");
         h_.writeText("  <td bgcolor=\"#FFFFFF\">");
-        h_.writeText("  <FONT SIZE=\"-2\">");
+        h_.writeText("  <FONT SIZE=\"-1\">");
         if (hasChanges) {
           if (indexType == 2) {
             h_.writeText("<b>Changes</b>");

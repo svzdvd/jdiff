@@ -55,14 +55,18 @@ class MergeChanges {
                 methodArr = (MethodAPI[])classDiff.methodsRemoved.toArray(methodArr);
                 for (int methodIdx = 0; methodIdx < methodArr.length; methodIdx++) {
                     MethodAPI removedMethod = methodArr[methodIdx];
-                    mergeRemoveAddMethod(removedMethod, classDiff, pkgDiff);
+                    // Only merge locally defined methods
+                    if (removedMethod.inheritedFrom_ == null)
+                        mergeRemoveAddMethod(removedMethod, classDiff, pkgDiff);
                 }
                 // Fields
                 FieldAPI[] fieldArr = new FieldAPI[classDiff.fieldsRemoved.size()];
                 fieldArr = (FieldAPI[])classDiff.fieldsRemoved.toArray(fieldArr);
                 for (int fieldIdx = 0; fieldIdx < fieldArr.length; fieldIdx++) {
-                    FieldAPI removedField = fieldArr[fieldIdx];
-                    mergeRemoveAddField(removedField, classDiff, pkgDiff);
+                    FieldAPI removedField = fieldArr[fieldIdx]; 
+                    // Only merge locally defined fields
+                    if (removedField.inheritedFrom_ == null)
+                        mergeRemoveAddField(removedField, classDiff, pkgDiff);
                 }
             }
         }        
@@ -134,37 +138,39 @@ class MergeChanges {
             // There is only one method with the name of the
             // removedMethod in both the removed and added methods.
             MethodAPI addedMethod = (MethodAPI)(classDiff.methodsAdded.get(startAdded));
-            // Create a MemberDiff for this change
-            MemberDiff methodDiff = new MemberDiff(removedMethod.name_);
-            methodDiff.oldType_ = removedMethod.returnType_;
-            methodDiff.newType_ = addedMethod.returnType_;
-            methodDiff.oldSignature_ = removedMethod.getSignature();
-            methodDiff.newSignature_ = addedMethod.getSignature();
-            methodDiff.oldExceptions_ = removedMethod.exceptions_;
-            methodDiff.newExceptions_ = addedMethod.exceptions_;
-            methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
-            // Track changes in documentation
-            if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
-                String sig = methodDiff.newSignature_;
-                if (sig.compareTo("void") == 0)
-                    sig = "";
-                String fqName = pkgDiff.name_ + "." + classDiff.name_;
-                String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
-                String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
-                String id = pkgDiff.name_ + "." + classDiff.name_ + ".dmethod." + addedMethod.name_ + "(" + sig + ")";
-                String title = link1 + "Class <b>" + classDiff.name_ + "</b></a>, " +
-                    link2 +  HTMLReportGenerator.simpleName(methodDiff.newType_) + " <b>" + addedMethod.name_ + "(" + HTMLReportGenerator.simpleName(sig) + ")</b></a>";
-                methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
-            }
-            classDiff.methodsChanged.add(methodDiff);
-            // Now remove the entries from the remove and add lists
-            classDiff.methodsRemoved.remove(startRemoved);
-            classDiff.methodsAdded.remove(startAdded);
-            if (trace) {
-                System.out.println("Merged the removal and addition of method " + 
-                                   removedMethod.name_ + 
-                                   " into one change");
-            }
+            if (addedMethod.inheritedFrom_ == null) {
+                // Create a MemberDiff for this change
+                MemberDiff methodDiff = new MemberDiff(removedMethod.name_);
+                methodDiff.oldType_ = removedMethod.returnType_;
+                methodDiff.newType_ = addedMethod.returnType_;
+                methodDiff.oldSignature_ = removedMethod.getSignature();
+                methodDiff.newSignature_ = addedMethod.getSignature();
+                methodDiff.oldExceptions_ = removedMethod.exceptions_;
+                methodDiff.newExceptions_ = addedMethod.exceptions_;
+                methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
+                // Track changes in documentation
+                if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
+                    String sig = methodDiff.newSignature_;
+                    if (sig.compareTo("void") == 0)
+                        sig = "";
+                    String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                    String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
+                    String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
+                    String id = pkgDiff.name_ + "." + classDiff.name_ + ".dmethod." + addedMethod.name_ + "(" + sig + ")";
+                    String title = link1 + "Class <b>" + classDiff.name_ + "</b></a>, " +
+                        link2 +  HTMLReportGenerator.simpleName(methodDiff.newType_) + " <b>" + addedMethod.name_ + "(" + HTMLReportGenerator.simpleName(sig) + ")</b></a>";
+                    methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
+                }
+                classDiff.methodsChanged.add(methodDiff);
+                // Now remove the entries from the remove and add lists
+                classDiff.methodsRemoved.remove(startRemoved);
+                classDiff.methodsAdded.remove(startAdded);
+                if (trace) {
+                    System.out.println("Merged the removal and addition of method " + 
+                                       removedMethod.name_ + 
+                                       " into one change");
+                }
+            } //if (addedMethod.inheritedFrom_ == null)
         }
     }
 
@@ -194,10 +200,12 @@ class MergeChanges {
                 System.exit(5);
             }
             // Find the index of the added method with the same signature, if 
-            // it exists
+            // it exists, and make sure it is defined locally.
             int addedIdx = -1;
             for (int i = startAdded; i <= endAdded; i++) {
-                if (removedMethod.equalSignatures(classDiff.methodsAdded.get(i)))
+                MethodAPI addedMethod2 = (MethodAPI)(classDiff.methodsAdded.get(i));
+                if (addedMethod2.inheritedFrom_ == null &&
+                    removedMethod.equalSignatures(addedMethod2))
                     addedIdx = i;
                     break;
             }
@@ -252,30 +260,32 @@ class MergeChanges {
             // There is only one field with the name of the
             // removedField in both the removed and added fields.
             FieldAPI addedField = (FieldAPI)(classDiff.fieldsAdded.get(startAdded));
-            // Create a MemberDiff for this change
-            MemberDiff fieldDiff = new MemberDiff(removedField.name_);
-            fieldDiff.oldType_ = removedField.type_;
-            fieldDiff.newType_ = addedField.type_;
-            fieldDiff.addModifiersChange(removedField.modifiers_.diff(addedField.modifiers_));
-            // Track changes in documentation
-            if (APIComparator.docChanged(removedField.doc_, addedField.doc_)) {
-                String fqName = pkgDiff.name_ + "." + classDiff.name_;
-                String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
-                String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedField.name_ + "\" class=\"hiddenlink\">";
-                String id = pkgDiff.name_ + "." + classDiff.name_ + ".field." + addedField.name_;
-                String title = link1 + "Class <b>" + classDiff.name_ + "</b></a>, " +
-                    link2 + HTMLReportGenerator.simpleName(fieldDiff.newType_) + " <b>" + addedField.name_ + "</b></a>";
-                fieldDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedField.doc_, addedField.doc_, id, title);
-            }
-            classDiff.fieldsChanged.add(fieldDiff);
-            // Now remove the entries from the remove and add lists
-            classDiff.fieldsRemoved.remove(startRemoved);
-            classDiff.fieldsAdded.remove(startAdded);
-            if (trace) {
-                System.out.println("Merged the removal and addition of field " + 
-                                   removedField.name_ + 
-                                   " into one change");
-            }
+            if (addedField.inheritedFrom_ == null) {
+                // Create a MemberDiff for this change
+                MemberDiff fieldDiff = new MemberDiff(removedField.name_);
+                fieldDiff.oldType_ = removedField.type_;
+                fieldDiff.newType_ = addedField.type_;
+                fieldDiff.addModifiersChange(removedField.modifiers_.diff(addedField.modifiers_));
+                // Track changes in documentation
+                if (APIComparator.docChanged(removedField.doc_, addedField.doc_)) {
+                    String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                    String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
+                    String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedField.name_ + "\" class=\"hiddenlink\">";
+                    String id = pkgDiff.name_ + "." + classDiff.name_ + ".field." + addedField.name_;
+                    String title = link1 + "Class <b>" + classDiff.name_ + "</b></a>, " +
+                        link2 + HTMLReportGenerator.simpleName(fieldDiff.newType_) + " <b>" + addedField.name_ + "</b></a>";
+                    fieldDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedField.doc_, addedField.doc_, id, title);
+                }
+                classDiff.fieldsChanged.add(fieldDiff);
+                // Now remove the entries from the remove and add lists
+                classDiff.fieldsRemoved.remove(startRemoved);
+                classDiff.fieldsAdded.remove(startAdded);
+                if (trace) {
+                    System.out.println("Merged the removal and addition of field " + 
+                                       removedField.name_ + 
+                                       " into one change");
+                }
+            } //if (addedField.inheritedFrom == null) 
         }
     }
 

@@ -1,4 +1,10 @@
-1.0.5.
+1.0.6 - TODO
+Added better detection of a method or field moving to or from a parent
+class.
+Changed the link to existing Javadoc link to the specific package or class.
+More cleaning up of the generated HTML.
+
+1.0.5 - November 17th 2001
 Fixed bug 482207 (Unable to run javadiff behind a firewall) by adding
 the -baseURI option.
 Fixed bug 482194 (Missing support for iso-8859-1 charset), which also
@@ -14,13 +20,13 @@ text is in CDATA elements.
 Used http://www.w3.org/People/Raggett/tidy/ to clean up the generated HTML.
 Corrected somes uses of JDK/J2SE and the capitalization of Javadoc.
 
-1.0.4
+1.0.4 - November 8th 2001
 Added feature request 472605 with the documentation differences page,
 which shows specific changes in Javadoc documentation as inserts and deletes.
 Improved the end of sentence checking in doc blocks.
 Added graphics of the statistics histograms.
 
-1.0.3
+1.0.3 - November 2nd 2001
 Fixed bugs in tracking package and class-level documentation changes.
 Fixed bugs in tracking documentation changes at the constructor,
 method and field level.
@@ -38,19 +44,19 @@ Added feature request 476202 (Port to J2SE1.4)
 Improved merging of additions and removals into changes for methods.
 Better display of elements which start with underscores in indexes
 
-1.0.2
+1.0.2 - October 2001
 Added scripts for non-Windows platforms
 Added support for emitting all documentation for an API to the XML, and then
 tracking changes in the documentation, with links to the old and new comments. 
 Added the option -allsentences to emit all documentation for an API.
 Added an option -nodocchanges to disable the comparison of documentation.
 
-1.0.1
+1.0.1 - October 2001
 Fixed bug 469794.
 Added script to generate differences between jar files.
 Added documentation about use behind firewalls.
 Added notes for future work.
 
-1.0 
+1.0 - October 9th 2001
 First release of JDiff.
 

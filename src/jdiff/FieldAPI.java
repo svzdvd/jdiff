@@ -22,8 +22,8 @@ class FieldAPI implements Comparable {
 
     /** 
      * The fully qualified name of the class or interface this field is
-     * inherited from. If this is null, then the field is defined in this 
-     * class or interface.
+     * inherited from. If this is null, then the field is defined locally 
+     * in this class or interface.
      */
     public String inheritedFrom_ = null;
 

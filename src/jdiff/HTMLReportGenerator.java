@@ -782,7 +782,25 @@ public class HTMLReportGenerator {
         boolean atClass = (level == 2);
 
         // Always have a link to the Javadoc files
-        reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + newDocPrefix + "index.html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + apiDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");
+        if (atOverview) {
+            reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + newDocPrefix + "index.html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + apiDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");
+        } else if (atPackage) {
+            String pkgRef = pkgName;
+            pkgRef = pkgRef.replace('.', '/');
+            pkgRef = newDocPrefix + pkgRef + "/package-summary";
+            reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + pkgRef + ".html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + apiDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");
+        } else if (atClass) {
+            String classRef = pkgName + "." + className;
+            classRef = classRef.replace('.', '/');
+            if (className.indexOf('.') != -1) {
+                classRef = pkgName + ".";
+                classRef = classRef.replace('.', '/');
+                classRef = newDocPrefix + classRef + className;
+            } else {
+                classRef = newDocPrefix + classRef;
+            }
+            reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + classRef + ".html\" target=\"_top\"><FONT CLASS=\"NavBarFont1\"><B><tt>" + apiDiff.newAPIName_ + "</tt></B></FONT></A>&nbsp;</TD>");
+        }
 
         if (atOverview) {
             reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1Rev\"> &nbsp;<FONT CLASS=\"NavBarFont1Rev\"><B>Overview</B></FONT>&nbsp;</TD>");
@@ -1335,6 +1353,16 @@ public class HTMLReportGenerator {
         }
 
         emitChanges(memberDiff, 1);
+        // Get the comment from the parent class if more appropriate
+        if (memberDiff.modifiersChange_ != null) {
+            int parentIdx = memberDiff.modifiersChange_.indexOf("now defined in");
+            int endParentIndex = memberDiff.modifiersChange_.indexOf(reportFileExt + "\">");
+            if (parentIdx != -1 && endParentIndex != -1) {
+                // 24 is the length of this: now defined in <a href="
+                commentID = memberDiff.modifiersChange_.substring(parentIdx+24, endParentIndex);
+                commentID += "." + memberName + "_added(" + newSignature + ")";
+            }
+        }
         emitComment(commentID, null, 2);
         
         reportFile.println("</TR>");
@@ -1459,6 +1487,16 @@ public class HTMLReportGenerator {
         }
 
         emitChanges(memberDiff, 2);
+        // Get the comment from the parent class if more appropriate
+        if (memberDiff.modifiersChange_ != null) {
+            int parentIdx = memberDiff.modifiersChange_.indexOf("now defined in");
+            int endParentIndex = memberDiff.modifiersChange_.indexOf(reportFileExt + "\">");
+            if (parentIdx != -1 && endParentIndex != -1) {
+                // 24 is the length of this: now defined in <a href="
+                commentID = memberDiff.modifiersChange_.substring(parentIdx+24, endParentIndex);
+                commentID += "." + memberName;
+            }
+        }
         emitComment(commentID, null, 2);
         
         reportFile.println("</TR>");

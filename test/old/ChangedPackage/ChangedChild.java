@@ -14,7 +14,13 @@ public class ChangedChild extends ChangedParent {
     public void MovingMethod1() {
     }
 
-    /** OLD This field moves to its parent. */
-    public void MovingField1() {
+    /** OLD This method is removed from the child. */
+    public int OldChildMethod(int a) {
     }
+
+    /** OLD This field moves to its parent. */
+    public int MovingField1;
+
+    /** OLD This field is removed from the child. */
+    public String OldChildField;
 }

@@ -14,7 +14,13 @@ public class ChangedChild extends ChangedParent {
     public void MovingMethod2() {
     }
 
-    /** NEW This field moves to its child. */
-    public void MovingField2() {
+    /** NEW This is a new method in the child. */
+    public void NewChildMethod() {
     }
+
+    /** NEW This field moves to its child. */
+    public int MovingField2;
+
+    /** NEW This is a new field in the child. */
+    public char NewChildField;
 }
