@@ -3,9 +3,10 @@ package jdiff;
 import com.sun.javadoc.*;
 
 import java.util.*;
-import java.text.SimpleDateFormat;
 import java.io.*;
 import java.lang.reflect.*; // Used for invoking Javadoc indirectly
+import java.lang.Runtime;
+import java.lang.Process;
 
 /**
  * Generates HTML describing the changes between two sets of Java source code.
@@ -154,8 +155,7 @@ public class JDiff extends Doclet {
         if (javaVersion.startsWith("1.1") || 
             javaVersion.startsWith("1.2") || 
             javaVersion.startsWith("1.3")) {
-            System.out.println("Error: cannot run jdiff.JDiff directly with J2SE version " + javaVersion + ", since it is earlier than version 1.4. Call javadoc directly instead.");
-            return;
+            earlyJDK = true;
         }
 
         if (args.length != 4) {
@@ -172,51 +172,73 @@ public class JDiff extends Doclet {
         String newPkgs = getTopDirs(newSrcDirName);
 
         // TODO Add a config file
+        // TODO Define the packages more easily
 
         // Create three separate String[] argument objects for Javadoc
-        String[] oldJavaDocArgs = new String[11];
-        oldJavaDocArgs[0] = "-private";
-        oldJavaDocArgs[1] = "-excludeclass";
-        oldJavaDocArgs[2] = "private";
-        oldJavaDocArgs[3] = "-excludemember";
-        oldJavaDocArgs[4] = "private";
+        List oldJavaDocArgs = new ArrayList();
+        oldJavaDocArgs.add("-private");
+        oldJavaDocArgs.add("-excludeclass");
+        oldJavaDocArgs.add("private");
+        oldJavaDocArgs.add("-excludemember");
+        oldJavaDocArgs.add("private");
         // JDiff arguments
-        oldJavaDocArgs[5] = "-apiname";
-        oldJavaDocArgs[6] = oldProductName;
-        oldJavaDocArgs[7] = "-sourcepath";
-        oldJavaDocArgs[8] = oldSrcDirName;
-        oldJavaDocArgs[9] = "-subpackages";
-        oldJavaDocArgs[10] = oldPkgs;
+        oldJavaDocArgs.add("-apiname");
+        oldJavaDocArgs.add("\"" + oldProductName + "\"");
+        oldJavaDocArgs.add("-sourcepath");
+        oldJavaDocArgs.add("\"" + oldSrcDirName + "\"");
+        if (earlyJDK) {
+            StringTokenizer st = new StringTokenizer(oldPkgs, ":");
+            while (st.hasMoreTokens()) {
+                oldJavaDocArgs.add(st.nextToken());
+            }
+        } else {
+            oldJavaDocArgs.add("-subpackages");
+            oldJavaDocArgs.add(oldPkgs);
+        }
+        String[] oldJavaDocArgsStr = new String[oldJavaDocArgs.size()];
+        oldJavaDocArgsStr = (String[])oldJavaDocArgs.toArray(oldJavaDocArgsStr);
 
-        String[] newJavaDocArgs = new String[11];
-        newJavaDocArgs[0] = "-private";
-        newJavaDocArgs[1] = "-excludeclass";
-        newJavaDocArgs[2] = "private";
-        newJavaDocArgs[3] = "-excludemember";
-        newJavaDocArgs[4] = "private";
+        List newJavaDocArgs = new ArrayList();
+        newJavaDocArgs.add("-private");
+        newJavaDocArgs.add("-excludeclass");
+        newJavaDocArgs.add("private");
+        newJavaDocArgs.add("-excludemember");
+        newJavaDocArgs.add("private");
         // JDiff arguments
-        newJavaDocArgs[5] = "-apiname";
-        newJavaDocArgs[6] = newProductName;
-        newJavaDocArgs[7] = "-sourcepath";
-        newJavaDocArgs[8] = newSrcDirName;
-        newJavaDocArgs[9] = "-subpackages";
-        newJavaDocArgs[10] = newPkgs;
+        newJavaDocArgs.add("-apiname");
+        newJavaDocArgs.add("\"" + newProductName + "\"");
+        newJavaDocArgs.add("-sourcepath");
+        newJavaDocArgs.add("\"" + newSrcDirName + "\"");
+        if (earlyJDK) {
+            StringTokenizer st = new StringTokenizer(newPkgs, ":");
+            while (st.hasMoreTokens()) {
+                newJavaDocArgs.add(st.nextToken());
+            }
+        } else {
+            newJavaDocArgs.add("-subpackages");
+            newJavaDocArgs.add(newPkgs);
+        }
+        String[] newJavaDocArgsStr = new String[newJavaDocArgs.size()];
+        newJavaDocArgsStr = (String[])newJavaDocArgs.toArray(newJavaDocArgsStr);
 
         String programName = "JDiff";
         String defaultDocletClassName = "jdiff.JDiff";
 
         // First generate the XML for the old API
-        int rc = runJavadoc(programName, defaultDocletClassName, oldJavaDocArgs);
+        System.out.println("JDiff: Step 1 of 3. Creating XML representation of the old API");
+        int rc = runJavadoc(programName, defaultDocletClassName, oldJavaDocArgsStr);
         if (rc != 0)
             return;
 
         // Then generate the XML for the new API
-        int rc2 = runJavadoc(programName, defaultDocletClassName, newJavaDocArgs);
+        System.out.println("JDiff: Step 2 of 3. reating XML representation of the old API");
+        int rc2 = runJavadoc(programName, defaultDocletClassName, newJavaDocArgsStr);
         if (rc2 != 0)
             return;
 
         // Finally use the two XML files to generate the HTML report of 
         // the differences between the two APIs. 
+        System.out.println("JDiff: Step 3 of 3. Comparing APIs");
         JDiff.compareAPIs = true;
         JDiff.writeXML = false;
         // This doesn't call Javadoc, so set the variables directly.
@@ -239,6 +261,45 @@ public class JDiff extends Doclet {
     public static int runJavadoc(String programName, 
                                  String defaultDocletClassName, 
                                  String[] args) {
+        if (earlyJDK) {
+            // TODO set the docletpath correctly
+            String allArgs = "javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\\src";
+            for (int i = 0; i < args.length; i++) {
+                allArgs += (" " + args[i]);
+            }
+            System.out.println("Javadoc command line:");
+            System.out.println(allArgs);
+        
+            Process proc  = null;
+            try {
+                proc = Runtime.getRuntime().exec(allArgs);
+                BufferedReader commandResult = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+                String sout = commandResult.readLine();
+                try {
+                    while (sout != null) {
+                        System.out.println(sout);
+                        sout = commandResult.readLine();
+                    }
+                    commandResult.close();
+                } catch (Exception e) {
+                    // Ignore read errors which indicate that the process is complete
+                }
+                // TODO display any errors too
+                proc.waitFor();
+            } catch (SecurityException sex) {
+                System.out.println("Permission error invoking Javadoc");
+                sex.printStackTrace();
+            } catch (IOException ioex) {
+                System.out.println("IO Error invoking Javadoc");
+                ioex.printStackTrace();
+            } catch (InterruptedException iex) {
+                // Do nothing
+            }
+            Runtime.getRuntime().gc(); // Clean up after running Javadoc
+            return proc.exitValue();
+        }
+        
+        // Call Javadoc directly (this is only possible from J2SE1.4 onwards).
         System.out.println("Javadoc command line arguments:");
         for (int i = 0; i < args.length; i++) {
             System.out.print(" " + args[i]);
@@ -260,6 +321,7 @@ public class JDiff extends Doclet {
             methodArgs[2] = args;
             // The object can be null because the method is static
             Integer res = (Integer)javaDocMethod.invoke(null, methodArgs);
+            Runtime.getRuntime().gc(); // Clean up after running Javadoc
             return res.intValue();
         } catch (ClassNotFoundException e1) {
             System.err.println("Error: class \"" + className + "\"not found");
@@ -277,6 +339,7 @@ public class JDiff extends Doclet {
             System.err.println("Error: ");
             e6.printStackTrace();
         }
+        Runtime.getRuntime().gc(); // Clean up after running Javadoc
         return -1;
     }
 
@@ -346,6 +409,9 @@ public class JDiff extends Doclet {
 
     /** The current JVM version. */
     static String javaVersion = System.getProperty("java.version");
+
+    /** Set if the JDK version is prior to JDK1.4. */
+    static boolean earlyJDK = false;;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;

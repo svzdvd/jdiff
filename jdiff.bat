@@ -1,11 +1,13 @@
 @echo off
 
-setlocal 
+setlocal
+REM Environment variables can be set here or picked up from the environment.
 REM Set JAVA_HOME to the root of your local Java installation, e.g. C:\jdk1.3
-set JAVA_HOME=C:\j2sdk1.4.0-beta3
+REM set JAVA_HOME=C:\j2sdk1.4.0-beta3
+if "x%JAVA_HOME%" == "x" set JAVA_HOME=C:\local\jdk1.3.x
 
 REM Set JDIFF_HOME to the location where JDiff is installed, e.g. C:\jdiff
-set JDIFF_HOME=C:\jdiff
+if "x%JDIFF_HOME%" == "x" set JDIFF_HOME=C:\jdiff
 
 REM You should not need to change anything below this line
 REM set CLASSPATH=%JAVA_HOME%\lib\tools.jar;%JDIFF_HOME%\lib\xerces.jar;%JDIFF_HOME%\lib\jdiff.jar;%CLASSPATH%
