@@ -602,7 +602,8 @@ public class APIComparator {
             differs = true;
         }
         // Native or not
-        if (oldMethod.isNative_ != newMethod.isNative_) {
+        if (Diff.showAllChanges && 
+	    oldMethod.isNative_ != newMethod.isNative_) {
             String changeText = "";
             if (oldMethod.isNative_)
                 changeText += "Changed from native to non-native.";
@@ -612,7 +613,8 @@ public class APIComparator {
             differs = true;
         }
         // Synchronized or not
-        if (oldMethod.isSynchronized_ != newMethod.isSynchronized_) {
+        if (Diff.showAllChanges && 
+	    oldMethod.isSynchronized_ != newMethod.isSynchronized_) {
             String changeText = "";
             if (oldMethod.isSynchronized_)
                 changeText += "Changed from synchronized to non-synchronized.";

@@ -17,6 +17,10 @@ simple names if the entries in reports are too large.
 Tested with J2SE1.4.1.
 Minor HTML formatting fixes.
 
+Changed the default behaviour to not show changes in antive and sychronized
+modifiers. Added the -showallchanges to show changes in these modifiers. Thanks
+go to Jesse Glick for this.
+
 1.0.8 - 31st July 2002
 Completed feature request 543260 (add an option to emit XML in another 
 directory) - thanks to Martin Bosak for these changes.

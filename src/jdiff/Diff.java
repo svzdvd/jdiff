@@ -638,6 +638,13 @@ class Diff {
      */
     public static Hashtable firstDiffOutput = new Hashtable();
 
+    /** 
+     * If set, then show changes in implementation-related modifiers such as
+     * native and synchronized. For more information, see 
+     * http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javadoc.html#generatedapideclarations
+     */
+    public static boolean showAllChanges = false;
+
     /** The list of documentation differences. */
     private static List docDiffs = new ArrayList(); // DiffOutput[]
         

@@ -142,6 +142,7 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-docchanges]
  [-checkcomments]
  [-packagesonly]
+ [-showallchanges]
  [-retainnonprinting]
  [-excludetag &lt;<i>exclude tag</i>>]
  [-stats]
@@ -342,6 +343,13 @@ the output to the given directory.
    If this options is not used when comparing Jar files, duplicate
    classes with no packages (&quot;anonymous&quot; classes) may be
    wrongly reported by JDiff.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-showallchanges</code></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   If this argument is used, JDiff will show changes in
+   native and synchronized modifiers. See <a href="http://java.sun.com/j2se/1.4.1/docs/tooldocs/solaris/javadoc.html#generatedapideclarations">here</a> for why these are not shown by default.
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
