@@ -77,12 +77,22 @@ Add support for XML parser use behind firewalls with no connection out at all.
 
 Support inherited exclusion in RootDocToXML.java
 
+Acknowledge xerces.jar
+
+Add copyright reference to all files?
+
 Long Term:
 ---------
 
 Add an index for all documentation changes
 Could generate a set of frames with differences highlighted (use Sun "standard" for diffs?).
 @first may no longer work? retest it.
+
+Add support for differences for other languages - create base classes, 
+generalize XML.
+
+Avoid need for scripts with JDK1.4 by calling JavaDoc from within an 
+executable jar file.
 
 The comment data in the deprecated attribute should really be in a CDATA 
 section to avoid having to hide the HTML tags. But his would mean that the 
