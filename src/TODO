@@ -46,11 +46,7 @@ DESIGN
 Short Term:
 ----------
 
-Change fonts in doc diffs page titles
-
 Add "Text Change" link to all navigation bars
-
-Use short types in the doc diffs pages
 
 Break out subclasses in DiffMyers.java for jar files?
 

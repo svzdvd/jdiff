@@ -48,7 +48,7 @@ class Diff {
         DiffMyers diff = new DiffMyers(oldDocWords, newDocWords);
         DiffMyers.change script = diff.diff_2(false);
         script = mergeDiffs(oldDocWords, newDocWords, script);
-        String text = "<A NAME=\"" + id + "\"></A><b>" + title + "</b><br><br>";
+        String text = "<A NAME=\"" + id + "\"></A>" + title + "<br><br>";
         // Generate the differences in blockquotes to cope with unterminated 
         // HTML tags
         text += "<blockquote>";
