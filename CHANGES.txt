@@ -11,6 +11,7 @@ addition to the existing links to constructors, methods and fields.
 Added META tags to generated HTML.
 Removed unnecessary use of xhtml1-transitional.dtd, since all comment
 text is in CDATA elements.
+Used http://www.w3.org/People/Raggett/tidy/ to clean up the generated HTML.
 Corrected somes uses of JDK/J2SE and the capitalization of Javadoc.
 
 1.0.4
