@@ -1,0 +1,206 @@
+<!-- An ANT build configuration file for the JDiff examples -->
+
+<project name="examples" default="usage" basedir=".">
+
+<description>
+This build file will generate Javadoc HTML for each version of the
+SuperProduct source code. Then it generates XML from each version,
+and finally compares the two XML files to produce an HTML report
+describing every change in the API between the two releases of
+SuperProduct.
+</description>
+
+<target name="usage">
+  <echo message="usage: ant jdiff"/>
+</target>
+ 
+<!-- ======================================================= -->
+<!-- Properties used when generating Javadoc and JDiff output  -->
+<!-- ======================================================= -->
+<target name="init">
+  <property name="app.name" value="JDiff Examples"/>
+  <!-- Change this to where JDiff is installed locally -->
+  <property name="JDIFF_INSTALL" value="c:\jdiff"/>
+  <!-- The location of the source code for the APIs to be compared -->
+  <property name="PROJECTBASE" value="c:\jdiff\examples"/>
+
+  <!-- Values used for the old API -->
+  <property name="OLD_SRC" value="${PROJECTBASE}\SuperProduct1.0"/>
+  <property name="OLD_PACKAGES" value="com.acme.*"/>
+  <property name="OLD_DOCS" value="${PROJECTBASE}\sample_output\olddocs\"/>
+  <property name="OLD_API"  value="SuperProduct 1.0"/>
+  <property name="OLD_API_TITLE" value="SuperProduct 1.0 API Documentation"/>
+
+  <!-- Values used for the new API -->
+  <property name="NEW_SRC" value="${PROJECTBASE}\SuperProduct2.0"/>
+  <property name="NEW_PACKAGES" value="com.acme.*"/>
+  <property name="NEW_DOCS" value="${PROJECTBASE}\sample_output\newdocs\"/>  
+  <property name="NEW_API"  value="SuperProduct 2.0"/>
+  <property name="NEW_API_TITLE" value="SuperProduct 2.0 API Documentation"/>
+
+  <path id="class.path">
+    <pathelement location="${JDIFF_INSTALL}\lib\xerces.jar"/>
+  </path>
+  <property name="BASE_URI" value="http://www.w3.org"/>
+  
+  <property name="debug" value="true"/>
+  <property name="build.compiler"  value="classic"/>    
+</target>
+
+<!-- ======================================================= -->
+<!-- Run all the steps used to produce Javadoc and JDiff HTML reports -->
+<!-- ======================================================= -->
+<target name="jdiff" depends="javadoc_old,javadoc_new,jdiff_old_api,jdiff_new_api,jdiff_compare_apis"/>
+  
+<!-- ======================================================= -->
+<!-- Create the directories for the Javadoc output          -->
+<!-- ======================================================= -->
+<target name="create_javadoc_dirs" depends="init">
+  <mkdir dir="${OLD_DOCS}"/>
+  <mkdir dir="${NEW_DOCS}"/>
+</target>
+  	
+<!-- ======================================================= -->
+<!-- Produce Javadoc HTML for the old API                    -->
+<!-- ======================================================= -->
+<target name="javadoc_old" depends="create_javadoc_dirs">
+<javadoc 
+  private="yes"
+  sourcepath="${OLD_SRC}"
+  destdir="${OLD_DOCS}"
+  verbose="no"
+  packagenames="${OLD_PACKAGES}" 
+  doctitle="${OLD_API_TITLE}"
+  windowtitle="${OLD_API_TITLE}">
+  <classpath>
+    <path refid="class.path"/>
+  </classpath>
+</javadoc>
+</target>
+		
+<!-- ======================================================= -->
+<!-- Produce Javadoc HTML for the new API                    -->
+<!-- ======================================================= -->
+<target name="javadoc_new" depends="create_javadoc_dirs">
+<javadoc 
+  private="yes"
+  sourcepath="${NEW_SRC}"
+  destdir="${NEW_DOCS}"
+  verbose="no"
+  packagenames="${NEW_PACKAGES}" 
+  doctitle="${NEW_API_TITLE}"
+  windowtitle="${NEW_API_TITLE}">
+  <classpath>
+    <path refid="class.path"/>
+  </classpath>
+</javadoc>
+</target>
+
+<!-- ======================================================= -->
+<!-- Use Javadoc with the JDiff doclet to generate an XML file -->
+<!-- representing the old API                                  -->
+<!-- ======================================================= -->
+<target name="jdiff_old_api" depends="create_javadoc_dirs">
+<javadoc 
+  sourcepath="${OLD_SRC}"
+  packagenames="${OLD_PACKAGES}">
+  <doclet name="jdiff.JDiff"
+    path="${JDIFF_INSTALL}\lib\jdiff.jar">
+    <param name="-apiname" value="${OLD_API}"/>
+    <param name="-baseURI" value="${BASE_URI}"/>
+  </doclet>
+  <classpath>
+    <path refid="class.path"/>    
+  </classpath>
+</javadoc>		
+</target>
+
+<!-- ======================================================= -->
+<!-- Use Javadoc with the JDiff doclet to generate an XML file -->
+<!-- representing the new API                                  -->
+<!-- ======================================================= -->
+<target name="jdiff_new_api" depends="create_javadoc_dirs">
+<javadoc 
+  sourcepath="${NEW_SRC}"
+  packagenames="${NEW_PACKAGES}">
+  <doclet name="jdiff.JDiff"
+    path="${JDIFF_INSTALL}\lib\jdiff.jar">
+    <param name="-apiname" value="${NEW_API}"/>
+    <param name="-baseURI" value="${BASE_URI}"/>
+  </doclet>
+  <classpath>
+    <path refid="class.path"/>    
+  </classpath>
+</javadoc>		
+</target>
+
+<!-- ======================================================= -->
+<!-- Use Javadoc with the JDiff doclet to compare the two XML files -->
+<!-- representing the old and new APIs, and generate an HTML report -->
+<!-- describing the differences between the two APIs                -->
+<!-- ======================================================= -->
+<target name="jdiff_compare_apis" depends="create_javadoc_dirs">
+<javadoc 
+  private="yes"
+  sourcepath="${JDIFF}"
+  destdir="${NEW_DOCS}"
+  packagenames="${JDIFF_INSTALL}\lib\Null.java">
+  <doclet name="jdiff.JDiff"
+    path="${JDIFF_INSTALL}\lib\jdiff.jar">
+    <param name="-stats"/>
+    <param name="-oldapi" value="${OLD_API}"/>
+    <param name="-newapi" value="${NEW_API}"/>
+    <param name="-javadocold" value="${OLD_DOCS}"/>
+    <param name="-javadocnew" value="${NEW_DOCS}"/>
+  </doclet>
+  <classpath>
+    <path refid="class.path"/>    
+  </classpath>
+</javadoc>	
+  <!-- Copy two image files. black.gif is only needed if -stats was -->
+  <!-- used -->
+  <copy file="${JDIFF_INSTALL}\lib\background.gif" todir="${NEW_DOCS}"/>
+  <copy file="${JDIFF_INSTALL}\lib\black.gif" todir="${NEW_DOCS}"/>
+</target>
+
+<!-- ======================================================= -->
+<!-- Clean up various files and directories                  -->
+<!-- ======================================================= -->
+<target	name="clean" depends="init">
+  <delete
+    includeEmptyDirs="true">
+    <fileset 
+      dir="${PROJECTBASE}\sample_output" 
+      includes="**/*.xml,**/*.class,**/*.html,**/*.css,**/*.gif"/>
+  </delete>
+</target>
+ 	
+<!-- ======================================================= -->
+<!-- Compile all files in the old API                        -->
+<!-- ======================================================= -->
+<target name="compile_old" depends="init">
+<javac	
+  srcdir="${OLD_SRC}"
+  destdir="${OLD_SRC}"
+  debug="${debug}">
+  <classpath>
+    <path refid="class.path"/>
+  </classpath>
+</javac>
+</target>	
+	
+<!-- ======================================================= -->
+<!-- Compile all files in the new API                        -->
+<!-- ======================================================= -->
+<target name="compile_new" depends="init">
+<javac	
+  srcdir="${NEW_SRC}"
+  destdir="${NEW_SRC}"
+  debug="${debug}">
+  <classpath>
+    <path refid="class.path"/>
+  </classpath>
+</javac>
+</target>	
+	
+</project>
