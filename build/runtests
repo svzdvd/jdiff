@@ -4,8 +4,8 @@ cd ../test
 set CLASSPATH ../lib/xerces.jar:$CLASSPATH
 
 echo These are the packages in each version of the API
-setenv OLDPKGS 'RemovedPackage ChangedPackage ChangedPackageDoc'
-setenv NEWPKGS 'AddedPackage ChangedPackage ChangedPackageDoc'
+setenv OLDPKGS 'RemovedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2'
+setenv NEWPKGS 'AddedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2'
 
 # Generate JavaDoc for the old API
 mkdir olddocs

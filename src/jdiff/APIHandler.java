@@ -219,7 +219,11 @@ class APIHandler extends DefaultHandler {
         } else if (currentElement.compareTo("constructor") == 0) {
             api_.currCtor_.doc_ = currentText;
             commentID = api_.currPkg_.name_ + "." + api_.currClass_.name_ +
-                ".ctor_changed(" + api_.currCtor_.type_+ ")";
+                ".ctor_changed(";
+            if (api_.currCtor_.type_.compareTo("void") == 0)
+                commentID = commentID + ")";
+            else
+                commentID = commentID + api_.currCtor_.type_ + ")";
         } else if (currentElement.compareTo("method") == 0) {
             api_.currMethod_.doc_ = currentText;
             commentID = api_.currPkg_.name_ + "." + api_.currClass_.name_ +

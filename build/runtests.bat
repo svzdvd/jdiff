@@ -5,8 +5,8 @@ setlocal
 set CLASSPATH=..\lib\xerces.jar;%CLASSPATH%
 
 REM These are the packages in each version of the API
-set OLDPKGS=RemovedPackage ChangedPackage ChangedPackageDoc
-set NEWPKGS=AddedPackage ChangedPackage ChangedPackageDoc
+set OLDPKGS=RemovedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2
+set NEWPKGS=AddedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2
 
 REM Generate JavaDoc for the old API
 mkdir olddocs
