@@ -19,7 +19,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * From http://www.w3.org/TR/2000/REC-xhtml1-20000126:
  * "Empty elements must either have an end tag or the start tag must end with /&lt;". 
- *: 
+ *
  * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
@@ -182,18 +182,18 @@ class CommentsHandler extends DefaultHandler {
     }
 
     public void warning(SAXParseException e) {
-        System.out.println("Warning (" + e.getLineNumber() + "): parsing XML configuration file:" + e);
+        System.out.println("Warning (" + e.getLineNumber() + "): parsing XML comments file:" + e);
         e.printStackTrace();
     }
 
     public void error(SAXParseException e) {
-        System.out.println("Error (" + e.getLineNumber() + "): parsing XML configuration file:" + e);
+        System.out.println("Error (" + e.getLineNumber() + "): parsing XML comments file:" + e);
         e.printStackTrace();
         System.exit(1);
     }
     
     public void fatalError(SAXParseException e) {
-        System.out.println("Fatal Error (" + e.getLineNumber() + "): parsing XML configuration file:" + e);
+        System.out.println("Fatal Error (" + e.getLineNumber() + "): parsing XML comments file:" + e);
         e.printStackTrace();
         System.exit(1);
     }    

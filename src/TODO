@@ -40,19 +40,19 @@ DESIGN
 Short Term:
 ----------
 
+Add title option to third pass for each different report
+
 Check validation works from behind firewalls. Populate the lib\2001 directory.
 
 Document validation details, note minor change with <implements/>, that it is now a single tag
 
-Write and test jdiff csh script
+Write and test jdiff example.xml usage
 
-Create bin dir for main scripts
+Gather all configuration variables into a single file
 
 Update docs for jdiff scripts
 
 Test @value changes
-
-Use -linksource in tests with J2SE1.4. (Source info is now in the XML)
 
 Add interactive ability with jdiff.JDiff for easiest use?
 
@@ -97,6 +97,8 @@ http://java.sun.com/j2se/1.3/docs/api/java/text/resources/DateFormatZoneData.htm
 These packages are not documented in the J2SE1.3.]
 
 Reduce memory usage with large APIs
+
+Use -linksource in tests with J2SE1.4. (Source info is now in the XML)
 
 Break up the XML file into smaller files?
 

@@ -158,15 +158,19 @@ public class JDiff extends Doclet {
             earlyJDK = true;
         }
 
-        if (args.length != 4) {
-            System.out.println("Usage: jdiff jdiff.JDiff <old product name> <old source directory> <new product name> <new source directory>");
-            System.out.println("e.g. jdiff jdiff.JDiff SuperProduct1.0 C:\\jdiff\\examples\\SuperProduct1.0 SuperProduct2.0 C:\\jdiff\\examples\\SuperProduct2.0");
+        if (args.length != 1) {
+            System.out.println("Usage: jdiff jdiff.JDiff <XML configuration file>");
+            System.out.println("e.g. jdiff jdiff.JDiff C:\\jdiff\\examples\\example.xml");
             return;
         }
-        String oldProductName = args[0];
-        String oldSrcDirName = args[1];
-        String newProductName = args[2];
-        String newSrcDirName = args[3];
+
+        String configFile = args[0];
+        Config.readFile(configFile);
+
+        String oldProductName = Config.oldProductName();
+        String oldSrcDirName = Config.oldSrcDirName();
+        String newProductName = Config.newProductName();
+        String newSrcDirName = Config.newSrcDirName();
 
         String oldPkgs = getTopDirs(oldSrcDirName);
         String newPkgs = getTopDirs(newSrcDirName);
@@ -178,9 +182,6 @@ public class JDiff extends Doclet {
             System.out.println("JDiff: no packages found for the new API");
             return;
         }
-
-        // TODO Add a config file
-        // TODO Define the packages more easily
 
         // Create two separate String[] argument objects for Javadoc
         List oldJavaDocArgs = new ArrayList();

@@ -21,15 +21,11 @@
 
 <xsd:complexType name="apiType">
   <xsd:sequence>
-    <xsd:element name="javadoc" type="javadocType" minOccurs='1' maxOccurs='1'/>
+    <xsd:element name="javadoc" type="xsd:string" minOccurs='1' maxOccurs='1'/>
     <xsd:element name="source" type="sourceType" minOccurs='1' maxOccurs='1'/>
     <xsd:element name="jdiff" type="jdiffType" minOccurs='0' maxOccurs='1'/>
   </xsd:sequence>
-</xsd:complexType>
-
-<xsd:complexType name="javadocType">
-  <xsd:attribute name="args" type="xsd:string"/>
-  <xsd:attribute name="packages" type="xsd:string"/>
+  <xsd:attribute name="name" type="xsd:string"/>
 </xsd:complexType>
 
 <xsd:complexType name="sourceType">
@@ -43,6 +39,7 @@
 
 <xsd:complexType name="reportType">
   <xsd:attribute name="output" type="xsd:string"/>
+  <xsd:attribute name="title" type="xsd:string"/>
   <xsd:attribute name="args" type="xsd:string"/>
   <xsd:attribute name="javadocold" type="xsd:string"/>
   <xsd:attribute name="javadocnew" type="xsd:string"/>

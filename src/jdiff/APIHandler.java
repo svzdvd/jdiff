@@ -322,18 +322,18 @@ class APIHandler extends DefaultHandler {
     }
 
     public void warning(SAXParseException e) {
-        System.out.println("Warning (" + e.getLineNumber() + "): parsing XML configuration file:" + e);
+        System.out.println("Warning (" + e.getLineNumber() + "): parsing XML API file:" + e);
         e.printStackTrace();
     }
 
     public void error(SAXParseException e) {
-        System.out.println("Error (" + e.getLineNumber() + "): parsing XML configuration file:" + e);
+        System.out.println("Error (" + e.getLineNumber() + "): parsing XML API file:" + e);
         e.printStackTrace();
         System.exit(1);
     }
     
     public void fatalError(SAXParseException e) {
-        System.out.println("Fatal Error (" + e.getLineNumber() + "): parsing XML configuration file:" + e);
+        System.out.println("Fatal Error (" + e.getLineNumber() + "): parsing XML API file:" + e);
         e.printStackTrace();
         System.exit(1);
     }    
