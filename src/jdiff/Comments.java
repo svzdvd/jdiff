@@ -238,7 +238,8 @@ public class Comments {
                     String ref = name;
                     if (ref.indexOf(".") == -1) {
                         // Prepend the package and/or class name
-                        if (currentElement.compareTo("class") == 0) {
+                        if (currentElement.compareTo("class") == 0 ||
+                            currentElement.compareTo("interface") == 0) {
                             ref = pkg.name_ + "." + cls.name_ + "." + ref;
                         } else if (currentElement.compareTo("package") == 0) {
                             ref = pkg.name_ + "." + ref;
@@ -253,7 +254,8 @@ public class Comments {
                     ref = ref.replace('.', '/');
                     if (ref.indexOf(".") == -1) {
                         // Prepend the package and/or class name
-                        if (currentElement.compareTo("class") == 0) {
+                        if (currentElement.compareTo("class") == 0 ||
+                            currentElement.compareTo("interface") == 0) {
                             ref = pkg.name_ + "." + cls.name_ + "." + ref;
                         } else if (currentElement.compareTo("package") == 0) {
                             ref = pkg.name_ + "." + ref;

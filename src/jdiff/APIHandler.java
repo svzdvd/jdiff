@@ -33,7 +33,9 @@ class APIHandler extends DefaultHandler {
 
     /** 
      * Contains the name of the current package element type
-     * where documentation is being added. 
+     * where documentation is being added. Also used as the level
+     * at which to add documentation into an element, i.e. class-level
+     * or package-level
      */
     private String currentElement = null;
 
@@ -251,7 +253,7 @@ class APIHandler extends DefaultHandler {
             String ctOld = (String)(Comments.allPossibleComments.put(commentID, ct));
             if (ctOld != null) {
                 System.out.println("Error: duplicate comment id: " + commentID);
-                System.exit(5);
+// Bug 517383                System.exit(5);
             }
         }
     }
