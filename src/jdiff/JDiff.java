@@ -20,7 +20,7 @@ public class JDiff extends Doclet {
     /**
      * Doclet-mandated start method. Everything begins here.
      *
-     * @param root  a RootDoc object passed by JavaDoc
+     * @param root  a RootDoc object passed by Javadoc
      * @return true if document generation succeeds
      */
     public static boolean start(RootDoc root) {
@@ -32,7 +32,7 @@ public class JDiff extends Doclet {
     /**
      * Generate the summary of the APIs.
      *
-     * @param root  the RootDoc object passed by JavaDoc
+     * @param root  the RootDoc object passed by Javadoc
      * @return true if no problems encountered within JDiff
      */
     protected boolean startGeneration(RootDoc newRoot) {
@@ -119,7 +119,7 @@ public class JDiff extends Doclet {
 // 
 
     /**
-     * This method is called by JavaDoc to
+     * This method is called by Javadoc to
      * parse the options it does not recognize. It then calls
      * {@link #validOptions} to validate them.
      *
@@ -132,7 +132,7 @@ public class JDiff extends Doclet {
 
     /**
      * After parsing the available options using {@link #optionLength},
-     * JavaDoc invokes this method with an array of options-arrays.
+     * Javadoc invokes this method with an array of options-arrays.
      *
      * @param options   an array of String arrays, one per option
      * @param reporter  a DocErrorReporter for generating error messages
@@ -173,6 +173,6 @@ public class JDiff extends Doclet {
     static final String authorEmail = "doar@pobox.com";
 
     /** The current JDiff version. */
-    static final String version = "1.0.4";
+    static final String version = "1.0.5";
 
 } //JDiff

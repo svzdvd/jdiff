@@ -8,13 +8,13 @@ REM These are the packages in each version of the API
 set OLDPKGS=RemovedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2
 set NEWPKGS=AddedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2
 
-REM Generate JavaDoc for the old API
+REM Generate Javadoc for the old API
 mkdir olddocs
 cd olddocs
 javadoc -private -sourcepath ..\old -doctitle "JDiff Test Old API" -windowtitle "JDiff Test Old API" %OLDPKGS%
 cd ..
 
-REM Generate JavaDoc for the new API
+REM Generate Javadoc for the new API
 mkdir newdocs
 cd newdocs
 javadoc -private -sourcepath ..\new -doctitle "JDiff Test New API" -windowtitle "JDiff Test New API" %NEWPKGS%

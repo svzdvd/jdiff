@@ -10,7 +10,7 @@ import java.util.*;
  * you cannot serialize a RootDoc object - see
  *  http://developer.java.sun.com/developer/bugParade/bugs/4125581.html
  * You might be able use Javadoc.Main() to create another RootDoc, but the 
- * methods are package private. You can run javadoc in JDK1.4, see:
+ * methods are package private. You can run javadoc in J2SE1.4, see:
  *  http://java.sun.com/j2se/1.4/docs/tooldocs/javadoc/standard-doclet.html#runningprogrammatically
  * but you still can't get the RootDoc object.
  *

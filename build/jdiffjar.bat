@@ -21,13 +21,13 @@ REM The second (new) jar to be scanned
 set INPUTNAME2=%3
 set INPUTJAR2=%4
 
-REM STEP ONE. Generate JavaDoc for the old API from the jar - no text
+REM STEP ONE. Generate Javadoc for the old API from the jar - no text
 mkdir output\olddocs
 cd output\olddocs
 java -cp %INPUTJAR1%;%CLASSDOC%;%JAVA_HOME%\lib\tools.jar;%CLASSPATH% classdoc -docpath %INPUTJAR1%
 cd ..\..
 
-REM STEP TWO. Generate JavaDoc for the new API from the jar - no text
+REM STEP TWO. Generate Javadoc for the new API from the jar - no text
 mkdir output\newdocs
 cd output\newdocs
 java -cp %INPUTJAR2%;%CLASSDOC%;%JAVA_HOME%\lib\tools.jar;%CLASSPATH% classdoc -docpath %INPUTJAR2%

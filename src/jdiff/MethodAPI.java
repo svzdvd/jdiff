@@ -5,7 +5,7 @@ import java.util.*;
 
 /** 
  * Class to represent a method, analogous to MethodDoc in the 
- * JavaDoc doclet API. 
+ * Javadoc doclet API. 
  * 
  * The method used for Collection comparison (compareTo) must make its
  * comparison based upon everything that is known about this method.

@@ -7,13 +7,13 @@ echo These are the packages in each version of the API
 setenv OLDPKGS 'RemovedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2'
 setenv NEWPKGS 'AddedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2'
 
-# Generate JavaDoc for the old API
+# Generate Javadoc for the old API
 mkdir olddocs
 cd olddocs
 javadoc -private -sourcepath ../old -doctitle "JDiff Test Old API" -windowtitle "JDiff Test Old API" $OLDPKGS
 cd ..
 
-# Generate JavaDoc for the new API
+# Generate Javadoc for the new API
 mkdir newdocs
 cd newdocs
 javadoc -private -sourcepath ../new -doctitle "JDiff Test New API" -windowtitle "JDiff Test New API" $NEWPKGS

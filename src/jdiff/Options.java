@@ -19,7 +19,7 @@ public class Options {
     /**
      * Returns the "length" of a given option. If an option takes no
      * arguments, its length is one. If it takes one argument, its
-     * length is two, and so on. This method is called by JavaDoc to
+     * length is two, and so on. This method is called by Javadoc to
      * parse the options it does not recognize. It then calls
      * {@link #validOptions} to validate them.
      * <blockquote>
@@ -66,10 +66,10 @@ public class Options {
         if (opt.equals("-allsentences"))    return 1;
         if (opt.equals("-nodocchanges"))    return 1;
 
-        // Option to change the location for the existing JavaDoc
+        // Option to change the location for the existing Javadoc
         // documentation for the new API. Default is "../"
         if (opt.equals("-javadocnew"))    return 2;
-        // Option to change the location for the existing JavaDoc
+        // Option to change the location for the existing Javadoc
         // documentation for the old API. Default is null.
         if (opt.equals("-javadocold"))    return 2;
 
@@ -90,7 +90,7 @@ public class Options {
 
    /**
     * After parsing the available options using {@link #optionLength},
-    * JavaDoc invokes this method with an array of options-arrays, where
+    * Javadoc invokes this method with an array of options-arrays, where
     * the first item in any array is the option, and subsequent items in
     * that array are its arguments. So, if -print is an option that takes
     * no arguments, and -copies is an option that takes 1 argument, then
@@ -107,10 +107,10 @@ public class Options {
     * they don't have to.)
     * <p>
     * <b>Note:</b><br>
-    * JavaDoc passes <i>all</i>parameters to this method, not just
-    * those that JavaDoc doesn't recognize. The only way to
+    * Javadoc passes <i>all</i>parameters to this method, not just
+    * those that Javadoc doesn't recognize. The only way to
     * identify unexpected arguments is therefore to check for every
-    * JavaDoc parameter as well as doclet parameters.
+    * Javadoc parameter as well as doclet parameters.
     *
     * @param options   an array of String arrays, one per option
     * @param reporter  a DocErrorReporter for generating error messages
@@ -320,18 +320,18 @@ public class Options {
         System.err.println();
         System.err.println("  -d <directory> Destination directory for output files");
         System.err.println("  -sourcepath <location of Java source files>");
-        System.err.println("  -javadocnew <location of existing JavaDoc files for the new API>");
-        System.err.println("  -javadocold <location of existing JavaDoc files for the old API>");
+        System.err.println("  -javadocnew <location of existing Javadoc files for the new API>");
+        System.err.println("  -javadocold <location of existing Javadoc files for the old API>");
         
         System.err.println("  -excludeclass [public|protected|package|private] Exclude classes which are not public, protected etc");
         System.err.println("  -excludemember [public|protected|package|private] Exclude members which are not public, protected etc");
         
         System.err.println("  -allsentences Save all of the comment blocks with the API.");
-        System.err.println("  -nodocchanges Do not report changes in JavaDoc comments between the APIs");
+        System.err.println("  -nodocchanges Do not report changes in Javadoc comments between the APIs");
         System.err.println("  -nosuggest [all|remove|add|change] Do not add suggested comments to all, or the removed, added or chabged sections");
         System.err.println("  -checkcomments Check that comments are sentences");
         System.err.println("  -stripnonprinting Remove non-printable characters from comments.");
-        System.err.println("  -excludetag <tag> Define the JavaDoc tag which implies exclusion");
+        System.err.println("  -excludetag <tag> Define the Javadoc tag which implies exclusion");
         System.err.println("  -stats Generate statistical output");
         System.err.println("  -help       (generates this output)");
         System.err.println("");

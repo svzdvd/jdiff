@@ -12,7 +12,7 @@ public class JavaLangByte {
     public JavaLangByte() {
     }
 
-    // This is verbatim from JDK1.3
+    // This is verbatim from J2SE1.3
 
     /**
      * Returns a new String object representing the specified Byte. The radix

@@ -1,4 +1,4 @@
-REM This batch file will generate JavaDocs for each version of the 
+REM This batch file will generate Javadocs for each version of the 
 REM SuperProduct source code. Then it generates XML from each version, 
 REM and finally compares the two XML files to produce an HTML report describing
 REM every change in the API between the two releases of SuperProduct.
@@ -11,13 +11,13 @@ REM These are the packages in each version of the API
 set OLDPKGS=com.acme.sp com.acme.util
 set NEWPKGS=com.acme.sp com.acme.spextra
 
-REM STEP ONE. Generate JavaDoc for the old API (version 1.0 of SuperProduct)
+REM STEP ONE. Generate Javadoc for the old API (version 1.0 of SuperProduct)
 mkdir sample_output\olddocs
 cd sample_output\olddocs
 javadoc -sourcepath ..\..\SuperProduct1.0 -doctitle "SuperProduct 1.0 API Documentation" -windowtitle "SuperProduct 1.0 API Documentation" %OLDPKGS%
 cd ..\..
 
-REM STEP TWO. Generate JavaDoc for the new API (version 2.0 of SuperProduct)
+REM STEP TWO. Generate Javadoc for the new API (version 2.0 of SuperProduct)
 mkdir sample_output\newdocs
 cd sample_output\newdocs
 javadoc -sourcepath ..\..\SuperProduct2.0 -doctitle "SuperProduct 2.0 API Documentation" -windowtitle "SuperProduct 2.0 API Documentation"  %NEWPKGS%

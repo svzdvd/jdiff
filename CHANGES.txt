@@ -1,6 +1,9 @@
+1.0.5.
+Corrected somes uses of JDK/J2SE and the capitalization of Javadoc.
+
 1.0.4
 Added feature request #472605 with the documentation differences page,
-which shows specific changes in JavaDoc documentation as inserts and deletes.
+which shows specific changes in Javadoc documentation as inserts and deletes.
 Improved the end of sentence checking in doc blocks.
 Added graphics of the statistics histograms.
 
@@ -18,7 +21,7 @@ Fixed bug 476930 (HTML tables need &nbsp; in some places)
 Added feature request 476946 (location of user comments file)
 Added feature request 476201 (Need more statistics) by creating the
 -stats option which generates a statistics page in the report.
-Added feature request 476202 (Port to JDK1.4)
+Added feature request 476202 (Port to J2SE1.4)
 Improved merging of additions and removals into changes for methods.
 Better display of elements which start with underscores in indexes
 

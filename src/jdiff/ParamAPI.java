@@ -5,7 +5,7 @@ import java.util.*;
 
 /** 
  * Class to represent any (name, type) pair such as a parameter. 
- * Analogous to ParamType in the JavaDoc doclet API. 
+ * Analogous to ParamType in the Javadoc doclet API. 
  *
  * The method used for Collection comparison (compareTo) must make its
  * comparison based upon everything that is known about this parameter.
