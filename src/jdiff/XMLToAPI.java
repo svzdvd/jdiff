@@ -348,8 +348,8 @@ public class XMLToAPI {
 
     /** 
      * If set, validate the XML which represents an API. By default, this is 
-     * not set for reasons of efficiency, and since if JDiff generated the XML
-     * it should not need validating. 
+     * not set for reasons of efficiency, and also because if JDiff generated 
+     * the XML, it should not need validating. 
      */
     public static boolean validateXML = false;
 }  

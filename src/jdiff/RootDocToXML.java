@@ -150,8 +150,8 @@ public class RootDocToXML {
             xsdFile.println();
             xsdFile.println("<xsd:complexType name=\"methodType\">");
             xsdFile.println("  <xsd:sequence>");
-            xsdFile.println("    <xsd:element name=\"exception\" type=\"exceptionType\" minOccurs='0' maxOccurs='unbounded'/>");
             xsdFile.println("    <xsd:element name=\"param\" type=\"paramsType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"exception\" type=\"exceptionType\" minOccurs='0' maxOccurs='unbounded'/>");
             xsdFile.println("    <xsd:element name=\"doc\" type=\"xsd:string\" minOccurs='0' maxOccurs='1'/>");
             xsdFile.println("  </xsd:sequence>");
             xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");

@@ -42,7 +42,7 @@ Short Term:
 
 Check validation works from behind firewalls. Populate the lib\2001 directory.
 
-Document validation details
+Document validation details, note minor change with <implements/>, that it is now a single tag
 
 Write and test jdiff csh script
 
