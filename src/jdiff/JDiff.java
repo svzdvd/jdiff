@@ -13,7 +13,6 @@ import java.io.*;
  *
  * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com.
- * @version 1.0
  */
 public class JDiff extends Doclet {
 

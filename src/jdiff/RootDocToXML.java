@@ -13,7 +13,6 @@ import java.io.*;
  *
  * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
- * @version 1.0
  */
 public class RootDocToXML {
 
@@ -709,6 +708,13 @@ public class RootDocToXML {
         int ellipsis = text.indexOf(". . ."); // Handles one instance of this
         if (ellipsis != -1)
             fromindex = ellipsis + 5;
+        // If the first non-whitespace character is an @, go beyond it
+        int i = 0;
+        while (text.charAt(i) == ' ') {
+            i++;
+        }
+        if (text.charAt(i) == '@')
+            fromindex = i + 1;
         // Use the brute force approach.
         index = minIndex(index, text.indexOf("? ", fromindex));
         index = minIndex(index, text.indexOf("?\t", fromindex));
