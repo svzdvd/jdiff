@@ -35,7 +35,7 @@ class APIHandler extends DefaultHandler {
      * Contains the name of the current package element type
      * where documentation is being added. Also used as the level
      * at which to add documentation into an element, i.e. class-level
-     * or package-level
+     * or package-level.
      */
     private String currentElement = null;
 
