@@ -7,6 +7,7 @@ import com.sun.javadoc.*;
 /** 
  * Class to handle options for JDiff.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class Options {

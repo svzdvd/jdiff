@@ -6,6 +6,7 @@ import java.util.*;
 /**
  * Represents a single comment element. Has an identifier and some text.
  * 
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 class SingleComment implements Comparable {

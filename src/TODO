@@ -68,10 +68,6 @@ DESIGN
 Short Term:
 ----------
 
-Doc diff identifiers are not yet unique
-
-Break down the large doc changes HTML file into per-package change files.
-
 Break out subclasses in DiffMyers.java for jar files?
 
 Work with crimson XML parser
@@ -81,13 +77,24 @@ More work on XML for standalone etc
 Should JDiff check for changes in @value values?
 
 Is there a problem with links to non-existent documentation, from where the 
-report generator creates the links? (new and old)
+report generator creates the links? (new and old). Doesn't seem to be?
 
 Add support for XML parser use behind firewalls with no connection out at all.
 
 Support inherited exclusion in RootDocToXML.java
 
-Add copyright reference to all files?
+Sometimes changed is not linked but documentation is noted as having changed
+because the documentation was inherited from a superclass.
+
+Could tidy up the doc diffs page more - group classes together?
+
+Could add an index to changed documentation
+
+Could add links back to classes as well as the other elements from the 
+documentation differences pages
+
+BUG: move the package level documentation difference entry to the top of each 
+file
 
 Long Term:
 ---------

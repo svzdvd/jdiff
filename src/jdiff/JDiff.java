@@ -11,6 +11,7 @@ import java.io.*;
 /**
  * Generates HTML describing the changes between two sets of Java source code.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com.
  * @version 1.0
  */

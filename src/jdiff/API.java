@@ -21,6 +21,7 @@ import java.util.*;
  * of JDiff can be used to create documents describing the difference in those
  * APIs.
  * 
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class API {

@@ -6,6 +6,7 @@ import com.sun.javadoc.*;
 /**
  * The changes between two classes.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 class ClassDiff {

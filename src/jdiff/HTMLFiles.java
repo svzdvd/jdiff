@@ -7,6 +7,7 @@ import java.io.*;
  * Emit HTML files for the supporting infrastructure for the HTML report.
  * Examples are stylesheets, help files, frame files.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class HTMLFiles {

@@ -15,6 +15,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * representation of the comments for the changes.
  * All methods in this class for populating a Comments object are static.
  * 
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class Comments {

@@ -6,6 +6,7 @@ import java.util.*;
  * This class contains method to compare two API objects.
  * The differences are stored in an APIDiff object.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class APIComparator {
@@ -15,6 +16,13 @@ public class APIComparator {
      * It is this object which is used to generate the report later on.
      */
     public APIDiff apiDiff;
+
+    /** 
+     * Package-level object representing the differences between two packages. 
+     * This object is also used to determine which file to write documentation
+     * differences into.
+     */
+    public PackageDiff pkgDiff;
 
     /** Default constructor. */
     public APIComparator() {
@@ -131,7 +139,7 @@ public class APIComparator {
         if (trace)
             System.out.println("Comparing old package " + oldPkg.name_ + 
                                " and new package " + newPkg.name_);
-        PackageDiff pkgDiff = new PackageDiff(oldPkg.name_);
+        pkgDiff = new PackageDiff(oldPkg.name_);
         double differs = 0.0;
 
         Collections.sort(oldPkg.classes_);
@@ -192,7 +200,10 @@ public class APIComparator {
         // Check if the only change was in documentation. Bug 472521.
         boolean differsFlag = false;
         if (docChanged(oldPkg.doc_, newPkg.doc_)) {
-            pkgDiff.documentationChange_ = Diff.emitDocDiffs(oldPkg.doc_, newPkg.doc_, "pkg_" + oldPkg.name_);
+            String link = "<a href=\"pkg_" + oldPkg.name_ + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
+            String id = "package";
+            String title = "Package " + link + oldPkg.name_ + "</a>";
+            pkgDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldPkg.doc_, newPkg.doc_, id, title);
             differsFlag = true;
         }
 
@@ -252,7 +263,12 @@ public class APIComparator {
         }
         // Track changes in documentation
         if (docChanged(oldClass.doc_, newClass.doc_)) {
-            classDiff.documentationChange_ = Diff.emitDocDiffs(oldClass.doc_, newClass.doc_, pkgDiff.name_ + "." + oldClass.name_);
+            String fqName = pkgDiff.name_ + "." + classDiff.name_;
+            String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";;
+            String id = "class_" + classDiff.name_;
+            String title = "Class " + link + classDiff.name_ + "</a>";
+            classDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_,
+ oldClass.doc_, newClass.doc_, id, title);
             differsFlag = true;
         }
         // All other modifiers
@@ -350,7 +366,16 @@ public class APIComparator {
                     memberDiff.newExceptions_ = newCtor.exceptions_;
                     // Track changes in documentation
                     if (docChanged(oldCtor.doc_, newCtor.doc_)) {
-                        memberDiff.documentationChange_ = Diff.emitDocDiffs(oldCtor.doc_, newCtor.doc_, memberDiff.name_);
+                        String type = memberDiff.newType_;
+                        if (type.compareTo("void") == 0)
+                            type = "";
+                        String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                        String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + ".ctor_changed(" + type + ")\" class=\"hiddenlink\">";
+                        String id = classDiff.name_ + "(" + type + ")";
+                        String title = "Class " + link + classDiff.name_ + 
+                            ", constructor " + classDiff.name_ + "(" + type + ")</a>";
+                        memberDiff.documentationChange_ = Diff.saveDocDiffs(
+                            pkgDiff.name_, oldCtor.doc_, newCtor.doc_, id, title);
                     }
                     String modifiersChange = oldCtor.modifiers_.diff(newCtor.modifiers_);
                     if (modifiersChange != null && modifiersChange.indexOf("Change from deprecated to undeprecated") != -1) {
@@ -561,7 +586,15 @@ public class APIComparator {
 
         // Track changes in documentation
         if (docChanged(oldMethod.doc_, newMethod.doc_)) {
-            methodDiff.documentationChange_ = Diff.emitDocDiffs(oldMethod.doc_, newMethod.doc_, oldMethod.name_);
+            String sig = methodDiff.newSignature_;
+            if (sig.compareTo("void") == 0)
+                sig = "";
+            String fqName = pkgDiff.name_ + "." + classDiff.name_;
+            String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + newMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
+            String id = classDiff.name_ + "." + newMethod.name_ + "(" + sig + ")";
+            String title = "Class " + classDiff.name_ + ", method " +
+                link + newMethod.name_ + "(" + sig + ")</a>";
+            methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldMethod.doc_, newMethod.doc_, id, title);
             differs = true;
         }
 
@@ -644,7 +677,12 @@ public class APIComparator {
                     }
                     // Track changes in documentation
                     if (docChanged(oldField.doc_, newField.doc_)) {
-                        memberDiff.documentationChange_ = Diff.emitDocDiffs(oldField.doc_, newField.doc_, oldField.name_);
+                        String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                        String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + newField.name_ + "\" class=\"hiddenlink\">";
+                        String id = classDiff.name_ + "." + newField.name_;
+                        String title = "Class " + classDiff.name_ + ", field " +
+                            link + newField.name_ + "</a>";
+                        memberDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldField.doc_, newField.doc_, id, title);
                         differs = true;
                     }
 

@@ -7,6 +7,7 @@ import java.io.*;
  * Emit an HTML file containing statistics about the differences.
  * Statistical information only appears if the -stats argument is used.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class HTMLStatistics {

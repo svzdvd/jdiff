@@ -9,6 +9,7 @@ import java.util.*;
  * The method used for Collection comparison (compareTo) must make its
  * comparison based upon everything that is known about this set of modifiers.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 class Modifiers implements Comparable {

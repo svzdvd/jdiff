@@ -6,6 +6,7 @@ import java.io.*;
 /**
  * Emit HTML based on the changes between two sets of APIs.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class HTMLReportGenerator {
@@ -135,6 +136,11 @@ public class HTMLReportGenerator {
                 "jdiff_statistics" + reportFileExt;
             HTMLStatistics stats = new HTMLStatistics(this);
             stats.emitStatistics(sf, apiDiff);
+        }
+
+        if (!Diff.noDocDiffs) {
+            // Documentation differences, one file per package
+            Diff.emitDocDiffs(fullReportFileName);
         }
     }   
 

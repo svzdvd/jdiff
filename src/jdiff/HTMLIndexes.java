@@ -7,6 +7,7 @@ import java.io.*;
  * Emit HTML indexes which appear in the bottom left frame in the report. 
  * All indexes are links to JDiff-generated pages.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 public class HTMLIndexes {
@@ -910,6 +911,7 @@ public class HTMLIndexes {
 /**
  * Class used to produce indexes of packages and classes. 
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 class Index implements Comparable {

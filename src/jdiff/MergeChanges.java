@@ -21,6 +21,7 @@ import java.util.*;
  * Another merge which can be made is if two or more methods with the same name
  * were marked as removed and added because of changes other than signature.
  *
+ * See the file LICENSE.txt for copyright details.
  * @author Matthew Doar, doar@pobox.com
  */
 class MergeChanges {
@@ -47,21 +48,21 @@ class MergeChanges {
                 ctorArr = (ConstructorAPI[])classDiff.ctorsRemoved.toArray(ctorArr);
                 for (int ctorIdx = 0; ctorIdx < ctorArr.length; ctorIdx++) {
                     ConstructorAPI removedCtor = ctorArr[ctorIdx];
-                    mergeRemoveAddCtor(removedCtor, classDiff);
+                    mergeRemoveAddCtor(removedCtor, classDiff, pkgDiff);
                 }
                 // Methods
                 MethodAPI[] methodArr = new MethodAPI[classDiff.methodsRemoved.size()];
                 methodArr = (MethodAPI[])classDiff.methodsRemoved.toArray(methodArr);
                 for (int methodIdx = 0; methodIdx < methodArr.length; methodIdx++) {
                     MethodAPI removedMethod = methodArr[methodIdx];
-                    mergeRemoveAddMethod(removedMethod, classDiff);
+                    mergeRemoveAddMethod(removedMethod, classDiff, pkgDiff);
                 }
                 // Fields
                 FieldAPI[] fieldArr = new FieldAPI[classDiff.fieldsRemoved.size()];
                 fieldArr = (FieldAPI[])classDiff.fieldsRemoved.toArray(fieldArr);
                 for (int fieldIdx = 0; fieldIdx < fieldArr.length; fieldIdx++) {
                     FieldAPI removedField = fieldArr[fieldIdx];
-                    mergeRemoveAddField(removedField, classDiff);
+                    mergeRemoveAddField(removedField, classDiff, pkgDiff);
                 }
             }
         }        
@@ -70,7 +71,7 @@ class MergeChanges {
     /**
      * Convert some removed and added constructors into changed constructors.
      */
-    public static void mergeRemoveAddCtor(ConstructorAPI removedCtor, ClassDiff classDiff) {
+    public static void mergeRemoveAddCtor(ConstructorAPI removedCtor, ClassDiff classDiff, PackageDiff pkgDiff) {
         // Search on the type of the constructor
         int startRemoved = classDiff.ctorsRemoved.indexOf(removedCtor);
         int endRemoved = classDiff.ctorsRemoved.lastIndexOf(removedCtor);
@@ -90,7 +91,15 @@ class MergeChanges {
             ctorDiff.addModifiersChange(removedCtor.modifiers_.diff(addedCtor.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedCtor.doc_, addedCtor.doc_)) {
-                ctorDiff.documentationChange_ = Diff.emitDocDiffs(removedCtor.doc_, addedCtor.doc_, classDiff.name_);
+                String type = ctorDiff.newType_;
+                if (type.compareTo("void") == 0)
+                    type = "";
+                String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" +fqName + ".ctor_changed(" + type + ")\" class=\"hiddenlink\">";
+                String id = classDiff.name_ + "(" + type + ")";
+                String title = "Class " + link + classDiff.name_ + 
+                    ", constructor " + classDiff.name_ + "(" + type + ")</a>";
+                ctorDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedCtor.doc_, addedCtor.doc_, id, title);
             }
             classDiff.ctorsChanged.add(ctorDiff);
             // Now remove the entries from the remove and add lists
@@ -105,15 +114,15 @@ class MergeChanges {
      * Convert some removed and added methods into changed methods.
      */
     public static void mergeRemoveAddMethod(MethodAPI removedMethod, 
-                                            ClassDiff classDiff) {
-        mergeSingleMethods(removedMethod, classDiff);
-        mergeMultipleMethods(removedMethod, classDiff);
+                                            ClassDiff classDiff, PackageDiff pkgDiff) {
+        mergeSingleMethods(removedMethod, classDiff, pkgDiff);
+        mergeMultipleMethods(removedMethod, classDiff, pkgDiff);
     }
 
     /**
      * Convert single removed and added methods into a changed method.
      */
-    public static void mergeSingleMethods(MethodAPI removedMethod, ClassDiff classDiff) {
+    public static void mergeSingleMethods(MethodAPI removedMethod, ClassDiff classDiff, PackageDiff pkgDiff) {
         // Search on the name of the method
         int startRemoved = classDiff.methodsRemoved.indexOf(removedMethod);
         int endRemoved = classDiff.methodsRemoved.lastIndexOf(removedMethod);
@@ -135,7 +144,15 @@ class MergeChanges {
             methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
-                methodDiff.documentationChange_ = Diff.emitDocDiffs(removedMethod.doc_, addedMethod.doc_, removedMethod.name_);
+                String sig = methodDiff.newSignature_;
+                if (sig.compareTo("void") == 0)
+                    sig = "";
+                String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
+                String id = classDiff.name_ + "." + addedMethod.name_ + "(" + sig + ")";
+                String title = "Class " + classDiff.name_ + ", method " +
+                    link + addedMethod.name_ + "(" + sig + ")</a>";
+                methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
             }
             classDiff.methodsChanged.add(methodDiff);
             // Now remove the entries from the remove and add lists
@@ -154,7 +171,7 @@ class MergeChanges {
      * This handles the case where the methods' signatures are unchanged, but
      * something else changed.
      */
-    public static void mergeMultipleMethods(MethodAPI removedMethod, ClassDiff classDiff) {
+    public static void mergeMultipleMethods(MethodAPI removedMethod, ClassDiff classDiff, PackageDiff pkgDiff) {
         // Search on the name and signature of the method
         int startRemoved = classDiff.methodsRemoved.indexOf(removedMethod);
         int endRemoved = classDiff.methodsRemoved.lastIndexOf(removedMethod);
@@ -196,7 +213,15 @@ class MergeChanges {
             methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
-                methodDiff.documentationChange_ =Diff.emitDocDiffs(removedMethod.doc_, addedMethod.doc_, removedMethod.name_) ;
+                String sig = methodDiff.newSignature_;
+                if (sig.compareTo("void") == 0)
+                    sig = "";
+                String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
+                String id = classDiff.name_ + "." + addedMethod.name_ + "(" + sig + ")";
+                String title = "Class " + classDiff.name_ + ", method " +
+                    link + addedMethod.name_ + "(" + sig + ")</a>";
+                methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
             }
             classDiff.methodsChanged.add(methodDiff);
             // Now remove the entries from the remove and add lists
@@ -213,7 +238,7 @@ class MergeChanges {
     /**
      * Convert some removed and added fields into changed fields.
      */
-    public static void mergeRemoveAddField(FieldAPI removedField, ClassDiff classDiff) {
+    public static void mergeRemoveAddField(FieldAPI removedField, ClassDiff classDiff, PackageDiff pkgDiff) {
         // Search on the name of the field
         int startRemoved = classDiff.fieldsRemoved.indexOf(removedField);
         int endRemoved = classDiff.fieldsRemoved.lastIndexOf(removedField);
@@ -231,7 +256,12 @@ class MergeChanges {
             fieldDiff.addModifiersChange(removedField.modifiers_.diff(addedField.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedField.doc_, addedField.doc_)) {
-                fieldDiff.documentationChange_ = Diff.emitDocDiffs(removedField.doc_, addedField.doc_, removedField.name_);
+                String fqName = pkgDiff.name_ + "." + classDiff.name_;
+                String link = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedField.name_ + "\" class=\"hiddenlink\">";
+                String id = classDiff.name_ + "." + addedField.name_;
+                String title = "Class " + classDiff.name_ + ", field " +
+                    link + addedField.name_ + "</a>";
+                fieldDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedField.doc_, addedField.doc_, id, title);
             }
             classDiff.fieldsChanged.add(fieldDiff);
             // Now remove the entries from the remove and add lists
