@@ -43,7 +43,7 @@ class DiffOutput implements Comparable {
         // Always put the package-level output at the top - not yet working
 //        if (id_.compareTo("package") == 0)
 //            return -1;
-        return title_.compareTo(oDiffOutput.title_);
+        return id_.compareTo(oDiffOutput.id_);
     }    
         
 }  

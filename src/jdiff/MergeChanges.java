@@ -97,7 +97,7 @@ class MergeChanges {
                 String fqName = pkgDiff.name_ + "." + classDiff.name_;
                 String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
                 String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + ".ctor_changed(" + type + ")\" class=\"hiddenlink\">";
-                String id = pkgDiff.name_ + "." + classDiff.name_ + "(" + type + ")";
+                String id = pkgDiff.name_ + "." + classDiff.name_ + ".ctor(" + type + ")";
                 String title = link1 + "Class " + classDiff.name_ + 
                     "</a>, " + link2 + "constructor " + classDiff.name_ + "(" + type + ")</a>";
                 ctorDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedCtor.doc_, addedCtor.doc_, id, title);
@@ -151,7 +151,7 @@ class MergeChanges {
                 String fqName = pkgDiff.name_ + "." + classDiff.name_;
                 String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
                 String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
-                String id = pkgDiff.name_ + "." + classDiff.name_ + "." + addedMethod.name_ + "(" + sig + ")";
+                String id = pkgDiff.name_ + "." + classDiff.name_ + ".dmethod." + addedMethod.name_ + "(" + sig + ")";
                 String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                     link2 + "method " + addedMethod.name_ + "(" + sig + ")</a>";
                 methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
@@ -221,7 +221,7 @@ class MergeChanges {
                 String fqName = pkgDiff.name_ + "." + classDiff.name_;
                 String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
                 String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedMethod.name_ + "_changed(" + sig + ")\" class=\"hiddenlink\">";
-                String id = pkgDiff.name_ + "." + classDiff.name_ + "." + addedMethod.name_ + "(" + sig + ")";
+                String id = pkgDiff.name_ + "." + classDiff.name_ + ".dmethod." + addedMethod.name_ + "(" + sig + ")";
                 String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                     link2 + "method " + addedMethod.name_ + "(" + sig + ")</a>";
                 methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
@@ -262,7 +262,7 @@ class MergeChanges {
                 String fqName = pkgDiff.name_ + "." + classDiff.name_;
                 String link1 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
                 String link2 = "<a href=\"" + fqName + HTMLReportGenerator.reportFileExt + "#" + fqName + "." + addedField.name_ + "\" class=\"hiddenlink\">";
-                String id = pkgDiff.name_ + "." + classDiff.name_ + "." + addedField.name_;
+                String id = pkgDiff.name_ + "." + classDiff.name_ + ".field." + addedField.name_;
                 String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                     link2 + "field " + addedField.name_ + "</a>";
                 fieldDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedField.doc_, addedField.doc_, id, title);
