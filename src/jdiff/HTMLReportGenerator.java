@@ -1929,9 +1929,9 @@ public class HTMLReportGenerator {
 
     /** 
      * If set, then report changes in documentation (Javadoc comments) 
-     * between the old and the new API. The default is that this is set.
+     * between the old and the new API. The default is that this is not set.
      */
-    public static boolean reportDocChanges = true;
+    public static boolean reportDocChanges = false;
 
     /** 
      * Define the prefix for HTML links to the existing set of Javadoc-
@@ -1942,7 +1942,7 @@ public class HTMLReportGenerator {
 
     /** 
      * Define the prefix for HTML links to the existing set of Javadoc-
-     * generated documetnation for the old API. Not used yet.
+     * generated documentation for the old API.
      */
     public static String oldDocPrefix = null;
 

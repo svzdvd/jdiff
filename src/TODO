@@ -26,6 +26,8 @@ Bugs for JDiff1.0.6
 
 BUG Work with crimson XML parser?
 
+BUG Remove Text Changes if not present
+
 BUG: Using classdoc to compare jar files suggests that the handling of
 classes with no packages is not correct. Temporarily disabled.
 

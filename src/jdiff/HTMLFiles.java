@@ -223,7 +223,7 @@ public class HTMLFiles {
             h_.writeText("<H3>Text Changes</H3>");        
             h_.writeText("This is a link to the top-level index of all documentation changes for the current package or class. ");        
             h_.writeText("If it is not active, then there are no documentation changes for the current package or class. ");        
-            h_.writeText("This can be removed using the <code>-nodocchanges</code> option.");        
+            h_.writeText("This can be removed by not using the <code>-docchanges</code> option.");        
             h_.writeText("</BLOCKQUOTE>");
             
             h_.writeText("<BLOCKQUOTE>");

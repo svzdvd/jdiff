@@ -32,10 +32,10 @@ javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs -stats -old
 copy ..\lib\background.gif newdocs
 copy ..\lib\black.gif newdocs\changes\black.gif
 
-REM Generate another HTML report comparing the old and new APIs, but ignoring 
-REM changes in documentation by using -nodocchanges
+REM Generate another HTML report comparing the old and new APIs, but including 
+REM changes in documentation by using -docchanges
 mkdir newdocs2
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs2 -nodocchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs2 -docchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java
 copy ..\lib\background.gif newdocs2
 copy ..\lib\black.gif newdocs2\changes\black.gif
 

@@ -117,7 +117,7 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-excludemember &lt;<i>exclusion level</i>>]
  [-nosuggest &lt;<i>suggestion level</i>>]
  [-firstsentence]
- [-nodocchanges]
+ [-docchanges]
  [-checkcomments]
  [-retainnonprinting]
  [-excludetag &lt;<i>exclude tag</i>>]
@@ -247,17 +247,17 @@ the output to the given directory.
    This argument causes JDiff to save only the first sentence of each
    Javadoc comment as part of
    the API. This is only necessary when the XML file representing the
-   API is being generated. See <code>-nodocchanges</code> for how to 
-   prevent any documentation changes being noted as differences.<br>
+   API is being generated. See <code>-docchanges</code> for how to 
+   note documentation changes as differences.<br>
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
-  <code>-nodocchanges</code></dt>
+  <code>-docchanges</code></dt>
   <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
-   This argument turns off comparison of Javadoc documentation.
+   This argument enables comparison of Javadoc documentation.
    By default, changes in the saved Javadoc documentation
-   are noted as changes (or at least as a removal and a related
-   addition). See <code>-firstsentence</code> option for how to compare just
+   are not noted as changes (or as removals and related
+   additions). See <code>-firstsentence</code> option for how to compare just
    the first sentence in Javadoc documentation.
   </DD>
 

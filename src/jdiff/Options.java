@@ -64,7 +64,7 @@ public class Options {
         if (opt.equals("-excludemember"))    return 2;
 
         if (opt.equals("-firstsentence"))    return 1;
-        if (opt.equals("-nodocchanges"))    return 1;
+        if (opt.equals("-docchanges"))    return 1;
 
         // Option to change the location for the existing Javadoc
         // documentation for the new API. Default is "../"
@@ -259,8 +259,8 @@ public class Options {
                 RootDocToXML.saveAllDocs = false;
                 continue;
             }
-            if (options[i][0].toLowerCase().equals("-nodocchanges")) {
-                HTMLReportGenerator.reportDocChanges = false;
+            if (options[i][0].toLowerCase().equals("-docchanges")) {
+                HTMLReportGenerator.reportDocChanges = true;
                 continue;
             }
             if (options[i][0].toLowerCase().equals("-nosuggest")) {
@@ -345,7 +345,7 @@ public class Options {
         System.err.println("  -excludemember [public|protected|package|private] Exclude members which are not public, protected etc");
         
         System.err.println("  -firstsentence Save only the first sentence of each comment block with the API.");
-        System.err.println("  -nodocchanges Do not report changes in Javadoc comments between the APIs");
+        System.err.println("  -docchanges Report changes in Javadoc comments between the APIs");
         System.err.println("  -nosuggest [all|remove|add|change] Do not add suggested comments to all, or the removed, added or chabged sections");
         System.err.println("  -checkcomments Check that comments are sentences");
         System.err.println("  -stripnonprinting Remove non-printable characters from comments.");
