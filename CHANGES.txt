@@ -1,6 +1,8 @@
 1.0.6 - TODO
 Added better detection of a method or field moving to or from a parent
 class.
+Added ability to run jdiff.JDiff as a Java application which makes
+the necessary calls to Javadoc. This requires J2SE1.4.
 Added checking for changes in field values (the @value tag in J2SE1.4).
 Changed the link to existing Javadoc link to the specific package or class.
 Improved the algorithm used to find the summary sentence in documentation.

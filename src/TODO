@@ -46,6 +46,8 @@ Test @value changes
 
 Use -linksource in tests with J2SE1.4
 
+Add interactive ability with jdiff.JDiff for easiest use
+
 Add progress bars for the longer parts of the program?
 
 Compare new test results to old test results to check parent/child work

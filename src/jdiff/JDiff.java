@@ -1,11 +1,11 @@
 package jdiff;
 
 import com.sun.javadoc.*;
-import com.sun.tools.javadoc.Main; // For running Javadoc programmatically
 
 import java.util.*;
 import java.text.SimpleDateFormat;
 import java.io.*;
+import java.lang.reflect.*; // Used for invoking Javadoc indirectly
 
 /**
  * Generates HTML describing the changes between two sets of Java source code.
@@ -198,13 +198,23 @@ public class JDiff extends Doclet {
         diffJavaDocArgs[10] = "../../newdocs/";
         diffJavaDocArgs[11] = "../lib/Null.java";
 
+        String javaVersion = System.getProperty("java.version");
+        if (trace)
+            System.out.println("Java version: " + javaVersion);
+        if (javaVersion.startsWith("1.1") || 
+            javaVersion.startsWith("1.2") || 
+            javaVersion.startsWith("1.3")) {
+            System.out.println("Error: cannot run jdiff.JDiff directly with J2SE version " + javaVersion + ", since it is earlier than version 1.4. Call javadoc directly instead.");
+            return;
+        }
+
         // First generate the XML for the old API
-        int rc = Main.execute("JDiff", "jdiff.JDiff", oldJavaDocArgs);
+        int rc = runJavadoc("JDiff", "jdiff.JDiff", oldJavaDocArgs);
         if (rc != 0)
             return;
 
         // Then generate the XML for the new API
-        int rc2 = Main.execute("JDiff", "jdiff.JDiff", newJavaDocArgs);
+        int rc2 = runJavadoc("JDiff", "jdiff.JDiff", newJavaDocArgs);
         if (rc2 != 0)
             return;
 
@@ -212,9 +222,53 @@ public class JDiff extends Doclet {
         // the differences between the two APIs.
         JDiff.compareAPIs = false;
         JDiff.writeXML = false;
-        int rc3 = Main.execute("JDiff", "jdiff.JDiff", diffJavaDocArgs);
+        int rc3 = runJavadoc("JDiff", "jdiff.JDiff", diffJavaDocArgs);
         if (rc3 != 0)
             return;
+    }
+
+    /** 
+     * Invoke Javadoc by reflection, so that J2SE1.3 can compile code which
+     * uses methods defined in J2SE1.4. 
+     *
+     * @return The integer return code from running Javadoc.
+     */
+    public static int runJavadoc(String programName, 
+                             String defaultDocletClassName, 
+                             String[] args) {
+        String className = null;
+        try {
+            className = "com.sun.tools.javadoc.Main";
+            Class c = Class.forName(className);
+            Class[] methodArgTypes = new Class[3];
+            methodArgTypes[0] = String.class;
+            methodArgTypes[1] = String.class;
+            methodArgTypes[2] = args.getClass();
+            Method javaDocMethod  = c.getMethod("execute", methodArgTypes);
+            Object[] methodArgs = new Object[3];
+            methodArgs[0] = programName;
+            methodArgs[1] = defaultDocletClassName;
+            methodArgs[2] = args;
+            // The object can be null because the method is static
+            Integer res = (Integer)javaDocMethod.invoke(null, methodArgs);
+            return res.intValue();
+        } catch (ClassNotFoundException e1) {
+            System.err.println("Error: class \"" + className + "\"not found");
+            e1.printStackTrace();
+        } catch (NoSuchMethodException e2) {
+            System.err.println("Error: method \"execute\" not found");
+            e2.printStackTrace();
+        } catch (IllegalAccessException e4) {
+            System.err.println("Error: class not permitted to be instantiated");
+            e4.printStackTrace();
+        } catch (InvocationTargetException e5) {
+            System.err.println("Error: method \"execute\" could not be invoked");
+            e5.printStackTrace();
+        } catch (Exception e6) {
+            System.err.println("Error: ");
+            e6.printStackTrace();
+        }
+        return -1;
     }
 
     /** 
@@ -252,5 +306,8 @@ public class JDiff extends Doclet {
 
     /** The current JDiff version. */
     static final String version = "1.0.6";
+
+    /** Set to enable increased logging verbosity for debugging. */
+    private static boolean trace = false;
 
 } //JDiff

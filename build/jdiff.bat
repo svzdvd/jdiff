@@ -7,6 +7,7 @@ cd ..\test
 REM Make sure we can find xerces.jar
 setlocal 
 set CLASSPATH=%JAVA_HOME%\lib\tools.jar;..\lib\xerces.jar;..\lib\jdiff.jar;%CLASSPATH%
+REM set CLASSPATH=%JAVA_HOME%\lib\tools.jar;..\lib\xerces.jar;..\src;%CLASSPATH%
 
 REM These are the packages in each version of the API
 set OLDPKGS=RemovedPackage ChangedPackage ChangedPackageDoc ChangedPackageDoc2
@@ -25,7 +26,7 @@ javadoc -private -sourcepath ..\new -doctitle "JDiff Test New API" -windowtitle 
 cd ..
 
 REM Generate an HTML report comparing the old and new APIs, using a single
-REM Java application to call the  JDiff Javadoc doclet.
+REM Java application to call the JDiff Javadoc doclet.
 java -classpath %CLASSPATH% jdiff.JDiff
 
 REM TODO use a configuration file?
