@@ -1,4 +1,4 @@
-1.0.6
+1.0.6 - January 9th 2002
 Fixed bug 494135 (Compare classes which have no package).
 Fixed bug 494970 (HTML strike element in the index was not closed when
 fields of the same name were deleted from different classes), and made
