@@ -49,12 +49,15 @@ Run with: ant -f simple.xml
            classname="jdiff.JDiffAntTask" 
            classpath="${JDIFF_HOME}/lib/antjdiff.jar"/>
 
-  <jdiff destdir="my_jdiff_report" verbose="on" stats="on">
-    <old name="Version 1" docchange="on">
+  <jdiff destdir="my_jdiff_report" verbose="on" stats="on" docchanges="on" >
+    <old name="Version 1">
       <dirset dir="SuperProduct1.0" includes="com/**"/>
     </old>
     <new name="Version 2">
       <dirset dir="SuperProduct2.0" includes="com/**"/>
+<!-- multiple dirsets not yet supported
+      <dirset dir="SuperProduct2.0" includes="com/acme/spextra/**"/> 
+-->
     </new>
   </jdiff>
 

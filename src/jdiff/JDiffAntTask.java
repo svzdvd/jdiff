@@ -32,7 +32,6 @@ public class JDiffAntTask {
 	    System.getProperty("path.separator") +
 	    jdiffHome + DIR_SEP + "lib" + DIR_SEP + "xerces.jar";
 
-	// TODO better javadoc generation
 	// TODO detect and set verboseAnt
 
 	// Create, if necessary, the directory for the JDiff HTML report
@@ -75,7 +74,13 @@ public class JDiffAntTask {
 	    }
 	}
 
-	// Call Javadoc three times.
+	// Call Javadoc twice to generate Javadoc for each project
+	generateJavadoc(oldProject.getJavadoc(), oldProject.getDirset(), 
+			oldProject.getName());
+	generateJavadoc(newProject.getJavadoc(), newProject.getDirset(), 
+			newProject.getName());
+
+	// Call Javadoc three times for JDiff.
 	generateXML(oldProject.getDirset(), oldProject.getName());
 	generateXML(newProject.getDirset(), newProject.getName());
 	compareXML(oldProject.getName(), newProject.getName());
@@ -96,7 +101,7 @@ public class JDiffAntTask {
 	// Create a fresh new Javadoc task
 	Javadoc jd = new Javadoc();
 	jd.setProject(project); // Vital, otherwise Ant crashes
-	jd.setTaskName(apiname);
+	jd.setTaskName("Analyzing " + apiname);
 	jd.init();
 
 	// First set up some parameters for the Javadoc task
@@ -141,20 +146,15 @@ public class JDiffAntTask {
 	
 	// Execute the Javadoc command to generate the XML file.
 	jd.perform();
-
-	project.log("To generate Javadoc for " + apiname +
-		    ", execute:", Project.MSG_INFO);
-	String javadocCmd = 
-	    "javadoc =private -d \"" + getDestdir().toString() + DIR_SEP + 
-	    apiname + "\" -sourcepath " + dirSet.getDir(project).toString() +
-	    " " + packageList.replace(',', ' ').replace('/','.');
-	project.log(javadocCmd, Project.MSG_INFO);
     }
 
     /**
      * Convenient method to create a Javadoc task, configure it and run it
      * to compare the XML representations of two instances of a project's 
      * source files, and generate an HTML report summarizing the differences.
+     *
+     * @param oldapiname The name of the older version of the project
+     * @param newapiname The name of the newer version of the project
      */
     public void compareXML(String oldapiname, String newapiname) {
 	// Create a fresh new Javadoc task
@@ -213,6 +213,54 @@ public class JDiffAntTask {
 	}
 
 	// Execute the Javadoc command to compare the two XML files
+	jd.perform();
+    }
+
+    /**
+     * Generate the Javadoc for the project. If you want to generate
+     * the Javadoc report for the project with different parameters from the
+     * simple ones used here, then use the Javadoc Ant task directly, and 
+     * set the javadoc attribute to the "old" or "new" element.
+     *
+     * @param javadoc The location of an existing Javadoc report, if any.
+     * @param dirset The set of directories to be treated as pacakge names
+     * @param apiname The name of the project, also use for the XML file
+     */
+    public void generateJavadoc(String javadoc, DirSet dirSet, String apiname) {	
+	if (javadoc != null && javadoc.compareTo("generated") != 0) {
+	    project.log("Configured to use existing Javadoc located in " +  
+			javadoc, Project.MSG_INFO);
+	    return;
+	}
+
+	// Create a fresh new Javadoc task
+	Javadoc jd = new Javadoc();
+	jd.setProject(project); // Vital, otherwise Ant crashes
+	jd.setTaskName("Javadoc for " + apiname);
+	jd.init();
+
+	// Set up some parameters for the Javadoc task
+	String dest = getDestdir().toString() + DIR_SEP + apiname;
+	jd.setDestdir(new File(dest));
+	jd.setPrivate(true);
+	jd.setSourcepath(new Path(project, dirSet.getDir(project).toString()));
+
+	// Tell Javadoc which packages we want to scan. JDiff works with 
+	// packagenames, not sourcefiles.
+	DirectoryScanner dirScanner = dirSet.getDirectoryScanner(project);
+	String[] files = dirScanner.getIncludedDirectories();
+	String packageList = ""; 
+	// TODO nasty slow hack to create comma separated list
+	// TODO also need to remove common ones: com com/foo etc
+	for (int i = 0; i < files.length; i++) {
+	    if (i != 0){
+		packageList = packageList + ",";
+	    }
+	    packageList = packageList + files[i];
+	}
+	jd.setPackagenames(packageList);
+
+	// Execute the Javadoc command to generate a regular Javadoc report
 	jd.perform();
     }
 
@@ -322,34 +370,27 @@ public class JDiffAntTask {
     /**
      * A ProjectInfo-derived object for the older version of the project
      */
-    private OldProject oldProject = null;
+    private ProjectInfo oldProject = null;
 
     /**
      * Used to store the child element named "old", which is under the 
      * JDiff task XML element.
      */
-    public void addConfiguredOld(OldProject projInfo) {
+    public void addConfiguredOld(ProjectInfo projInfo) {
 	oldProject = projInfo;
     }
 
     /**
      * A ProjectInfo-derived object for the newer version of the project
      */
-    private NewProject newProject = null;
+    private ProjectInfo newProject = null;
 
     /**
      * Used to store the child element named "new", which is under the 
      * JDiff task XML element.
      */
-    public void addConfiguredNew(NewProject projInfo) {
+    public void addConfiguredNew(ProjectInfo projInfo) {
 	newProject = projInfo;
-    }
-
-    /** TODO remove this layer? */
-    public static class OldProject extends ProjectInfo {
-    }
-
-    public static class NewProject extends ProjectInfo {
     }
 
     /**
@@ -370,6 +411,22 @@ public class JDiffAntTask {
 
 	public String getName() {
 	    return name;
+	}
+
+	/** 
+	 * The location of the Javadoc HTML for this project. Default value
+	 * is "generate", which will cause the Javadoc to be generated in 
+	 * a subdirectory named "name" in the task's destdir directory.
+	 */
+	private String javadoc;
+
+	public void setJavadoc(String value) {
+	    System.out.println("*** in here with "+ value);
+	    javadoc = value;
+	}
+
+	public String getJavadoc() {
+	    return javadoc;
 	}
 
  	/** TODO multiple dirset calls TODO filesets for classes?
@@ -396,6 +453,6 @@ public class JDiffAntTask {
 	
     }
     /*
-TODO link checked with linklint-2.3.5 -error -warn /@ and all is fine in the example except for the link in the Javadoc text for SuperProduct2.0/com/acme/sp/package.html. Looks like the old @link not genreating the correct href when it in a package bug?
+TODO link checked with linklint-2.3.5 -error -warn /@ and all is fine in the example except for the link in the Javadoc text for SuperProduct2.0/com/acme/sp/package.html. Looks like the old @link not generating the correct href when it in a package bug?
      */
 }
