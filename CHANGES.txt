@@ -4,6 +4,10 @@
 and showAllChanges is not used, then no change has occurred. Thanks to 
 C. Le Goff for finding this bug and providing the fix.
 
+#872344 JDiff was using a relative URI for XMLReader.parse(). This
+made it hard to use an XML parser other than Xerces. Thanks to Brian
+Duff for finding this bug and providing the fix.
+
 Updated copyright notices to 2003.
 
 1.0.9 - 19th June 2003

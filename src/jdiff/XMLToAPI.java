@@ -8,6 +8,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.InputSource;
 import org.xml.sax.helpers.*;
 
 /**
@@ -67,7 +68,7 @@ public class XMLToAPI {
 
             parser.setContentHandler(handler);
             parser.setErrorHandler(handler);
-            parser.parse(filename);
+            parser.parse(new InputSource(new FileInputStream(new File(filename))));
         } catch(org.xml.sax.SAXNotRecognizedException snre) {
             System.out.println("SAX Parser does not recognize feature: " + snre);
             snre.printStackTrace();

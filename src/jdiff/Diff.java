@@ -234,7 +234,7 @@ class Diff {
                         res += "</span>";
                 }
             }
-            // Emit the inserted words, but do not emphasis new HTML tags
+            // Emit the inserted words, but do not emphasise new HTML tags
             if (inserts != 0) {
                 boolean inEmph = false;
                 for (int i = first1; i <= last1; i++) {
