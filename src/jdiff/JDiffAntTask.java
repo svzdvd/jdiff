@@ -18,93 +18,137 @@ import org.apache.tools.ant.types.Path;
  */
 public class JDiffAntTask {
 
-    private Project project;
-
-    public void setProject(Project proj) {
-        project = proj;
-    }
-
     public void execute() throws BuildException {
-	// TODO check if debug is set
-	//String message = project.getProperty("ant.project.name");
-        //project.log("Starting '" + message, Project.MSG_INFO);
+	//String message = project.getProperty("basedir");
+        //project.log("Starting from " + message, Project.MSG_INFO);
 
-	// Check for and create the directory for the JDiff HTML report
+	jdiffHome = project.getProperty("JDIFF_HOME");
+	if (jdiffHome == null || jdiffHome.compareTo("") == 0 | 
+	    jdiffHome.compareTo("(not set)") == 0) {
+	    throw new BuildException("Error: invalid JDIFF_HOME property. Set it in the build file to the directory where jdiff is installed");
+	}
+
+	jdiffClassPath = jdiffHome + DIR_SEP + "lib" + DIR_SEP + "jdiff.jar" +
+	    System.getProperty("path.separator") +
+	    jdiffHome + DIR_SEP + "lib" + DIR_SEP + "xerces.jar";
+
+	// TODO better javadoc generation
+	// TODO detect and set verboseAnt
+
+	// Create, if necessary, the directory for the JDiff HTML report
         if (!destdir.mkdir() && !destdir.exists()) {
 	    throw new BuildException(getDestdir() + " is not a valid directory");
 	} else {
-	    project.log("Output directory: " + getDestdir(), Project.MSG_INFO);
+	    project.log(" Report location: " + getDestdir() + DIR_SEP 
+			+ "changes.html", Project.MSG_INFO);
 	}
+	// TODO could also record the parameters used for JDiff here?
  	
-	// TODO check there are two projects to compare
-
-	project.log("Old name: " + oldProject.getName(), Project.MSG_INFO);
-	// Display the files being compared
-	DirectoryScanner ds = oldProject.getDirset().getDirectoryScanner(project);
-	String[] files = ds.getIncludedDirectories();
-	for (int i = 0; i < files.length; i++) {
-	    project.log(" " + files[i], Project.MSG_INFO);
-	}
-	ds = null;
-
-	project.log("New name: " + newProject.getName(), Project.MSG_INFO);
-	ds = newProject.getDirset().getDirectoryScanner(project);
-	files = ds.getIncludedDirectories();
-	for (int i = 0; i < files.length; i++) {
-	    project.log(" " + files[i], Project.MSG_INFO);
+	// Check that there are indeed two projects to compare. If there
+	// are no directories in the project, let Javadoc do the complaining
+	if (oldProject == null || newProject == null) {
+	    throw new BuildException("Error: two projects are needed, one <old> and one <new>");
 	}
 
-	// TODO generalise
-	generateXML(oldProject.getDirset(), "SuperProduct 1.0", "/home/matt/jdiff/examples/SuperProduct1.0");
-	generateXML(newProject.getDirset(), "SuperProduct 2.0", "/home/matt/jdiff/examples/SuperProduct2.0");
-	compareXML("SuperProduct 1.0", "SuperProduct 2.0");
+	// Display the directories being compared, and some name information
+	if (getVerbose()) {
+	    project.log("Older version: " + oldProject.getName(), 
+			Project.MSG_INFO);
+	    project.log("Included directories for older version:", 
+			Project.MSG_INFO);
+	    DirectoryScanner ds = 
+		oldProject.getDirset().getDirectoryScanner(project);
+	    String[] files = ds.getIncludedDirectories();
+	    for (int i = 0; i < files.length; i++) {
+		project.log(" " + files[i], Project.MSG_INFO);
+	    }
+	    ds = null;
+	    
+	    project.log("Newer version: " + newProject.getName(), 
+			Project.MSG_INFO);
+	    project.log("Included directories for newer version:", 
+			Project.MSG_INFO);
+	    ds = newProject.getDirset().getDirectoryScanner(project);
+	    files = ds.getIncludedDirectories();
+	    for (int i = 0; i < files.length; i++) {
+		project.log(" " + files[i], Project.MSG_INFO);
+	    }
+	}
 
-	// TODO copy some images files too
+	// Call Javadoc three times.
+	generateXML(oldProject.getDirset(), oldProject.getName());
+	generateXML(newProject.getDirset(), newProject.getName());
+	compareXML(oldProject.getName(), newProject.getName());
+
+	// Repeat some useful information
+	project.log(" Report location: " + getDestdir() + DIR_SEP 
+		    + "changes.html", Project.MSG_INFO);
     }
 
     /**
      * Convenient method to create a Javadoc task, configure it and run it
      * to generate the XML representation of a project's source files.
+     *
+     * @param dirset The set of directories to be treated as pacakge names
+     * @param apiname The name of the project, also use for the XML file
      */
-    // TODO remove root
-    public void generateXML(DirSet fs, String apiname, String root) {
-	// Create a Javadoc task which can be reset
+    public void generateXML(DirSet dirSet, String apiname) {
+	// Create a fresh new Javadoc task
 	Javadoc jd = new Javadoc();
-	jd.setProject(project);
-	jd.setTaskName("JDiffAntTask");
+	jd.setProject(project); // Vital, otherwise Ant crashes
+	jd.setTaskName(apiname);
 	jd.init();
 
-	// Tell Javadoc which files we want to scan. 
-	// JDiff works with packagenames, not sourcefiles.
-	jd.setSourcepath(new Path(project, root));
-	DirectoryScanner ds = fs.getDirectoryScanner(project);
-	String[] files = ds.getIncludedDirectories();
-	String fss = ""; // TODO nasty slow hack to create comma separated list
+	// First set up some parameters for the Javadoc task
+	if (verboseAnt) {
+	    jd.setVerbose(true);
+	}
+	jd.setDestdir(getDestdir());
+	// TODO Add each of the root directories of the dirsets as source paths
+	jd.setSourcepath(new Path(project, dirSet.getDir(project).toString()));
+
+	// Tell Javadoc which packages we want to scan. JDiff works with 
+	// packagenames, not sourcefiles.
+	DirectoryScanner dirScanner = dirSet.getDirectoryScanner(project);
+	String[] files = dirScanner.getIncludedDirectories();
+	String packageList = ""; 
+	// TODO nasty slow hack to create comma separated list
+	// TODO also need to remove common ones: com com/foo etc
 	for (int i = 0; i < files.length; i++) {
 	    if (i != 0){
-		fss = fss + ",";
+		packageList = packageList + ",";
 	    }
-	    fss = fss + files[i];
+	    packageList = packageList + files[i];
 	}
-	jd.setPackagenames(fss);
-	jd.setDestdir(getDestdir());
+	jd.setPackagenames(packageList);
 	
-	// Creaste this first so we have a handle on the doclet
-	DocletInfo d = jd.createDoclet();
+	// Create the DocletInfo first so we have a way to use it to add params
+	DocletInfo dInfo = jd.createDoclet();
 	jd.setDoclet("jdiff.JDiff");
-	// TODO generalise this
-	jd.setDocletPath(new Path(project, "/home/matt/jdiff/lib/jdiff.jar:/home/matt/jdiff/lib/xerces.jar"));
+	jd.setDocletPath(new Path(project, jdiffClassPath));
 	
-	DocletParam dp1 = d.createParam();
+	// Now set up some parameters for the JDiff doclet.
+	DocletParam dp1 = dInfo.createParam();
 	dp1.setName("-apiname");
 	dp1.setValue(apiname);
-	DocletParam dp2 = d.createParam();
+	DocletParam dp2 = dInfo.createParam();
 	dp2.setName("-baseURI");
 	dp2.setValue("http://www.w3.org");
+	// Put the generated file in the same directory as the report
+	DocletParam dp3 = dInfo.createParam();
+	dp3.setName("-apidir");
+	dp3.setValue(getDestdir().toString());
 	
-	// Execute the Javadoc command to generate the XML representation of 
-	// the old version.
+	// Execute the Javadoc command to generate the XML file.
 	jd.perform();
+
+	project.log("To generate Javadoc for " + apiname +
+		    ", execute:", Project.MSG_INFO);
+	String javadocCmd = 
+	    "javadoc =private -d \"" + getDestdir().toString() + DIR_SEP + 
+	    apiname + "\" -sourcepath " + dirSet.getDir(project).toString() +
+	    " " + packageList.replace(',', ' ').replace('/','.');
+	project.log(javadocCmd, Project.MSG_INFO);
     }
 
     /**
@@ -113,42 +157,109 @@ public class JDiffAntTask {
      * source files, and generate an HTML report summarizing the differences.
      */
     public void compareXML(String oldapiname, String newapiname) {
-	// Create a Javadoc task which can be reset
+	// Create a fresh new Javadoc task
 	Javadoc jd = new Javadoc();
-	jd.setProject(project);
-	jd.setTaskName("JDiffAntTask");
+	jd.setProject(project); // Vital, otherwise Ant crashes
+	jd.setTaskName("Comparing");
 	jd.init();
 	
-	// Tell Javadoc which files we want to scan - a dummy file in this case
-	jd.setSourcefiles("/home/matt/jdiff/lib/Null.java");
-	// Add some more options to Javadoc
+	// First set up some parameters for the Javadoc task
+	if (verboseAnt) {
+	    jd.setVerbose(true);
+	}
 	jd.setPrivate(true);
 	jd.setDestdir(getDestdir());
+
+	// Tell Javadoc which files we want to scan - a dummy file in this case
+	jd.setSourcefiles(jdiffHome + DIR_SEP + "lib" + DIR_SEP + "Null.java");
 	
-	// Creaste this first so we have a handle on the doclet
-	DocletInfo d = jd.createDoclet();
+	// Create the DocletInfo first so we have a way to use it to add params
+	DocletInfo dInfo = jd.createDoclet();
 	jd.setDoclet("jdiff.JDiff");
-	// TODO generalise this
-	jd.setDocletPath(new Path(project, "/home/matt/jdiff/lib/jdiff.jar:/home/matt/jdiff/lib/xerces.jar"));
+	jd.setDocletPath(new Path(project, jdiffClassPath));
 	
-	DocletParam dp1 = d.createParam();
+	// Now set up some parameters for the JDiff doclet.
+	DocletParam dp1 = dInfo.createParam();
 	dp1.setName("-oldapi");
 	dp1.setValue(oldapiname);
-	DocletParam dp2 = d.createParam();
+	DocletParam dp2 = dInfo.createParam();
 	dp2.setName("-newapi");
 	dp2.setValue(newapiname);
+	// Get the generated XML files from the same directory as the report
+	DocletParam dp3 = dInfo.createParam();
+	dp3.setName("-oldapidir");
+	dp3.setValue(getDestdir().toString());
+	DocletParam dp4 = dInfo.createParam();
+	dp4.setName("-newapidir");
+	dp4.setValue(getDestdir().toString());
+
+	// Assume that Javadoc reports already exist in ../"apiname"
+	DocletParam dp5 = dInfo.createParam();
+	dp5.setName("-javadocold");
+	dp5.setValue(".." + DIR_SEP + oldapiname + DIR_SEP);
+	DocletParam dp6 = dInfo.createParam();
+	dp6.setName("-javadocnew");
+	dp6.setValue(".." + DIR_SEP + newapiname + DIR_SEP);
 	
-	// Execute the Javadoc command to generate the XML representation of 
-	// the old version.
+	if (getStats()) {
+	    // There are no arguments to this argument
+	    dInfo.createParam().setName("-stats");
+	    // TODO also have to copy image files for the stats pages
+	}
+
+	if (getDocchanges()) {
+	    // There are no arguments to this argument
+	    dInfo.createParam().setName("-docchanges");
+	}
+
+	// Execute the Javadoc command to compare the two XML files
 	jd.perform();
     }
 
-    /** No default value for the directory where the reports go is provided. */
-    private File destdir;
+    /**
+     * The JDiff Ant task does not inherit from an Ant task, such as the 
+     * Javadoc task, though this is usually how most Tasks are
+     * written. This is because JDiff needs to run Javadoc three times
+     * (twice for generating XML, once for generating HTML). The
+     * Javadoc task has not easy way to reset its list of packages, so
+     * we needed to be able to crate new Javadoc task objects.
+     */
+    private Project project;
 
-    private OldProject oldProject = null;
-    private NewProject newProject = null;
+    /**
+     * Used as part of Ant's startup.
+     */
+    public void setProject(Project proj) {
+        project = proj;
+    }
 
+    static String DIR_SEP = System.getProperty("file.separator");
+
+    /**
+     * JDIFF_HOME must be set as a property in the Ant build file.
+     * It should be set to the root JDiff directory, ie. the one above 
+     * wherever jdiff/lib/jdiff.jar is found.
+     */
+    private String jdiffHome = "(not set)";
+
+    /**
+     * The classpath used by Javadoc to find jdiff.jar and xerces.jar.
+     */
+    private String jdiffClassPath = "(not set)";
+
+    /* ***************************************************************** */
+    /* * Objects and methods which are related to attributes           * */
+    /* ***************************************************************** */
+
+    /** 
+     * The destination directory for the generated report.
+     * The default is "./jdiff_report".
+     */
+    private File destdir = new File("jdiff_report");
+
+    /**
+     * Used to store the destdir attribute of the JDiff task XML element.
+     */
     public void setDestdir(File value) {
 	this.destdir = value;
     }
@@ -157,61 +268,134 @@ public class JDiffAntTask {
 	return this.destdir;
     }
 
-    public void addConfiguredOld(OldProject anOld) {
-	oldProject = anOld;
+    /** 
+     * Increases the JDiff Ant task logging verbosity if set with "yes", "on" 
+     * or true". Default has to be false.
+     * To increase verbosity of Javadoc, start Ant with -v or -verbose.
+     */ 
+    private boolean verbose = false;
+
+    public void setVerbose(boolean value) {
+	this.verbose = value;
     }
 
-    public void addConfiguredNew(NewProject aNew) {
-	newProject = aNew;
+    public boolean getVerbose() {
+	return this.verbose;
     }
 
+    /** 
+     * Set if ant was started with -v or -verbose 
+     */
+    private boolean verboseAnt = false;
+
+    /** 
+     * Add the -docchanges argument, to track changes in Javadoc documentation
+     * as well as changes in classes etc.
+     */ 
+    private boolean docchanges = false;
+
+    public void setDocchanges(boolean value) {
+	this.docchanges = value;
+    }
+
+    public boolean getDocchanges() {
+	return this.docchanges;
+    }
+
+    /** 
+     * Add statistics to the report if set. Default can only be false.
+     */ 
+    private boolean stats = false;
+
+    public void setStats(boolean value) {
+	this.stats = value;
+    }
+
+    public boolean getStats() {
+	return this.stats;
+    }
+
+    /* ***************************************************************** */
+    /* * Classes and objects which are related to elements             * */
+    /* ***************************************************************** */
+
+    /**
+     * A ProjectInfo-derived object for the older version of the project
+     */
+    private OldProject oldProject = null;
+
+    /**
+     * Used to store the child element named "old", which is under the 
+     * JDiff task XML element.
+     */
+    public void addConfiguredOld(OldProject projInfo) {
+	oldProject = projInfo;
+    }
+
+    /**
+     * A ProjectInfo-derived object for the newer version of the project
+     */
+    private NewProject newProject = null;
+
+    /**
+     * Used to store the child element named "new", which is under the 
+     * JDiff task XML element.
+     */
+    public void addConfiguredNew(NewProject projInfo) {
+	newProject = projInfo;
+    }
+
+    /** TODO remove this layer? */
     public static class OldProject extends ProjectInfo {
     }
 
     public static class NewProject extends ProjectInfo {
     }
 
+    /**
+     * This class handles the information about a project, whether it is
+     * the older or newer version.
+     */
     public static class ProjectInfo {
-	/** The name of the project */
+	/** 
+	 * The name of the project. This is used (without spaces) as the 
+	 * base of the name of the file which contains the XML representing 
+	 * the project.
+	 */
 	private String name;
+
 	public void setName(String value) {
 	    name = value;
 	}
+
 	public String getName() {
 	    return name;
 	}
 
- 	/** The files to be compared as part of the project */
-	private FileSet fileset = null;
-	public void setFileset(FileSet value) {
-	    fileset = value;
-	}
-	public FileSet getFileset() {
-	    return fileset;
-	}
-
-	/** Called when the fileset element is encountered */
-	public void addFileset(FileSet aFileset) {
-	    // TODO check only one fileset allowed?
-	    setFileset(aFileset);
-	}
-
- 	/** The files to be compared as part of the project TODO could share */
+ 	/** TODO multiple dirset calls TODO filesets for classes?
+	 * These are the directories which contain the packages which make 
+	 * up the project. Filesets are not supported by JDiff.
+	 */
 	private DirSet dirset = null;
+
 	public void setDirset(DirSet value) {
 	    dirset = value;
 	}
+
 	public DirSet getDirset() {
 	    return dirset;
 	}
 
-	/** Called when the dirset element is encountered */
+	/** 
+	 * Used to store the child element named "dirset", which is under the 
+	 * "old" or "new" XML elements.
+	 */
 	public void addDirset(DirSet aDirset) {
 	    setDirset(aDirset);
 	}
 	
-	public void execute() {
-	}
     }
-
+    /*
+TODO link checked with linklint-2.3.5 -error -warn /@ and all is fine in the example except for the link in the Javadoc text for SuperProduct2.0/com/acme/sp/package.html. Looks like the old @link not genreating the correct href when it in a package bug?
+     */
 }
