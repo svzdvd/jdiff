@@ -147,9 +147,11 @@ http://jakarta.apache.org/ant/manual/CoreTasks/javadoc.html
 <!-- describing the differences between the two APIs                -->
 <!-- ======================================================= -->
 <target name="jdiff_compare_apis" depends="create_javadoc_dirs">
+<!-- To use this task with JDK 1.4, use ANT 1.5 and change -->
+<!-- packagenames to sourcefiles.                          -->
 <javadoc 
   private="yes"
-  sourcepath="${JDIFF}"
+  sourcepath="${JDIFF_HOME}"
   destdir="${NEW_DOCS}"
   packagenames="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"

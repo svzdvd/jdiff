@@ -48,7 +48,8 @@ SuperProduct.
   <property name="BASE_URI" value="http://www.w3.org"/>
   
   <property name="debug" value="true"/>
-  <property name="build.compiler"  value="classic"/>    
+  <!-- classic, javac13 and JDK1.4 should all work -->
+  <property name="build.compiler"  value="javac14"/>    
 </target>
 
 <!-- ======================================================= -->
@@ -149,9 +150,11 @@ SuperProduct.
 <!-- describing the differences between the two APIs                -->
 <!-- ======================================================= -->
 <target name="jdiff_compare_apis" depends="create_javadoc_dirs">
+<!-- To use this task with JDK 1.4, use ANT 1.5 and change -->
+<!-- packagenames to sourcefiles.                          -->
 <javadoc 
   private="yes"
-  sourcepath="${JDIFF}"
+  sourcepath="${JDIFF_HOME}"
   destdir="${NEW_DOCS}"
   packagenames="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"
@@ -176,9 +179,11 @@ SuperProduct.
 <!-- also noting changes in documentation by using -nodocchanges and -->
 <!-- using -stats to generate statistics. -->
 <target name="jdiff_compare_apis2" depends="create_javadoc_dirs">
+<!-- To use this task with JDK 1.4, use ANT 1.5 and change -->
+<!-- packagenames to sourcefiles.                          -->
 <javadoc 
   private="yes"
-  sourcepath="${JDIFF}"
+  sourcepath="${JDIFF_HOME}"
   destdir="${NEW_DOCS2}"
   packagenames="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"
