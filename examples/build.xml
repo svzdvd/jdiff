@@ -15,7 +15,7 @@ SuperProduct.
 </target>
  
 <!-- ======================================================= -->
-<!-- Properties used when generating Javadoc and JDiff output -->
+<!-- Properties used when generating Javadoc and JDiff output. -->
 <!-- You must change some of these for this build file to work. -->
 <!-- ======================================================= -->
 <target name="init">
@@ -161,7 +161,7 @@ SuperProduct.
     <path refid="class.path"/>    
   </classpath>
 </javadoc>	
-  <!-- Copy two image files. black.gif is only needed if -stats was -->
+  <!-- Copy two image files. black.gif is only needed because -stats was -->
   <!-- used -->
   <copy file="${JDIFF_INSTALL}\lib\background.gif" todir="${NEW_DOCS}"/>
   <copy file="${JDIFF_INSTALL}\lib\black.gif" todir="${NEW_DOCS}"/>

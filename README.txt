@@ -15,7 +15,9 @@ examples/README.html
 An example of using JDiff to compare the public APIs of J2SE1.2 and
 J2SE1.3 can be seen at: 
 
-http://javadiff.sourceforge.net/jdiff/jdkchanges/changes.html
+http://www.jdiff.org 
+
+or via http://javadiff.sourceforge.net/jdiff/jdkchanges/changes.html
 
 or via http://www.pobox.com/~doar and the SourceForge javadiff project 
 homepage.

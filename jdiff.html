@@ -98,7 +98,11 @@ The results are written into a file called <code>changes.html</code>, with more 
  files which usually need to be shipped with a product to include a report
  of what has changed since the previous release.</i>. (If the
  <code>-stats</code> option was used, then the file
- <code>black.gif</code> should also be shipped.) No Windows registry
+ <code>black.gif</code> should also be shipped.)
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+No Windows registry
  entries are changed by JDiff. To remove JDiff, simply delete the
  directory where it is installed.
 </BLOCKQUOTE>
@@ -106,6 +110,28 @@ The results are written into a file called <code>changes.html</code>, with more 
 <hr>
 
 <H2><A NAME="synopsis"></A>SYNOPSIS</H2>
+
+<BLOCKQUOTE>
+There are two different ways to run JDiff. The first way is to use the
+<code>jdiff</code> script and an XML configuration file. The format of
+the XML configuration file is the same one which 
+<a href="http://jakarta.apache.org/ant">ANT</a> uses, and it can be
+used as an ANT build file if you already use ANT. If you don't use
+ANT, the configuration file is simply a convenient place to configure JDiff.
+If the <code>-buildfile</code> option is not used, <code>jdiff</code> will
+look for a local configuration file named <code>build.xml</code>.
+</BLOCKQUOTE>
+
+<PRE STYLE="margin-left: 1cm; margin-right: 1cm; margin-bottom:0.5cm">
+jdiff [-buildfile &lt;configuration filename&gt;]
+</PRE>
+
+<BLOCKQUOTE>
+The second way is to invoke JDiff directly as a Javadoc doclet. This
+is described in more detail in the <a
+href="#examples">example</a> which is shipped with JDiff.
+</BLOCKQUOTE>
+
 <PRE STYLE="margin-left: 1cm; margin-right: 1cm; margin-bottom:0.5cm">
 java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-apiname &lt;<i>API name</i>>]
@@ -124,6 +150,8 @@ java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-retainnonprinting]
  [-excludetag &lt;<i>exclude tag</i>>]
  [-stats]
+ [-windowtitle &lt;<i>text</i>>]
+ [-doctitle &lt;<i>HTML text</i>>]
  [-help]
 </PRE>
 
@@ -316,6 +344,24 @@ the output to the given directory.
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-windowtitle &lt;<i>text</i>></code></DT> 
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  Specify the title used in the browser window for the report. 
+  By default, this is 
+  &quot;API Differences Between &lt;name of old API&gt; and 
+  &lt;name of new API&gt;&quot;.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-doctitle &lt;<i>HTML text</i>></code></DT> 
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  Specify the title used on the first page of the report.
+  By default, this is 
+  &quot;API Differences Between &lt;name of old API&gt; and 
+  &lt;name of new API&gt;&quot;.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
   <code>-help</code></DT> 
   <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
   Display the usage summary and version.
@@ -348,7 +394,8 @@ for the APIs, and the <code>comments.xsd</code> template describes the format
 of the XML for the comments. The API template is independent of any
 related work at Sun, but the intention is to adopt whatever becomes
 the <i>de facto</i> standard in the future, whilst retaining backward
-compatibility.</li>
+compatibility. To enable validation, set the boolean <code>validateXML</code> in 
+the file <code>XMLToAPI.java</code> and recompile.</li>
 <li>Comments in the comments XML file do get reordered during
 regeneration. This is harmless.</li>
 </ul>
@@ -409,7 +456,7 @@ sentence from the appropriate Javadoc comment.
 
 <BLOCKQUOTE>
 The JDiff doclet has been tested with J2SE1.2, J2SE1.3 and J2SE1.4B3 on
-Windows 2000 1.1 and Windows NT 4.0SP6.
+Windows 2000 1.1 and Windows NT 4.0SP5.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>

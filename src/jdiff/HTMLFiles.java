@@ -37,7 +37,10 @@ public class HTMLFiles {
             String newAPIName = "New API";
             if (apiDiff.newAPIName_ != null)
                 newAPIName = apiDiff.newAPIName_;
-            h_.writeHTMLTitle("API Differences between " + oldAPIName + " and " + newAPIName);
+            if (h_.windowTitle == null) 
+                h_.writeHTMLTitle("API Differences between " + oldAPIName + " and " + newAPIName);
+            else
+                h_.writeHTMLTitle(h_.windowTitle);
             // Note that the stylesheet is in the same directory
             h_.writeStyleSheetRef(true);
             h_.writeText("</HEAD>");

@@ -8,7 +8,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.*;
 
 /**
  * Creates a Comments from an XML file. The Comments object is the internal 
@@ -59,19 +59,20 @@ public class Comments {
             DefaultHandler handler = new CommentsHandler(oldComments_);
             XMLReader parser = null;
             try {
-                parser = (XMLReader)Class.forName("org.apache.xerces.parsers.SAXParser").newInstance();
-            } catch (ClassNotFoundException cnfe) {
-                System.out.println("Could not find class 'org.apache.xerces.parsers.SAXParser'");
-                System.exit(1);
-            } catch (InstantiationException ie) {
-                System.out.println("Could not instantiate 'org.apache.xerces.parsers.SAXParser': " + ie);
-                ie.printStackTrace();
-                System.exit(1);
-            } catch (IllegalAccessException iae) {
-                System.out.println("IllegalAccessException creating an instance of 'org.apache.xerces.parsers.SAXParser': " + iae);
-                iae.printStackTrace();
+                String parserName = System.getProperty("org.xml.sax.driver");
+                if (parserName == null) {
+                    parser = org.xml.sax.helpers.XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
+                } else {
+                    // Let the underlying mechanisms try to work out which 
+                    // class to instantiate
+                    parser = org.xml.sax.helpers.XMLReaderFactory.createXMLReader();
+                }
+            } catch (SAXException saxe) {
+                System.out.println("SAXException: " + saxe);
+                saxe.printStackTrace();
                 System.exit(1);
             }
+
             if (XMLToAPI.validateXML) {
                 parser.setFeature("http://xml.org/sax/features/namespaces", true);
                 parser.setFeature("http://xml.org/sax/features/validation", true);

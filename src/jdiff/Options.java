@@ -87,6 +87,11 @@ public class Options {
         // Generate statistical output
         if (opt.equals("-stats"))    return 1;
 
+        // Set the browser window title
+        if (opt.equals("-windowtitle"))    return 2;
+        // Set the report title
+        if (opt.equals("-doctitle"))    return 2;
+
         return 0;
     }//optionLength()
 
@@ -309,6 +314,22 @@ public class Options {
             }
             if (options[i][0].toLowerCase().equals("-stats")) {
                 HTMLReportGenerator.doStats = true;
+                continue;
+            }
+            if (options[i][0].toLowerCase().equals("-doctitle")) {
+                if (options[i].length < 2) {
+                    err.msg("No HTML text specified after -doctitle option.");
+                } else { 
+                    HTMLReportGenerator.docTitle = options[i][1];
+                }
+                continue;
+            }
+            if (options[i][0].toLowerCase().equals("-windowtitle")) {
+                if (options[i].length < 2) {
+                    err.msg("No text specified after -windowtitle option.");
+                } else { 
+                    HTMLReportGenerator.windowTitle = options[i][1];
+                }
                 continue;
             }
             if (options[i][0].toLowerCase().equals("-help")) {

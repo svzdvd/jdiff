@@ -225,7 +225,7 @@ public class JDiff extends Doclet {
     static String DIR_SEP = System.getProperty("file.separator");
 
     /** Details for where to find JDiff. */
-    static final String jDiffLocation = "http://www.pobox.com/~doar/src/jdiff";
+    static final String jDiffLocation = "http://www.jdiff.org";
     /** Contact email address for the JDiff maintainer. */
     static final String authorEmail = "doar@pobox.com";
 
@@ -239,9 +239,6 @@ public class JDiff extends Doclet {
 
     /** The current JVM version. */
     static String javaVersion = System.getProperty("java.version");
-
-    /** Set if the JDK version is prior to JDK1.4. */
-    static boolean earlyJDK = false;
 
     /** Set to enable increased logging verbosity for debugging. */
     private static boolean trace = false;

@@ -75,7 +75,10 @@ public class HTMLReportGenerator {
             String newAPIName = "New API";
             if (apiDiff.newAPIName_ != null)
                 newAPIName = apiDiff.newAPIName_;
-            writeHTMLTitle("API Differences between " + oldAPIName + " and " + newAPIName);
+            if (windowTitle == null) 
+                writeHTMLTitle("API Differences between " + oldAPIName + " and " + newAPIName);
+            else
+                writeHTMLTitle(windowTitle);
             writeStyleSheetRef();
             writeText("</HEAD>");
             writeText("<BODY>");
@@ -88,12 +91,16 @@ public class HTMLReportGenerator {
                                apiDiff.packagesChanged.size() != 0);
             
             // Write the title in the body with some formatting
-            writeText("<center>");        
-            writeText("<H1>API Differences</H1>");
-            writeText("</center>");        
-            writeText("<center>");        
-            writeText("<H2>Between " + oldAPIName + " and " + newAPIName + "</H2>");
-            writeText("</center>");        
+            if (docTitle == null) {
+                writeText("<center>");        
+                writeText("<H1>API Differences</H1>");
+                writeText("</center>");        
+                writeText("<center>");        
+                writeText("<H2>Between " + oldAPIName + " and " + newAPIName + "</H2>");
+                writeText("</center>");
+            } else {
+                writeText(docTitle);
+            }
 
             // Write the contents and the other files as well
             writeReport(apiDiff);
@@ -1953,6 +1960,22 @@ public class HTMLReportGenerator {
      * The destination directory for output files.
      */
     public static String outputDir = null;
+
+    /** 
+     * The title used on the first page of the report. By default, this is 
+     * &quot;API Differences Between &lt;name of old API&gt; and 
+     * &lt;name of new API&gt;&quot;. It can be
+     * set by using the -doctitle option.
+     */
+    public static String docTitle = null;
+
+    /** 
+     * The browser window title for the report. By default, this is 
+     * &quot;API Differences Between &lt;name of old API&gt; and 
+     * &lt;name of new API&gt;&quot;. It can be
+     * set by using the -windowtitle option.
+     */
+    public static String windowTitle = null;
 
     /** The desired background color for JDiff tables. */
     static final String bgcolor = "#FFFFFF";
