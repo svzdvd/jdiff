@@ -20,7 +20,7 @@ SuperProduct.
 <target name="init">
   <property name="app.name" value="JDiff Tests"/>
   <!-- Root of the JDiff hierarchy of directories -->
-  <property name="JDIFF_HOME" value="C:/jdiff"/>
+  <property name="JDIFF_HOME" value=".."/>
   <property name="PROJECTBASE" value="${JDIFF_HOME}/test"/>
 
   <!-- Values used for the old API -->
