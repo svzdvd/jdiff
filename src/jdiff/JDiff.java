@@ -203,22 +203,6 @@ public class JDiff extends Doclet {
         newJavaDocArgs[9] = "-subpackages";
         newJavaDocArgs[10] = newPkgs;
 
-        String[] diffJavaDocArgs = new String[6];
-//        diffJavaDocArgs[0] = "-d";
-//        diffJavaDocArgs[1] = "newdocs";
-        // JDiff arguments
-        diffJavaDocArgs[0] = "-stats";
-        diffJavaDocArgs[1] = "-oldapi";
-        diffJavaDocArgs[2] = oldProductName;
-        diffJavaDocArgs[3] = "-newapi";
-        diffJavaDocArgs[4] = newProductName;
-//        diffJavaDocArgs[7] = "-javadocold";
-//        diffJavaDocArgs[8] = "../../olddocs/";
-//        diffJavaDocArgs[9] = "-javadocnew";
-///        diffJavaDocArgs[10] = "../../newdocs/";
-//        jdiffHome = jdiffHome.replace('\\', '/');
-//        diffJavaDocArgs[5] = jdiffHome + "/lib/Null.java";
-
         String programName = "JDiff";
         String defaultDocletClassName = "jdiff.JDiff";
 
