@@ -1,0 +1,17 @@
+<!-- The top-level ANT build file for JDiff -->
+
+<project name="jdiff" default="all" basedir=".">
+
+<target name="all">
+    <ant dir="build" target="jdiff"/>
+    <ant dir="test" target="jdiff"/>
+    <ant dir="examples" target="jdiff"/>
+</target>
+
+<target name="clean">
+    <ant dir="build" target="clean"/>
+    <ant dir="test" target="clean"/>
+    <ant dir="examples" target="clean"/>
+</target>
+
+</project>

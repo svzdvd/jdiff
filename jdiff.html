@@ -127,8 +127,10 @@ href="#examples">example</a> which is shipped with JDiff.
 <PRE STYLE="margin-left: 1cm; margin-right: 1cm; margin-bottom:0.5cm">
 java -doclet <b>jdiff.JDiff</b> -docletpath lib\jdiff.jar
  [-apiname &lt;<i>API name</i>>]
- [-oldapi &lt;<i>name of old API</i>>]
+ [-apidir &lt;<i>optional directory where the API XML file is to be placed</i>>] [-oldapi &lt;<i>name of old API</i>>]
+ [-oldapidir &lt;<i>optional directory where the old API XML file is located</i>>]
  [-newapi &lt;<i>name of new API</i>>]
+ [-newapidir &lt;<i>optional directory where the new API XML file is located</i>>]
  [-sourcepath &lt;<i>source path</i>>]
  [-javadocnew &lt;<i>javadoc files location for the new API</i>>]
  [-javadocold &lt;<i>javadoc files location for the old API</i>>]
@@ -172,7 +174,8 @@ the output to the given directory.
    element.
    E.g. "SuperProduct 1.0" generates an XML file named 
    "SuperProduct_1.0.xml".
-   The XML file is always generated in the current directory.
+   The XML file is always generated in the current directory, unless 
+   overridden by the <code>-apidir</code> argument.
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
@@ -193,6 +196,29 @@ the output to the given directory.
    APIs compared.
    This name is the name which was given to <code>-apiname</code> when
    the XML file was generated.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-apidir</code> &lt;<i>API directory</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   Defines the directory where the API XML file is to be placed.  Used in 
+   conjunction with the <code>-apiname</code> argument.
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-oldapidir</code> &lt;<i>old API directory</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   Defines the directory where the XML file for the old API is located.
+   Used in conjunction with the <code>-oldapi</code> argument. Default is the current
+   directory. 
+  </DD>
+
+  <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+  <code>-newapidir</code> &lt;<i>new API directory</i>></DT>
+  <DD STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
+   Defines the directory where the XML file for the new API is located.
+   Used in conjunction with the <code>-newapi</code> argument. Default is the current
+   directory. 
   </DD>
 
   <DT STYLE="margin-right: 2cm; margin-bottom: 0.5cm">
