@@ -42,7 +42,153 @@ public class RootDocToXML {
             System.out.println("Error: " +  e.getMessage());
             System.exit(1);
         }
+        // If validation is desired, write out the appropriate api.xsd file
+        // in the same directory as the XML file.
+        if (XMLToAPI.validateXML) {
+            writeXSD();
+        }
         return true;
+    }
+
+    /**
+     * Write the XML Schema file used for validation.
+     */
+    public static void writeXSD() {
+        String xsdFileName = outputFileName;
+        int idx = xsdFileName.lastIndexOf('\\');
+        int idx2 = xsdFileName.lastIndexOf('/');
+        if (idx == -1 && idx2 == -1) {
+            xsdFileName = "";
+        } else if (idx == -1 && idx2 != -1) {
+            xsdFileName = xsdFileName.substring(0, idx2);
+        } else if (idx != -1  && idx2 == -1) {
+            xsdFileName = xsdFileName.substring(0, idx);
+        } else if (idx != -1  && idx2 != -1) {
+            int max = idx2 > idx ? idx2 : idx;
+            xsdFileName = xsdFileName.substring(0, max);
+        }
+        xsdFileName += "api.xsd";
+        try {
+            FileOutputStream fos = new FileOutputStream(xsdFileName);
+            PrintWriter xsdFile = new PrintWriter(fos);
+            // The contents of the api.xsd file
+            xsdFile.println("<?xml version=\"1.0\" encoding=\"iso-8859-1\" standalone=\"no\"?>");
+            xsdFile.println("<xsd:schema ");
+            xsdFile.println("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
+            xsdFile.println("");
+            xsdFile.println("<xsd:annotation>");
+            xsdFile.println("  <xsd:documentation>");
+            xsdFile.println("  Schema for JDiff API representation.");
+            xsdFile.println("  </xsd:documentation>");
+            xsdFile.println("</xsd:annotation>");
+            xsdFile.println();
+            xsdFile.println("<xsd:element name=\"api\" type=\"apiType\"/>");
+            xsdFile.println("");
+            xsdFile.println("<xsd:complexType name=\"apiType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:element name=\"package\" type=\"packageType\" minOccurs='1' maxOccurs='unbounded'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"jdversion\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"packageType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:choice maxOccurs='unbounded'>");
+            xsdFile.println("      <xsd:element name=\"class\" type=\"classType\"/>");
+            xsdFile.println("      <xsd:element name=\"interface\" type=\"classType\"/>");
+            xsdFile.println("    </xsd:choice>");
+            xsdFile.println("    <xsd:element name=\"doc\" type=\"xsd:string\" minOccurs='0' maxOccurs='1'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"classType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:element name=\"implements\" type=\"interfaceTypeName\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"constructor\" type=\"constructorType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"method\" type=\"methodType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"field\" type=\"fieldType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"doc\" type=\"xsd:string\" minOccurs='0' maxOccurs='1'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"extends\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"abstract\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"src\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"static\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"final\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"deprecated\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"visibility\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"interfaceTypeName\">");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"constructorType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:element name=\"exception\" type=\"exceptionType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"doc\" type=\"xsd:string\" minOccurs='0' maxOccurs='1'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"type\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"src\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"static\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"final\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"deprecated\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"visibility\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"paramsType\">");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"type\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"exceptionType\">");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"methodType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:element name=\"exception\" type=\"exceptionType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"param\" type=\"paramsType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"doc\" type=\"xsd:string\" minOccurs='0' maxOccurs='1'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"return\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"abstract\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"native\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"synchronized\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"src\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"static\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"final\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"deprecated\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"visibility\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"fieldType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:element name=\"doc\" type=\"xsd:string\" minOccurs='0' maxOccurs='1'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"type\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"transient\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"volatile\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"value\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"src\" type=\"xsd:string\" use='optional'/>");
+            xsdFile.println("  <xsd:attribute name=\"static\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"final\" type=\"xsd:boolean\"/>");
+            xsdFile.println("  <xsd:attribute name=\"deprecated\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"visibility\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("</xsd:schema>");
+            xsdFile.close();
+        } catch(IOException e) {
+            System.out.println("IO Error while attempting to create " + xsdFileName);
+            System.out.println("Error: " +  e.getMessage());
+            System.exit(1);
+        }
     }
 
     /**
@@ -262,8 +408,8 @@ public class RootDocToXML {
         for (int i = 0; i < ifaces.length; i++) {
             String ifaceName = ifaces[i].qualifiedName();
             if (trace) System.out.println("PROCESSING INTERFACE: " + ifaceName);
-            outputFile.println("    <implements name=\"" + ifaceName + "\">");
-            outputFile.println("    </implements>");
+            outputFile.println("    <implements name=\"" + ifaceName + "\"/>");
+// DEBUG            outputFile.println("    </implements>");
         }//for
     }//processInterfaces()
     
@@ -435,7 +581,7 @@ public class RootDocToXML {
         outputFile.println("     \"" + baseURI + "/TR/xhtml1/DTD/xhtml1-transitional.dtd\">");
 */
         outputFile.println("<api");
-        outputFile.println("  xmlns:xsi='" + baseURI + "/2000/10/XMLSchema-instance'");
+        outputFile.println("  xmlns:xsi='" + baseURI + "/2001/XMLSchema-instance'");
         outputFile.println("  xsi:noNamespaceSchemaLocation='api.xsd'");
         outputFile.println("  name=\"" + apiIdentifier + "\"");
         outputFile.println("  jdversion=\"" + JDiff.version + "\">");

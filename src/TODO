@@ -31,8 +31,6 @@ MINOR BUG: Possibly simply due to the method being at the end of the HTML page. 
 <A HREF="com.vitria.jct.JctLib.html#
          com.vitria.jct.JctLib.createGenericUpdateEventBody_changed(com.vitria.fc.meta.DataInterfaceDef, java.lang.String, java.lang.Object[])"
 
-BUG: Fix validation of XML
-
 BUG? The MergeChanges code may not be transferring all change information into 
 the MemberDiff for methods and fields?
 
@@ -41,6 +39,8 @@ DESIGN
 
 Short Term:
 ----------
+
+Check validation works from behind firewalls. Populate the lib\2001 directory.
 
 Write and test jdiff csh script
 

@@ -51,13 +51,12 @@ public class XMLToAPI {
                 iae.printStackTrace();
                 System.exit(1);
             }
-// TODO validate the XML by fixing this error. autotest.xml also breaks the way this parser is used. Get the same error if there is no .xsd file.
-// "Reading the old API in from file 'old_java.xml'...Error: parsing XML 
-// configuration file:org.xml.sax.SAXParseException: Element type "api" must 
-// be declared."
-//          parser.setFeature( "http://apache.org/xml/features/validation/schema", true);
-            parser.setFeature( "http://xml.org/sax/features/namespaces", true);
-//          parser.setFeature( "http://xml.org/sax/features/validation", true);
+            if (validateXML) {
+                parser.setFeature("http://xml.org/sax/features/namespaces", true);
+                parser.setFeature("http://xml.org/sax/features/validation", true);
+                parser.setFeature("http://apache.org/xml/features/validation/schema", true);
+            }
+
             parser.setContentHandler(handler);
             parser.setErrorHandler(handler);
             parser.parse(filename);
@@ -346,4 +345,11 @@ public class XMLToAPI {
                 api_.currCtor_.exceptions_ += ", " + name;
         }
     }
+
+    /** 
+     * If set, validate the XML which represents an API. By default, this is 
+     * not set for reasons of efficiency, and since if JDiff generated the XML
+     * it should not need validating. 
+     */
+    public static boolean validateXML = false;
 }  

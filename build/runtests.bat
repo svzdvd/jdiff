@@ -24,7 +24,8 @@ REM Generate XML for the old API.
 javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "Old Test API" -sourcepath old %OLDPKGS%
 
 REM Generate XML for the new API. This uses local copies of the DTD files.
-javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "New Test API" -baseURI "file:///C:/jdiff/lib" -sourcepath new %NEWPKGS%
+REM javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "New Test API" -baseURI "file:///C:/jdiff/lib" -sourcepath new %NEWPKGS%
+javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "New Test API" -sourcepath new %NEWPKGS%
 
 REM Generate an HTML report comparing the old and new APIs
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\lib\Null.java

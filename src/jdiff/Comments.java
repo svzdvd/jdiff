@@ -42,6 +42,12 @@ public class Comments {
      * it. The Comments object may be null if no file exists.
      */
     public static Comments readFile(String filename) {
+        // If validation is desired, write out the appropriate comments.xsd 
+        // file in the same directory as the comments XML file.
+        if (XMLToAPI.validateXML) {
+            writeXSD(filename);
+        }
+
         // If the file does not exist, return null
         File f = new File(filename);
         if (!f.exists())
@@ -66,10 +72,11 @@ public class Comments {
                 iae.printStackTrace();
                 System.exit(1);
             }
-// TODO validate the XML
-//          parser.setFeature( "http://xml.org/sax/features/validation", true);
-            parser.setFeature( "http://xml.org/sax/features/namespaces", true);
-//          parser.setFeature( "http://apache.org/xml/features/validation/schema", true);
+            if (XMLToAPI.validateXML) {
+                parser.setFeature("http://xml.org/sax/features/namespaces", true);
+                parser.setFeature("http://xml.org/sax/features/validation", true);
+                parser.setFeature("http://apache.org/xml/features/validation/schema", true);
+            }
             parser.setContentHandler(handler);
             parser.setErrorHandler(handler);
             parser.parse(filename);
@@ -94,6 +101,67 @@ public class Comments {
         Collections.sort(oldComments_.commentsList_);
         return oldComments_;
     } //readFile()
+
+    /**
+     * Write the XML Schema file used for validation.
+     */
+    public static void writeXSD(String filename) {
+        String xsdFileName = filename;
+        int idx = xsdFileName.lastIndexOf('\\');
+        int idx2 = xsdFileName.lastIndexOf('/');
+        if (idx == -1 && idx2 == -1) {
+            xsdFileName = "";
+        } else if (idx == -1 && idx2 != -1) {
+            xsdFileName = xsdFileName.substring(0, idx2+1);
+        } else if (idx != -1  && idx2 == -1) {
+            xsdFileName = xsdFileName.substring(0, idx+1);
+        } else if (idx != -1  && idx2 != -1) {
+            int max = idx2 > idx ? idx2 : idx;
+            xsdFileName = xsdFileName.substring(0, max+1);
+        }
+        xsdFileName += "comments.xsd";
+        try {
+            FileOutputStream fos = new FileOutputStream(xsdFileName);
+            PrintWriter xsdFile = new PrintWriter(fos);
+            // The contents of the comments.xsd file
+            xsdFile.println("<?xml version=\"1.0\" encoding=\"iso-8859-1\" standalone=\"no\"?>");
+            xsdFile.println("<xsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
+            xsdFile.println();
+            xsdFile.println("<xsd:annotation>");
+            xsdFile.println("  <xsd:documentation>");
+            xsdFile.println("  Schema for JDiff comments.");
+            xsdFile.println("  </xsd:documentation>");
+            xsdFile.println("</xsd:annotation>");
+            xsdFile.println();
+            xsdFile.println("<xsd:element name=\"comments\" type=\"commentsType\"/>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"commentsType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:element name=\"comment\" type=\"commentType\" minOccurs='0' maxOccurs='unbounded'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("  <xsd:attribute name=\"name\" type=\"xsd:string\"/>");
+            xsdFile.println("  <xsd:attribute name=\"jdversion\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"commentType\">");
+            xsdFile.println("  <xsd:sequence>");
+            xsdFile.println("    <xsd:element name=\"identifier\" type=\"identifierType\" minOccurs='1' maxOccurs='unbounded'/>");
+            xsdFile.println("    <xsd:element name=\"text\" type=\"xsd:string\" minOccurs='1' maxOccurs='1'/>");
+            xsdFile.println("  </xsd:sequence>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("<xsd:complexType name=\"identifierType\">");
+            xsdFile.println("  <xsd:attribute name=\"id\" type=\"xsd:string\"/>");
+            xsdFile.println("</xsd:complexType>");
+            xsdFile.println();
+            xsdFile.println("</xsd:schema>");
+            xsdFile.close();
+        } catch(IOException e) {
+            System.out.println("IO Error while attempting to create " + xsdFileName);
+            System.out.println("Error: " +  e.getMessage());
+            System.exit(1);
+        }
+    }
 
 //
 // Methods to add data to a Comments object. Called by the XML parser and the 
@@ -305,7 +373,7 @@ public class Comments {
     public void emitXMLHeader(String filename) {
         outputFile.println("<?xml version=\"1.0\" encoding=\"iso-8859-1\" standalone=\"no\"?>");
         outputFile.println("<comments");
-        outputFile.println("  xmlns:xsi='" + RootDocToXML.baseURI + "/2000/10/XMLSchema-instance'");
+        outputFile.println("  xmlns:xsi='" + RootDocToXML.baseURI + "/2001/XMLSchema-instance'");
         outputFile.println("  xsi:noNamespaceSchemaLocation='comments.xsd'");
         // Extract the identifier from the filename by removing the suffix
         int idx = filename.lastIndexOf('.');
