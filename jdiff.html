@@ -472,10 +472,12 @@ moved to the end of the file and placed inside XML comments.
 
 <BLOCKQUOTE> The text which is added can be HTML text if necessary, but if the 
   HTML is incorrect, JDiff may fail to read the comments file and exit. Note that 
-  because this HTML is stored in an XML document, single tags are not permitted. 
+  the required HTML is in fact XHTML (<a href="http://www.w3.org/TR/xhtml1/diffs.html">differences</a>). Since this HTML is stored in an XML document, single tags without their closing ("slash") element are not permitted. 
   For example, most browsers permit HTML which looks like "&lt;p>Here is some 
   text.", with no closing tag. XML requires that either a closing tag exists ("&lt;/p>"), 
-  or that the single tag is closed, e.g. "&lt;p/>Here is some text.". </BLOCKQUOTE>
+  or that the single tag is closed, e.g. "&lt;p/>Here is some text.". 
+HTML p, br and hr tags can be single, due to common usage.
+</BLOCKQUOTE>
 
 <BLOCKQUOTE>
 To write comments for a particular removal, addition or change in the
@@ -947,7 +949,7 @@ details.
 
 <p align="center">
 <font size="-1">
-Copyright &copy; 2001-2003 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
+Copyright &copy; 2001-2004 <a href="mailto:doar@pobox.com">Matthew B. Doar</a><br>
 <a href="http://sourceforge.net/projects/javadiff/">JDiff Doclet</a>, v1.0.9.
 </font>
 </p>

@@ -1,5 +1,11 @@
 1.0.10 - not yet released
 
+#875516 Some HTML elements in user comments were being processed incorrectly. 
+Thanks to Jojo Dijamco for pointing this bug out.
+
+#875470 @link tags were not exanded in user comments. Thanks to Brian Duff 
+for the bug and the fix. 
+
 #815039 If the only changes in a class are in native or sync method changes, 
 and showAllChanges is not used, then no change has occurred. Thanks to 
 C. Le Goff for finding this bug and providing the fix.
@@ -8,15 +14,15 @@ C. Le Goff for finding this bug and providing the fix.
 made it hard to use an XML parser other than Xerces. Thanks to Brian
 Duff for finding this bug and providing the fix.
 
-Updated copyright notices to 2003.
+Updated copyright notices to 2004.
 
 1.0.9 - 19th June 2003
-Darren Carlton <darren@bea.com> pointed out that Javadoc
+Darren Carlton <darren at bea.com> pointed out that Javadoc
 package.html files may, in fact, be full HTML documents.
 This fix only solves the issue for package.html
 HTML, not the general issue of HTML comments.
 
-Jan Rueten-Budde <jan@rueten-budde.de> noted that the -excludetag
+Jan Rueten-Budde <jan at rueten-budde.de> noted that the -excludetag
 option was not working for package-level documentation block,
 and that its documentation needed improvement.
 
