@@ -2,6 +2,7 @@
 
 <project name="jdiff" default="all" basedir=".">
 
+<!-- Takes a minute or so -->
 <target name="all">
     <ant dir="build" target="jdiff"/>
     <ant dir="test" target="jdiff"/>
@@ -12,6 +13,25 @@
     <ant dir="build" target="clean"/>
     <ant dir="test" target="clean"/>
     <ant dir="examples" target="clean"/>
+</target>
+
+<!-- Prepare for a release of JDiff -->
+<!-- Also need to change the version number wherever it is found -->
+<target name="release">
+    <delete includeEmptyDirs="true" quiet="true">
+      <fileset dir="." excludes="build.xml" includes="jdiff*.tar.gz,*.xml,**/*~" />
+      <fileset dir="src" includes="**/*.class"/>
+      <fileset dir="test" includes="**/*.class"/>
+      <fileset dir="test/newdocs"/>
+      <fileset dir="test/newdocs2"/>
+      <fileset dir="test/olddocs"/>
+    </delete>
+</target>
+
+<target name="tgz" depends="release">
+    <tar tarfile="jdiff108.tar.gz" basedir=".." 
+         excludes="*.tar.gz" includes="jdiff/**" 
+         compression="gzip"/>
 </target>
 
 </project>

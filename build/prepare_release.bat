@@ -1,3 +1,5 @@
+REM Superceded by the release target in jdiff/build.xml
+
 REM Clean up ready to release jdiff as a zip file
 REM Start in the top-level directory and make sure that JAVA_HOME is set
 REM to the root of the current Java installation
