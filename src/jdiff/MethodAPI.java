@@ -96,10 +96,12 @@ class MethodAPI implements Comparable {
         if (isAbstract_ != oMethod.isAbstract_) {
             return -1;
         }
-        if (isNative_ != oMethod.isNative_) {
+        if (Diff.showAllChanges && 
+	    isNative_ != oMethod.isNative_) {
             return -1;
         }
-        if (isSynchronized_ != oMethod.isSynchronized_) {
+        if (Diff.showAllChanges && 
+	    isSynchronized_ != oMethod.isSynchronized_) {
             return -1;
         }
         comp = exceptions_.compareTo(oMethod.exceptions_);
