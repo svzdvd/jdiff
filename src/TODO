@@ -89,6 +89,16 @@ changed because the documentation was inherited from a superclass.
 
 Break out subclasses in DiffMyers.java for jar files?
 
+In Javadoc generated HTML, the methods and fields which are inherited 
+from a parent do not have named anchors for the JDiff to link to them. This
+means that the links go to the correct child class, but the user has to look
+in the inherited methods and fields sections to find the right element.
+This was fixed by checking for the case in HTMLReportGenerator, but the tricky
+case, which is not checked for, is the case with inner classes and methods or 
+fields moving to their parent class. In this case, the class will be 
+correct, but the link will take you to the top of the page, rather than the 
+actual method.
+
 Add support for differences for other languages - create base classes, 
 generalize XML.
 

@@ -1314,6 +1314,17 @@ public class HTMLReportGenerator {
         } else {
             memberRef = newDocPrefix + memberRef;
         }
+        // Javadoc generated HTML has no named anchors for methods
+        // inherited from other classes, so link to the defining class' method.
+        // Only copes with non-inner classes.
+        if (className.indexOf('.') == -1 &&
+            memberDiff.modifiersChange_ != null &&
+            memberDiff.modifiersChange_.indexOf("but is now inherited from") != -1) {
+            memberRef = memberDiff.inheritedFrom_;
+            memberRef = memberRef.replace('.', '/'); 
+            memberRef = newDocPrefix + memberRef;
+        }
+        
         String newReturnType = memberDiff.newType_;
         String shortReturnType = simpleName(newReturnType); 
         String shortSignature = simpleName(newSignature);        
@@ -1454,6 +1465,17 @@ public class HTMLReportGenerator {
         } else {
             memberRef = newDocPrefix + memberRef;
         }
+        // Javadoc generated HTML has no named anchors for fields
+        // inherited from other classes, so link to the defining class' field.
+        // Only copes with non-inner classes.
+        if (className.indexOf('.') == -1 &&
+            memberDiff.modifiersChange_ != null &&
+            memberDiff.modifiersChange_.indexOf("but is now inherited from") != -1) {
+            memberRef = memberDiff.inheritedFrom_;
+            memberRef = memberRef.replace('.', '/'); 
+            memberRef = newDocPrefix + memberRef;
+        }
+
         String newType = memberDiff.newType_;
         String shortNewType = simpleName(newType); 
         reportFile.print("  <nobr>");
