@@ -14,6 +14,7 @@ Regenerate reports with correct JDK versions
 Unix scripts need chmod +x and dos2unix to work?
 
 Populate the lib\2001 directory and check validation works from behind firewalls. 
+Add a version option
 
 Need to label files in CVS, also for jdiff1.0.5?
 
@@ -40,6 +41,10 @@ DESIGN
 
 Short Term:
 ----------
+
+Add an option for verbose output?
+
+Add an option to redirect output to a log file?
 
 Does not check when there is a change in the class in which a locally defined 
 method is overriding another method.

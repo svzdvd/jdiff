@@ -150,13 +150,29 @@ public class JDiff extends Doclet {
      * XML configuration file passed in.
      */
     public static void main(String[] args) {
-        if (args.length == 1) {
-            System.out.println("usage: java jdiff.JDiff [-buildfile <XML configuration file>]");
-            System.out.println("If no build file is specified, the local build.xml file is used.");
+        if (args.length == 0) {
+            showUsage();
+            return;
+        } else if (args.length == 1) {
+            if (args[0].compareTo("-help") == 0 ||
+                args[0].compareTo("-h") == 0 ||
+                args[0].compareTo("?") == 0) {
+                showUsage();
+            } else if (args[0].compareTo("-version") == 0) {
+                System.out.println("JDiff version: " + JDiff.version);
+            }
             return;
         }
         int rc = runAnt(args);
         return;
+    }
+
+    /** 
+     * Display usage information for JDiff.
+     */
+    public static void showUsage() {
+        System.out.println("usage: java jdiff.JDiff [-version] [-buildfile <XML configuration file>]");
+        System.out.println("If no build file is specified, the local build.xml file is used.");
     }
 
     /** 
