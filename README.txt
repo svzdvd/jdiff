@@ -38,5 +38,10 @@ http://www.apache.org.
 JDiff is licensed under the Lesser GNU General Public License (LGPL).
 See the file LICENSE.txt.
 
+ACKNOWLEDGEMENTS
+
+JDiff uses Stuart D. Gathman's Java translation of Gene Myers' O(ND) 
+difference algorithm.
+
 Many thanks to the reviewers at Sun and Vitria who gave feedback on early
 versions of JDiff output.

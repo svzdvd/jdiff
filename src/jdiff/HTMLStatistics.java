@@ -165,6 +165,7 @@ public class HTMLStatistics {
         h_.writeText("<TR>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage<br>Difference</b></FONT></TD>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Frequency</b></FONT></TD>");
+        h_.writeText("  <TD width=\"300\" ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage Frequency</b></FONT></TD>");
         h_.writeText("</TR>");
 
         double total = 0;
@@ -176,6 +177,7 @@ public class HTMLStatistics {
                 h_.writeText("<TR>");
                 h_.writeText("  <TD ALIGN=\"center\">" + i + "</TD>");
                 h_.writeText("  <TD>" + (hist[i]/total) + "</TD>");
+                h_.writeText("  <TD><img src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
                 h_.writeText("</TR>");
             }
         }
@@ -253,6 +255,7 @@ public class HTMLStatistics {
         h_.writeText("<TR>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage<br>Difference</b></FONT></TD>");
         h_.writeText("  <TD ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Frequency</b></FONT></TD>");
+        h_.writeText("  <TD width=\"300\" ALIGN=\"center\" bgcolor=\"#EEEEFF\"><FONT size=\"+1\"><b>Percentage Frequency</b></FONT></TD>");
         h_.writeText("</TR>");
 
         double total = 0;
@@ -264,6 +267,7 @@ public class HTMLStatistics {
                 h_.writeText("<TR>");
                 h_.writeText("  <TD ALIGN=\"center\">" + i + "</TD>");
                 h_.writeText("  <TD>" + (hist[i]/total) + "</TD>");
+                h_.writeText("  <TD><img src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
                 h_.writeText("</TR>");
             }
         }

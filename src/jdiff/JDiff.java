@@ -172,6 +172,6 @@ public class JDiff extends Doclet {
     static final String authorEmail = "doar@pobox.com";
 
     /** The current JDiff version. */
-    static final String version = "1.0.3";
+    static final String version = "1.0.4";
 
 } //JDiff
