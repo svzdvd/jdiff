@@ -3,7 +3,7 @@ REM javadoc -private -excludeclass private -excludemember private
 
 REM Remember to set the sourcepath to find the Java source files on your system
 setlocal
-set SRCPATH=C:\jdktests\1.3\sr
+set SRCPATH=C:\jdktests\1.3\src
 REM Packages java.awt.dnd.peer and java.text.resources appear in the source 
 REM code, but not in the API documentation, so are not compared here.
 
