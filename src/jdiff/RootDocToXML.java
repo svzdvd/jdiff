@@ -842,13 +842,13 @@ public class RootDocToXML {
 	    boolean inBody = false;
 	    while(str != null) {
                 if (!inBody) {
-		    if (str.toLowerCase().trim().startsWith("<body>")) {
+		    if (str.toLowerCase().trim().startsWith("<body")) {
 			inBody = true;
 		    }
 		    str = d.readLine(); // Get the next line
 		    continue; // Ignore the line
 		} else {
-		    if (str.toLowerCase().trim().startsWith("</body>")) {
+		    if (str.toLowerCase().trim().startsWith("</body")) {
 			inBody = false;
 			continue; // Ignore the line
 		    }
