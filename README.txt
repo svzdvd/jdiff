@@ -44,4 +44,5 @@ JDiff uses Stuart D. Gathman's Java translation of Gene Myers' O(ND)
 difference algorithm.
 
 Many thanks to the reviewers at Sun and Vitria who gave feedback on early
-versions of JDiff output.
+versions of JDiff output, and also to Arturo Fuente for his consistently
+fine cigars which helped inspire much of this work.

@@ -14,6 +14,9 @@ class DiffOutput implements Comparable {
     /** The package name for this difference. */
     public String pkgName_ = null;
 
+    /** The class name for this difference, may be null. */
+    public String className_ = null;
+
     /** The HTML named anchor identifier for this difference. */
     public String id_ = null;
 
@@ -24,8 +27,10 @@ class DiffOutput implements Comparable {
     public String text_ = null;
 
     /** Constructor. */
-    public DiffOutput(String pkgName, String id, String title, String text) {
+    public DiffOutput(String pkgName, String className, String id, 
+                      String title, String text) {
         pkgName_ = pkgName;
+        className_ = className;
         id_ = id;
         title_ = title;
         text_ = text;

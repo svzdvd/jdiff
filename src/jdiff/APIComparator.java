@@ -203,7 +203,7 @@ public class APIComparator {
             String link = "<a href=\"pkg_" + oldPkg.name_ + HTMLReportGenerator.reportFileExt + "\" class=\"hiddenlink\">";
             String id = oldPkg.name_ + "!package";
             String title = link + "Package " + oldPkg.name_ + "</a>";
-            pkgDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldPkg.doc_, newPkg.doc_, id, title);
+            pkgDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, null, oldPkg.doc_, newPkg.doc_, id, title);
             differsFlag = true;
         }
 
@@ -269,7 +269,7 @@ public class APIComparator {
             String id = pkgDiff.name_ + "." + classDiff.name_ + "!class";
             String title = link + "Class " + classDiff.name_ + "</a>";
             classDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_,
- oldClass.doc_, newClass.doc_, id, title);
+ classDiff.name_, oldClass.doc_, newClass.doc_, id, title);
             differsFlag = true;
         }
         // All other modifiers
@@ -382,7 +382,7 @@ public class APIComparator {
                         String title = link1 + "Class " + classDiff.name_ + 
                             "</a>, " + link2 + "constructor " + classDiff.name_ + "(" + type + ")</a>";
                         memberDiff.documentationChange_ = Diff.saveDocDiffs(
-                            pkgDiff.name_, oldCtor.doc_, newCtor.doc_, id, title);
+                            pkgDiff.name_, classDiff.name_, oldCtor.doc_, newCtor.doc_, id, title);
                     }
                     String modifiersChange = oldCtor.modifiers_.diff(newCtor.modifiers_);
                     if (modifiersChange != null && modifiersChange.indexOf("Change from deprecated to undeprecated") != -1) {
@@ -602,7 +602,7 @@ public class APIComparator {
             String id = pkgDiff.name_ + "." + classDiff.name_ + ".dmethod." + newMethod.name_ + "(" + sig + ")";
             String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                 link2 + "method " + newMethod.name_ + "(" + sig + ")</a>";
-            methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldMethod.doc_, newMethod.doc_, id, title);
+            methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, oldMethod.doc_, newMethod.doc_, id, title);
             differs = true;
         }
 
@@ -691,7 +691,7 @@ public class APIComparator {
                         String id = pkgDiff.name_ + "." + classDiff.name_ + ".field." + newField.name_;
                         String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                             link2 + "field " + newField.name_ + "</a>";
-                        memberDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, oldField.doc_, newField.doc_, id, title);
+                        memberDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, oldField.doc_, newField.doc_, id, title);
                         differs = true;
                     }
 

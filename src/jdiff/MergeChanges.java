@@ -100,7 +100,7 @@ class MergeChanges {
                 String id = pkgDiff.name_ + "." + classDiff.name_ + ".ctor(" + type + ")";
                 String title = link1 + "Class " + classDiff.name_ + 
                     "</a>, " + link2 + "constructor " + classDiff.name_ + "(" + type + ")</a>";
-                ctorDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedCtor.doc_, addedCtor.doc_, id, title);
+                ctorDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedCtor.doc_, addedCtor.doc_, id, title);
             }
             classDiff.ctorsChanged.add(ctorDiff);
             // Now remove the entries from the remove and add lists
@@ -154,7 +154,7 @@ class MergeChanges {
                 String id = pkgDiff.name_ + "." + classDiff.name_ + ".dmethod." + addedMethod.name_ + "(" + sig + ")";
                 String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                     link2 + "method " + addedMethod.name_ + "(" + sig + ")</a>";
-                methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
+                methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
             }
             classDiff.methodsChanged.add(methodDiff);
             // Now remove the entries from the remove and add lists
@@ -224,7 +224,7 @@ class MergeChanges {
                 String id = pkgDiff.name_ + "." + classDiff.name_ + ".dmethod." + addedMethod.name_ + "(" + sig + ")";
                 String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                     link2 + "method " + addedMethod.name_ + "(" + sig + ")</a>";
-                methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
+                methodDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedMethod.doc_, addedMethod.doc_, id, title);
             }
             classDiff.methodsChanged.add(methodDiff);
             // Now remove the entries from the remove and add lists
@@ -265,7 +265,7 @@ class MergeChanges {
                 String id = pkgDiff.name_ + "." + classDiff.name_ + ".field." + addedField.name_;
                 String title = link1 + "Class " + classDiff.name_ + "</a>, " +
                     link2 + "field " + addedField.name_ + "</a>";
-                fieldDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, removedField.doc_, addedField.doc_, id, title);
+                fieldDiff.documentationChange_ = Diff.saveDocDiffs(pkgDiff.name_, classDiff.name_, removedField.doc_, addedField.doc_, id, title);
             }
             classDiff.fieldsChanged.add(fieldDiff);
             // Now remove the entries from the remove and add lists

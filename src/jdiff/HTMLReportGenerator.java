@@ -53,6 +53,12 @@ public class HTMLReportGenerator {
             System.exit(3);
         }
 
+        // Emit the documentation difference files
+        if (!Diff.noDocDiffs) {
+            // Documentation differences, one file per package
+            Diff.emitDocDiffs(fullReportFileName);
+        }
+
         // This is the top-level summary file, first in the right hand frame
         // or linked at the start to if no frames are used.
         String changesSummaryName = fullReportFileName + JDiff.DIR_SEP +
@@ -137,11 +143,6 @@ public class HTMLReportGenerator {
                 "jdiff_statistics" + reportFileExt;
             HTMLStatistics stats = new HTMLStatistics(this);
             stats.emitStatistics(sf, apiDiff);
-        }
-
-        if (!Diff.noDocDiffs) {
-            // Documentation differences, one file per package
-            Diff.emitDocDiffs(fullReportFileName);
         }
     }   
 
@@ -783,6 +784,17 @@ public class HTMLReportGenerator {
             reportFile.println("      <TD BGCOLOR=\"#FFFFFF\" CLASS=\"NavBarCell1Rev\"> &nbsp;<FONT CLASS=\"NavBarFont1Rev\"><B>Class</B></FONT>&nbsp;</TD>");
         }
 
+        if (!Diff.noDocDiffs) {
+            // TODO no link if no changes exist in this package
+            if (atPackage) {
+                reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + Diff.diffFileName + "index" + reportFileExt  + "#" + pkgName + "!package\"><FONT CLASS=\"NavBarFont1\"><B>Text Changes</B></FONT></A>&nbsp;</TD>");
+            } else if (atClass) {
+                reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + Diff.diffFileName + "index" + reportFileExt  + "#" + pkgName + "." + className + "!class\"><FONT CLASS=\"NavBarFont1\"><B>Text Changes</B></FONT></A>&nbsp;</TD>");
+            } else {
+                reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"" + Diff.diffFileName + "index" + reportFileExt + "\"><FONT CLASS=\"NavBarFont1\"><B>Text Changes</B></FONT></A>&nbsp;</TD>");
+            }
+        }
+
         if (doStats) {
             reportFile.println("      <TD BGCOLOR=\"#EEEEFF\" CLASS=\"NavBarCell1\"> <A HREF=\"jdiff_statistics" + reportFileExt + "\"><FONT CLASS=\"NavBarFont1\"><B>Statistics</B></FONT></A>&nbsp;</TD>");
         }
@@ -808,7 +820,7 @@ public class HTMLReportGenerator {
         // links are in one table cell
         reportFile.println("  <TD BGCOLOR=\"" + bgcolor + "\" CLASS=\"NavBarCell2\"><FONT SIZE=\"-2\">");        
         // Display links to the previous and next packages or classes
-        if (level != 0) {
+        if (atPackage || atClass) {
             String elemName = "CLASS";
             if (className == null) {
                 elemName = "PACKAGE";

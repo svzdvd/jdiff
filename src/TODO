@@ -46,6 +46,12 @@ DESIGN
 Short Term:
 ----------
 
+Change fonts in doc diffs page titles
+
+Add "Text Change" link to all navigation bars
+
+Use short types in the doc diffs pages
+
 Break out subclasses in DiffMyers.java for jar files?
 
 Work with crimson XML parser
@@ -186,3 +192,5 @@ Maybe the table should be name and a row under it for the description , to stop 
 
 MISCELLANEOUS
 =============
+
+Add META keywords to all HTML
