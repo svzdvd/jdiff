@@ -80,7 +80,7 @@ RootDoc object for any doclet from a JAR file. It is also a good place
 to see how RootDoc objects can be constructed for any language, not
 just Java.
 
-<p>To find all packages, in order to create a list to be be passed to Javadoc, try<code>find java javax org -type d | sed "s,/,.,g</code>
+<p>To find all packages, in order to create a list to be be passed to Javadoc, try<code>find java javax org -type d | sed -e 's/\//./g'</code>
 
 <p align="center">
 <font size="-1">
