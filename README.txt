@@ -43,6 +43,9 @@ ACKNOWLEDGEMENTS
 JDiff uses Stuart D. Gathman's Java translation of Gene Myers' O(ND) 
 difference algorithm.
 
+JDiff also has the option to use an ANT XML configuration file. ANT is
+a general-purpose build tool and can be found at http://jakarta.apache.org/ant
+
 JDiff also includes a script to use the classdoc application from
 http://www.jensgulden.de/, Jens Gulden, mail@jensgulden.de,
 to call a doclet such as jdiff on a .jar file rather than on source.

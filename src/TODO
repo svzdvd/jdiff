@@ -11,8 +11,6 @@ EJB 1.0 -> 2.0
  
 Complete build.xml files, and make them platform independent.
 
-Add docs necessary to ship ant.jar
-
 Document or update the documentation for how to use JDiff as a script
 
 Need to label files in CVS
@@ -58,8 +56,6 @@ DESIGN
 
 Short Term:
 ----------
-
-Add "in" to duplicate fields etc
 
 ant.bat is a complex script for all windows platforms - could be useful
 
