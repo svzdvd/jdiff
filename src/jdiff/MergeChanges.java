@@ -119,7 +119,8 @@ class MergeChanges {
      * Convert some removed and added methods into changed methods.
      */
     public static void mergeRemoveAddMethod(MethodAPI removedMethod, 
-                                            ClassDiff classDiff, PackageDiff pkgDiff) {
+                                            ClassDiff classDiff, 
+                                            PackageDiff pkgDiff) {
         mergeSingleMethods(removedMethod, classDiff, pkgDiff);
         mergeMultipleMethods(removedMethod, classDiff, pkgDiff);
     }
@@ -147,6 +148,10 @@ class MergeChanges {
                 methodDiff.newSignature_ = addedMethod.getSignature();
                 methodDiff.oldExceptions_ = removedMethod.exceptions_;
                 methodDiff.newExceptions_ = addedMethod.exceptions_;
+                // The addModifiersChange field may not have been
+                // initialized yet if there were multiple methods of the same
+                // name.
+                diffMethods(methodDiff, removedMethod, addedMethod);
                 methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
                 // Track changes in documentation
                 if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
@@ -220,6 +225,10 @@ class MergeChanges {
             methodDiff.newSignature_ = addedMethod.getSignature();
             methodDiff.oldExceptions_ = removedMethod.exceptions_;
             methodDiff.newExceptions_ = addedMethod.exceptions_;
+                // The addModifiersChange field may not have been
+                // initialized yet if there were multiple methods of the same
+                // name.
+                diffMethods(methodDiff, removedMethod, addedMethod);
             methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
@@ -243,6 +252,42 @@ class MergeChanges {
                                    removedMethod.name_ + 
                                    " into one change. There were multiple methods of this name.");
             }
+        }
+    }
+
+    /**
+     * Track changes in methods related to abstract, native, and 
+     * synchronized modifiers here.
+     */
+    public static void diffMethods(MemberDiff methodDiff, 
+                                   MethodAPI oldMethod, 
+                                   MethodAPI newMethod) {
+        // Abstract or not
+        if (oldMethod.isAbstract_ != newMethod.isAbstract_) {
+            String changeText = "";
+            if (oldMethod.isAbstract_)
+                changeText += "Changed from abstract to non-abstract.";
+            else
+                changeText += "Changed from non-abstract to abstract.";
+            methodDiff.addModifiersChange(changeText);
+        }
+        // Native or not
+        if (oldMethod.isNative_ != newMethod.isNative_) {
+            String changeText = "";
+            if (oldMethod.isNative_)
+                changeText += "Changed from native to non-native.";
+            else
+                changeText += "Changed from non-native to native.";
+            methodDiff.addModifiersChange(changeText);
+        }
+        // Synchronized or not
+        if (oldMethod.isSynchronized_ != newMethod.isSynchronized_) {
+            String changeText = "";
+            if (oldMethod.isSynchronized_)
+                changeText += "Changed from synchronized to non-synchronized.";
+            else
+                changeText += "Changed from non-synchronized to synchronized.";
+            methodDiff.addModifiersChange(changeText);
         }
     }
 

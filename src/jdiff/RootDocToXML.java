@@ -405,7 +405,6 @@ public class RootDocToXML {
             String ifaceName = ifaces[i].qualifiedName();
             if (trace) System.out.println("PROCESSING INTERFACE: " + ifaceName);
             outputFile.println("    <implements name=\"" + ifaceName + "\"/>");
-// DEBUG            outputFile.println("    </implements>");
         }//for
     }//processInterfaces()
     

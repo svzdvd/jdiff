@@ -4,32 +4,20 @@
 
 For the article:
 
-Note that the article ties into JDiff1.0.6
-
 Snapshots to do:
 
-Figure 1 is a screenshot of some of the packages which were changed between J2SE versions, and Figure 2 shows the detail for a particular class java.foo.bar. Every change in the API is reported, from new methods and fields, to changes in parameter types and which exceptions are thrown. Even the changes in the documentation for each class and method can be reported.
-INSERT MD01.bmp
-Figure 1. A JDiff Report comparing J2SE1.3 and J2SE1.4, showing the packages which have changed
-INSERT MD02.bmp
-Figure 2. A JDiff Report comparing J2SE1.3 and J2SE1.4, showing the changes in the class java.foo.bar
 Figure 4 shows the percentage changes for some popular APIs. Interestingly, the percentage change between J2SE1.2 and J2SE1.3 was about XX% (not including documentation changes), and about XX% between J2SE1.3.1 and J2SE1.4.0, confirming opinions that the changes from J2SE1.3 to J2SE1.4 are larger than the changes in the previous major release.
 INSERT MD04.bmp
 Figure 4. Percentage Changes for Some Popular APIs.
 
-Regenerate reports with correct JDK versions:
-
-JDK1.2 with JDK1.2.x. 
-JDK1.3.1 with JDK1.3.1
-JDK1.4B3 with JDK1.4B3
-
 Reports for the webpage, and update index.html:
 
-1.2 to 1.3.1 with and without documentation
-1.3.1 to 1.4 with and without documentation
-JDBC
-Servlet
-EJB
+1.2 to 1.3.0 with and without documentation 11%
+1.3.0 to 1.3.1 with and without documentation 
+1.3.0 to 1.4 with 43% and without documentation 33%
+JDBC no documentation
+Servlet no documentation
+EJB no documentation
 
 For the 1.0.6 release:
 
@@ -80,6 +68,8 @@ No longer need the lib/TR directory - files deleted
 
 Long Term:
 ---------
+
+Better end of sentence detection for annotations - use the J2SE14 approach?
 
 Support inherited exclusion in RootDocToXML.java
 
