@@ -258,7 +258,10 @@ public class HTMLFiles {
             h_.writeText();
             h_.writeText("/* Page background color */");
 //            h_.writeText("body { background-color: " + h_.bgcolor + "; font-family: arial; }");
-            h_.writeText("body { background: url(background.gif); font-family: arial; }");
+            // First argument after backgroun: is for older Netscape browsers
+            // For more information, see http://css.nu/pointers/bugs.html and 
+            // http://www.richinstyle.com/bugs/netscape4.html
+            h_.writeText("body { background: #CCFFFF url(background.gif); font-family: arial; }");
             h_.writeText();
             h_.writeText("/* Table colors */");
             h_.writeText(".TableHeadingColor     { background: #CCCCFF } /* Dark mauve */");
