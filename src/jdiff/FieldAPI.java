@@ -20,6 +20,13 @@ class FieldAPI implements Comparable {
     /** Type of the field. */
     public String type_;
 
+    /** 
+     * The fully qualified name of the class or interface this field is
+     * inherited from. If this is null, then the field is defined in this 
+     * class or interface.
+     */
+    public String inheritedFrom_ = null;
+
     /** Set if this field is transient. */
     boolean isTransient_ = false;
 
@@ -43,6 +50,17 @@ class FieldAPI implements Comparable {
         modifiers_ = modifiers;
     }
 
+    /** Copy constructor. */
+    public FieldAPI(FieldAPI f) {
+        name_ = f.name_;
+        type_ = f.type_;
+        inheritedFrom_ = f.inheritedFrom_;
+        isTransient_ = f.isTransient_;
+        isVolatile_ = f.isVolatile_;
+        modifiers_ = f.modifiers_; // Note: shallow copy
+        doc_ = f.doc_;
+    }
+
     /** Compare two FieldAPI objects, including name, type and modifiers. */
     public int compareTo(Object o) {
         FieldAPI oFieldAPI = (FieldAPI)o;
@@ -52,6 +70,8 @@ class FieldAPI implements Comparable {
         comp = type_.compareTo(oFieldAPI.type_);
         if (comp != 0)
             return comp;
+        if (APIComparator.changedInheritance(inheritedFrom_, oFieldAPI.inheritedFrom_) != 0)
+            return -1;
         if (isTransient_ != oFieldAPI.isTransient_) {
             return -1;
         }

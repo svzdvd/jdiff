@@ -553,6 +553,18 @@ public class APIComparator {
         if (oldSig.compareTo(newSig) != 0) {
             differs = true;
         }
+        // Changes in inheritance
+        int inh = changedInheritance(oldMethod.inheritedFrom_, newMethod.inheritedFrom_);
+        if (inh != 0)
+            differs = true;
+        if (inh == 1) {
+            methodDiff.addModifiersChange("Method was locally defined, but is now defined in " + linkToClass(newMethod.inheritedFrom_) + ".");
+        } else if (inh == 2) {
+            methodDiff.addModifiersChange("Method was defined in " + linkToClass(oldMethod.inheritedFrom_) + ", but is now defined locally.");
+        } else if (inh == 3) {
+            methodDiff.addModifiersChange("Method was defined in " + 
+                                          linkToClass(oldMethod.inheritedFrom_) + ", but is now defined in " + linkToClass(newMethod.inheritedFrom_) + ".");
+        }
         // Abstract or not
         if (oldMethod.isAbstract_ != newMethod.isAbstract_) {
             String changeText = "";
@@ -663,6 +675,17 @@ public class APIComparator {
                     memberDiff.oldType_ = oldField.type_;
                     FieldAPI newField = (FieldAPI)(newClass.fields_.get(existsNew));
                     memberDiff.newType_ = newField.type_;
+                    // Changes in inheritance
+                    int inh = changedInheritance(oldField.inheritedFrom_, newField.inheritedFrom_);
+                    if (inh != 0)
+                        differs = true;
+                    if (inh == 1) {
+                        memberDiff.addModifiersChange("Field was locally defined, but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
+                    } else if (inh == 2) {
+                        memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined locally.");
+                    } else if (inh == 3) {
+                        memberDiff.addModifiersChange("Field was defined in " + linkToClass(oldField.inheritedFrom_) + ", but is now defined in " + linkToClass(newField.inheritedFrom_) + ".");
+                    }
                     // Transient or not
                     if (oldField.isTransient_ != newField.isTransient_) {
                         String changeText = "";
@@ -753,6 +776,40 @@ public class APIComparator {
             return true;
         return false;
     }
+
+    /** 
+     * Decide if two elements changed where they were defined. 
+     *
+     * @return 0 if both are null, or both are non-null and are the same.
+     *         1 if the oldInherit was null and newInherit is non-null.
+     *         2 if the oldInherit was non-null and newInherit is null.
+     *         3 if the oldInherit was non-null and newInherit is non-null 
+     *           and they differ.
+     */
+    public static int changedInheritance(String oldInherit, String newInherit) {
+        if (oldInherit == null && newInherit == null)
+            return 0;
+        if (oldInherit == null && newInherit != null)
+            return 1;
+        if (oldInherit != null && newInherit == null)
+            return 2;
+        if (oldInherit.compareTo(newInherit) == 0)
+            return 0;
+        else
+            return 3;
+    }
+
+    /** 
+     * Generate a link to a class changes page. 
+     */
+    public static String linkToClass(String className) {
+        int idx = className.lastIndexOf(".");
+        String name = className;
+        if (idx != -1)
+            name = className.substring(idx+1);
+        return "<a href=\"" + className + 
+            HTMLReportGenerator.reportFileExt + "\">" + name + "</a>";
+    }    
 
     /** Set to enable increased logging verbosity for debugging. */
     private boolean trace = false;

@@ -636,7 +636,7 @@ follows:
     current APIs.</TD>
   </TR>
   <TR>
-    <TD VALIGN="top">Warning: warning: multiple @deprecated tags found in comments for <i>X</i>. Using the first one only.</TD>
+    <TD VALIGN="top">Warning: multiple @deprecated tags found in comments for <i>X</i>. Using the first one only.</TD>
     <TD VALIGN="top">A comment with more than one @deprecated tag was
     encountered in the source code. This is considered poor Javadoc.</TD>
   </TR>
@@ -645,6 +645,12 @@ follows:
     <TD VALIGN="top">An @ tag other than @link has somehow made its
     way into a suggested comment. This should not occur, but can be
     remedied by editing the comments file to use a different comment.</TD>
+  </TR>
+  <TR>
+    <TD VALIGN="top">Warning: duplicate class : <i>X</i> found. Using the first instance only.</TD>
+    <TD VALIGN="top">Multiple instances of the same fully qualified
+    class name were found in the API XML file. Most likely caused by
+    manual modification of the file after it was generated.</TD>
   </TR>
   <TR>
     <TD VALIGN="top">Warning: API identifier in the XML file <i>X</i> differs from the name of the file <i>Y</i>.</TD>

@@ -79,9 +79,85 @@ public class XMLToAPI {
             System.exit(1);
         }
 
+        // Add the inherited methods and fields to each class
+        addInheritedElements();
+//        api_.dump(); //DEBUG
         return api_;
     } //readFile()
-  
+
+    /** 
+     * Add the inherited methods and fields to each class.
+     * TODO check visibility of each element
+     */
+    public static void addInheritedElements() {
+        Iterator iter = api_.packages_.iterator();
+        while (iter.hasNext()) {
+            PackageAPI pkg = (PackageAPI)(iter.next());
+            Iterator iter2 = pkg.classes_.iterator();
+            while (iter2.hasNext()) {
+                ClassAPI cls = (ClassAPI)(iter2.next());
+                // Look up any inherited classes or interfaces
+                if (cls.extends_ != null) {
+                    ClassAPI parent = (ClassAPI)api_.classes_.get(cls.extends_);
+                    if (parent != null)
+                        addInheritedElements(cls, parent, cls.extends_);
+                }
+                if (cls.implements_.size() != 0) {
+                    Iterator iter3 = cls.implements_.iterator();
+                    while (iter3.hasNext()) {
+                        String implName = (String)(iter3.next());
+                        ClassAPI parent = (ClassAPI)api_.classes_.get(implName);
+                        if (parent != null)
+                            addInheritedElements(cls, parent, implName);
+                    }
+                }
+            } //while (iter2.hasNext())
+        } //while (iter.hasNext())
+    }
+
+    /** 
+     * Add all the inherited methods and fields in the second class to 
+     * the first class, marking them as inherited from the second class.
+     *
+     * If the parent class inherits any classes or interfaces, call this
+     * method recursively with those parents.
+     */
+    public static void addInheritedElements(ClassAPI child, ClassAPI parent,
+                                            String fqParentName) {
+        if (parent.methods_.size() != 0) {
+            Iterator iter = parent.methods_.iterator();
+            while (iter.hasNext()) {
+                MethodAPI m = new MethodAPI((MethodAPI)(iter.next()));
+                m.inheritedFrom_ = fqParentName;
+                child.methods_.add(m);
+            }            
+        }
+        if (parent.fields_.size() != 0) {
+            Iterator iter = parent.fields_.iterator();
+            while (iter.hasNext()) {
+                FieldAPI f = new FieldAPI((FieldAPI)(iter.next()));
+                f.inheritedFrom_ = fqParentName;
+                child.fields_.add(f);
+            }            
+        }
+
+        // Look up any inherited classes or interfaces
+        if (parent.extends_ != null) {
+            ClassAPI parent2 = (ClassAPI)api_.classes_.get(parent.extends_);
+            if (parent2 != null)
+                addInheritedElements(child, parent2, parent.extends_);
+        }
+        if (parent.implements_.size() != 0) {
+            Iterator iter3 = parent.implements_.iterator();
+            while (iter3.hasNext()) {
+                String implName = (String)(iter3.next());
+                ClassAPI parent2 = (ClassAPI)api_.classes_.get(implName);
+                if (parent2 != null)
+                    addInheritedElements(child, parent2, implName);
+            }
+        }
+    }
+
 //
 // Methods to add data to an API object. Called by the XML parser.
 //
@@ -130,6 +206,11 @@ public class XMLToAPI {
                                 Modifiers modifiers) {
         api_.currClass_ = new ClassAPI(name, parent, false, isAbstract, modifiers);
         api_.currPkg_.classes_.add(api_.currClass_);
+        String fqName = api_.currPkg_.name_ + "." + name;
+        ClassAPI caOld = (ClassAPI)api_.classes_.put(fqName, api_.currClass_);
+        if (caOld != null) {
+            System.out.println("Warning: duplicate class : " + fqName + " found. Using the first instance only.");
+        }
     }
   
     /** 

@@ -33,6 +33,13 @@ public class API {
     public List packages_; // PackageAPI[]
 
     /** 
+     * The list of all the classes. 
+     * This is used to generate the methods and fields which are inherited,
+     * rather than storing them in the XML file.
+     */
+    public Hashtable classes_;
+
+    /** 
      * The String which identifies this API, e.g. &quotSuperProduct 1.3&quot;.
      */
     public String name_ = null;
@@ -51,6 +58,7 @@ public class API {
     /** Default constructor. */
     public API() {
         packages_ = new ArrayList(); //PackageAPI[]
+        classes_ = new Hashtable(); //ClassAPI
     }   
   
 //
@@ -184,12 +192,16 @@ public class API {
     /** 
      * Display the contents of a MethodAPI object.
      *
-     * @parammc The given MethodAPI object.
+     * @param m The given MethodAPI object.
      * @param indent The number of spaces to indent the output.
      */
     public static void dumpMethod(MethodAPI m, int indent) {
+        if (m.inheritedFrom_ != null)
+            return;
         for (int i = 0; i < indent; i++) System.out.print(" ");
         System.out.print("Method Name: " + m.name_);
+        if (m.inheritedFrom_ != null)
+            System.out.println(", inherited from: " + m.inheritedFrom_);
         if (m.returnType_ != null)
             System.out.println(", return type: " + m.returnType_);
         else
@@ -219,13 +231,18 @@ public class API {
 
     /** 
      * Display the contents of a field.
+     * Does not show inherited fields.
      *
      * @param f The given field object.
      * @param indent The number of spaces to indent the output.
      */
     public static void dumpField(FieldAPI f, int indent) {
+        if (f.inheritedFrom_ != null)
+            return;
         for (int i = 0; i < indent; i++) System.out.print(" ");
         System.out.println("Field Name: " + f.name_ + ", type: " + f.type_);
+        if (f.inheritedFrom_ != null)
+            System.out.println(", inherited from: " + f.inheritedFrom_);
         if (f.isTransient_)
             System.out.print("transient ");
         if (f.isVolatile_)

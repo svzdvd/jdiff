@@ -22,6 +22,13 @@ class MethodAPI implements Comparable {
     public String returnType_ = null;
 
     /** 
+     * The fully qualified name of the class or interface this method is
+     * inherited from. If this is null, then the method is defined in this 
+     * class or interface.
+     */
+    public String inheritedFrom_ = null;
+
+    /** 
      * The exceptions thrown by this method, being all the exception types
      * separated by commas. "no exceptions" if no exceptions are thrown.
      */
@@ -57,6 +64,21 @@ class MethodAPI implements Comparable {
         params_ = new ArrayList(); // ParamAPI[]
     }
 
+    /** Copy constructor. */
+    public MethodAPI(MethodAPI m) {
+        name_ = m.name_;
+        returnType_ = m.returnType_;
+        inheritedFrom_ = m.inheritedFrom_;
+        exceptions_ = m.exceptions_;
+        isAbstract_ = m.isAbstract_;
+        isNative_ = m.isNative_;
+        isSynchronized_ = m.isSynchronized_;
+        modifiers_ = m.modifiers_; // Note: shallow copy
+        params_ = m.params_; // Note: shallow copy
+        doc_ = m.doc_;
+        signature_ = m.signature_; // Cached
+    }
+
     /** 
      * Compare two methods, including the return type, and parameter 
      * names and types, and modifiers. 
@@ -69,6 +91,8 @@ class MethodAPI implements Comparable {
         comp = returnType_.compareTo(oMethod.returnType_);
         if (comp != 0)
             return comp;
+        if (APIComparator.changedInheritance(inheritedFrom_, oMethod.inheritedFrom_) != 0)
+            return -1;
         if (isAbstract_ != oMethod.isAbstract_) {
             return -1;
         }
