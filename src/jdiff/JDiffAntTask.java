@@ -1,6 +1,11 @@
 package jdiff;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Vector;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
@@ -19,9 +24,6 @@ import org.apache.tools.ant.types.Path;
 public class JDiffAntTask {
 
     public void execute() throws BuildException {
-	//String message = project.getProperty("basedir");
-        //project.log("Starting from " + message, Project.MSG_INFO);
-
 	jdiffHome = project.getProperty("JDIFF_HOME");
 	if (jdiffHome == null || jdiffHome.compareTo("") == 0 | 
 	    jdiffHome.compareTo("(not set)") == 0) {
@@ -41,7 +43,7 @@ public class JDiffAntTask {
 	    project.log(" Report location: " + getDestdir() + DIR_SEP 
 			+ "changes.html", Project.MSG_INFO);
 	}
-	// TODO could also record the parameters used for JDiff here?
+	// Could also output the other parameters used for JDiff here
  	
 	// Check that there are indeed two projects to compare. If there
 	// are no directories in the project, let Javadoc do the complaining
@@ -49,6 +51,7 @@ public class JDiffAntTask {
 	    throw new BuildException("Error: two projects are needed, one <old> and one <new>");
 	}
 
+	/*
 	// Display the directories being compared, and some name information
 	if (getVerbose()) {
 	    project.log("Older version: " + oldProject.getName(), 
@@ -73,16 +76,15 @@ public class JDiffAntTask {
 		project.log(" " + files[i], Project.MSG_INFO);
 	    }
 	}
+	*/
 
 	// Call Javadoc twice to generate Javadoc for each project
-	generateJavadoc(oldProject.getJavadoc(), oldProject.getDirset(), 
-			oldProject.getName());
-	generateJavadoc(newProject.getJavadoc(), newProject.getDirset(), 
-			newProject.getName());
+	generateJavadoc(oldProject);
+	generateJavadoc(newProject);
 
 	// Call Javadoc three times for JDiff.
-	generateXML(oldProject.getDirset(), oldProject.getName());
-	generateXML(newProject.getDirset(), newProject.getName());
+	generateXML(oldProject);
+	generateXML(newProject);
 	compareXML(oldProject.getName(), newProject.getName());
 
 	// Repeat some useful information
@@ -94,38 +96,17 @@ public class JDiffAntTask {
      * Convenient method to create a Javadoc task, configure it and run it
      * to generate the XML representation of a project's source files.
      *
-     * @param dirset The set of directories to be treated as pacakge names
-     * @param apiname The name of the project, also use for the XML file
+     * @param proj The current Project
      */
-    public void generateXML(DirSet dirSet, String apiname) {
-	// Create a fresh new Javadoc task
-	Javadoc jd = new Javadoc();
-	jd.setProject(project); // Vital, otherwise Ant crashes
-	jd.setTaskName("Analyzing " + apiname);
-	jd.init();
-
-	// First set up some parameters for the Javadoc task
-	if (verboseAnt) {
-	    jd.setVerbose(true);
-	}
+    protected void generateXML(ProjectInfo proj) {
+	String apiname = proj.getName();
+	Javadoc jd = initJavadoc("Analyzing " + apiname);
 	jd.setDestdir(getDestdir());
-	// TODO Add each of the root directories of the dirsets as source paths
-	jd.setSourcepath(new Path(project, dirSet.getDir(project).toString()));
+	addSourcePaths(jd, proj);
 
-	// Tell Javadoc which packages we want to scan. JDiff works with 
-	// packagenames, not sourcefiles.
-	DirectoryScanner dirScanner = dirSet.getDirectoryScanner(project);
-	String[] files = dirScanner.getIncludedDirectories();
-	String packageList = ""; 
-	// TODO nasty slow hack to create comma separated list
-	// TODO also need to remove common ones: com com/foo etc
-	for (int i = 0; i < files.length; i++) {
-	    if (i != 0){
-		packageList = packageList + ",";
-	    }
-	    packageList = packageList + files[i];
-	}
-	jd.setPackagenames(packageList);
+	// Tell Javadoc which packages we want to scan. 
+	// JDiff works with packagenames, not sourcefiles.
+	jd.setPackagenames(getPackageList(proj));
 	
 	// Create the DocletInfo first so we have a way to use it to add params
 	DocletInfo dInfo = jd.createDoclet();
@@ -156,19 +137,10 @@ public class JDiffAntTask {
      * @param oldapiname The name of the older version of the project
      * @param newapiname The name of the newer version of the project
      */
-    public void compareXML(String oldapiname, String newapiname) {
-	// Create a fresh new Javadoc task
-	Javadoc jd = new Javadoc();
-	jd.setProject(project); // Vital, otherwise Ant crashes
-	jd.setTaskName("Comparing");
-	jd.init();
-	
-	// First set up some parameters for the Javadoc task
-	if (verboseAnt) {
-	    jd.setVerbose(true);
-	}
-	jd.setPrivate(true);
+    protected void compareXML(String oldapiname, String newapiname) {
+	Javadoc jd = initJavadoc("Comparing versions");
 	jd.setDestdir(getDestdir());
+	jd.setPrivate(true);
 
 	// Tell Javadoc which files we want to scan - a dummy file in this case
 	jd.setSourcefiles(jdiffHome + DIR_SEP + "lib" + DIR_SEP + "Null.java");
@@ -204,9 +176,41 @@ public class JDiffAntTask {
 	if (getStats()) {
 	    // There are no arguments to this argument
 	    dInfo.createParam().setName("-stats");
-	    // TODO also have to copy image files for the stats pages
-	}
+	    // We also have to copy an image file for the stats pages
+	    File src = new File(jdiffHome + DIR_SEP + "lib" + DIR_SEP + 
+				"black.gif");
+	    File dst = new File(getDestdir().toString() + DIR_SEP + "changes" +
+				DIR_SEP + "black.gif");
+	    try {
+		File reportSubdir = new File(getDestdir().toString() + 
+					     DIR_SEP + "changes");
+		if (!reportSubdir.mkdir() && !reportSubdir.exists()) {
+		    project.log("Warning: unable to create " + reportSubdir,
+				Project.MSG_WARN);
+		}
 
+		InputStream in = new FileInputStream(src);
+		OutputStream out = new FileOutputStream(dst);
+		
+		// Transfer bytes from in to out
+		byte[] buf = new byte[1024];
+		int len;
+		while ((len = in.read(buf)) > 0) {
+		    out.write(buf, 0, len);
+		}
+		in.close();
+		out.close();
+	    } catch (java.io.FileNotFoundException fnfe) {
+		project.log("Warning: unable to copy " + src.toString() + 
+			    " to " + dst.toString(), Project.MSG_WARN);
+		// Discard the exception
+	    } catch (java.io.IOException ioe) {
+		project.log("Warning: unable to copy " + src.toString() + 
+			    " to " + dst.toString(), Project.MSG_WARN);
+		// Discard the exception
+	    }
+	}
+	
 	if (getDocchanges()) {
 	    // There are no arguments to this argument
 	    dInfo.createParam().setName("-docchanges");
@@ -222,46 +226,92 @@ public class JDiffAntTask {
      * simple ones used here, then use the Javadoc Ant task directly, and 
      * set the javadoc attribute to the "old" or "new" element.
      *
-     * @param javadoc The location of an existing Javadoc report, if any.
-     * @param dirset The set of directories to be treated as pacakge names
-     * @param apiname The name of the project, also use for the XML file
+     * @param proj The current Project
      */
-    public void generateJavadoc(String javadoc, DirSet dirSet, String apiname) {	
+    protected void generateJavadoc(ProjectInfo proj) {	
+	String javadoc = proj.getJavadoc();
 	if (javadoc != null && javadoc.compareTo("generated") != 0) {
 	    project.log("Configured to use existing Javadoc located in " +  
 			javadoc, Project.MSG_INFO);
 	    return;
 	}
 
-	// Create a fresh new Javadoc task
-	Javadoc jd = new Javadoc();
-	jd.setProject(project); // Vital, otherwise Ant crashes
-	jd.setTaskName("Javadoc for " + apiname);
-	jd.init();
+	String apiname = proj.getName();
+	Javadoc jd = initJavadoc("Javadoc for " + apiname);
+	jd.setDestdir(new File(getDestdir().toString() + DIR_SEP + apiname));
+	addSourcePaths(jd, proj);
 
-	// Set up some parameters for the Javadoc task
-	String dest = getDestdir().toString() + DIR_SEP + apiname;
-	jd.setDestdir(new File(dest));
 	jd.setPrivate(true);
-	jd.setSourcepath(new Path(project, dirSet.getDir(project).toString()));
-
-	// Tell Javadoc which packages we want to scan. JDiff works with 
-	// packagenames, not sourcefiles.
-	DirectoryScanner dirScanner = dirSet.getDirectoryScanner(project);
-	String[] files = dirScanner.getIncludedDirectories();
-	String packageList = ""; 
-	// TODO nasty slow hack to create comma separated list
-	// TODO also need to remove common ones: com com/foo etc
-	for (int i = 0; i < files.length; i++) {
-	    if (i != 0){
-		packageList = packageList + ",";
-	    }
-	    packageList = packageList + files[i];
-	}
-	jd.setPackagenames(packageList);
+	jd.setPackagenames(getPackageList(proj));
 
 	// Execute the Javadoc command to generate a regular Javadoc report
 	jd.perform();
+    }
+
+    /**
+     * Create a fresh new Javadoc task object and initialize it.
+     *
+     * @param logMsg String which appears as a prefix in the Ant log
+     * @return The new task.Javadoc object
+     */
+    protected Javadoc initJavadoc(String logMsg) {
+	Javadoc jd = new Javadoc();
+	jd.setProject(project); // Vital, otherwise Ant crashes
+	jd.setTaskName(logMsg);
+	jd.init();
+
+	// Set up some common parameters for the Javadoc task
+	if (verboseAnt) {
+	    jd.setVerbose(true);
+	}
+	return jd;
+    }
+
+    /**
+     * Add the root directories for the given project to the Javadoc 
+     * sourcepath.
+     */
+    protected void addSourcePaths(Javadoc jd, ProjectInfo proj) {
+	Vector dirSets = proj.getDirsets();
+	int numDirSets = dirSets.size();
+	for (int i = 0; i < numDirSets; i++) {
+	    DirSet dirSet = (DirSet)dirSets.elementAt(i);
+	    jd.setSourcepath(new Path(project, dirSet.getDir(project).toString()));
+	}
+    }
+
+    /**
+     * Return the comma-separated list of packages. The list is
+     * generated from Ant DirSet tasks, and includes all directories
+     * in a hierarchy, e.g. com, com/acme. com/acme/foo. Duplicates are 
+     * ignored.
+     */
+    protected String getPackageList(ProjectInfo proj) throws BuildException {
+	String packageList = ""; 
+	java.lang.StringBuffer sb = new StringBuffer();
+	Vector dirSets = proj.getDirsets();
+	int numDirSets = dirSets.size();
+	boolean addComma = false;
+	for (int i = 0; i < numDirSets; i++) {
+	    DirSet dirSet = (DirSet)dirSets.elementAt(i);
+	    DirectoryScanner dirScanner = dirSet.getDirectoryScanner(project);
+	    String[] files = dirScanner.getIncludedDirectories();
+	    for (int j = 0; j < files.length; j++) {
+		if (!addComma){
+		    addComma = true;
+		} else {
+		    sb.append(",");
+		}
+		sb.append(files[j]);
+	    }
+	}
+	packageList = sb.toString();
+	if (packageList.compareTo("") == 0) {
+	    throw new BuildException("Error: no packages found to scan");
+	}
+	project.log(" Package list: " + packageList, Project.MSG_INFO);
+	
+	return packageList;
     }
 
     /**
@@ -271,6 +321,9 @@ public class JDiffAntTask {
      * (twice for generating XML, once for generating HTML). The
      * Javadoc task has not easy way to reset its list of packages, so
      * we needed to be able to crate new Javadoc task objects.
+     *
+     * Note: Don't confuse this class with the ProjectInfo used by JDiff. 
+     * This Project class is from Ant.
      */
     private Project project;
 
@@ -281,6 +334,9 @@ public class JDiffAntTask {
         project = proj;
     }
 
+    /** 
+     * Ferward or backward slash, as appropriate.
+     */
     static String DIR_SEP = System.getProperty("file.separator");
 
     /**
@@ -396,6 +452,9 @@ public class JDiffAntTask {
     /**
      * This class handles the information about a project, whether it is
      * the older or newer version.
+     *
+     * Note: Don't confuse this class with the Project used by Ant.
+     * This ProjectInfo class is from local to this task.
      */
     public static class ProjectInfo {
 	/** 
@@ -429,18 +488,18 @@ public class JDiffAntTask {
 	    return javadoc;
 	}
 
- 	/** TODO multiple dirset calls TODO filesets for classes?
+ 	/**
 	 * These are the directories which contain the packages which make 
 	 * up the project. Filesets are not supported by JDiff.
 	 */
-	private DirSet dirset = null;
+	private Vector dirsets = new Vector();
 
 	public void setDirset(DirSet value) {
-	    dirset = value;
+	    dirsets.add(value);
 	}
 
-	public DirSet getDirset() {
-	    return dirset;
+	public Vector getDirsets() {
+	    return dirsets;
 	}
 
 	/** 
@@ -452,7 +511,4 @@ public class JDiffAntTask {
 	}
 	
     }
-    /*
-TODO link checked with linklint-2.3.5 -error -warn /@ and all is fine in the example except for the link in the Javadoc text for SuperProduct2.0/com/acme/sp/package.html. Looks like the old @link not generating the correct href when it in a package bug?
-     */
 }

@@ -41,9 +41,9 @@ Run with: ant -f simple.xml
 
 </target>
 
-<!-- ======================================================== -->
-<!-- Show how to use some more of the Ant task's choices      -->
-<!-- ======================================================== -->
+<!-- ========================================================= -->
+<!-- Show how to use some more of the JDiff Ant task's options -->
+<!-- ========================================================= -->
 <target name="easyjdiff2" depends="init">
   <taskdef name="jdiff" 
            classname="jdiff.JDiffAntTask" 
@@ -54,10 +54,8 @@ Run with: ant -f simple.xml
       <dirset dir="SuperProduct1.0" includes="com/**"/>
     </old>
     <new name="Version 2">
-      <dirset dir="SuperProduct2.0" includes="com/**"/>
-<!-- multiple dirsets not yet supported
-      <dirset dir="SuperProduct2.0" includes="com/acme/spextra/**"/> 
--->
+      <dirset dir="SuperProduct2.0" includes="com/acme/**"/>
+      <dirset dir="SuperProduct2.0" includes="com/acme/**"/> 
     </new>
   </jdiff>
 
