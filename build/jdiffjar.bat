@@ -5,10 +5,10 @@ REM This script can be used to run JDiff on two jar files.
 REM
 REM Usage: jdiffjar <Old API name> <Old API jar absolute filename> <New API name> <New API jar absolute filename>
 REM
-REM e.g. jdiffjar SuperProduct1.0 C:\test_jdiff\jdiff\test\old\SuperProduct1.0.jar SuperProduct2.0 C:\test_jdiff\jdiff\test\new\SuperProduct2.0.jar 
+REM e.g. jdiffjar SuperProduct1.0 C:\jdiff\test\old\SuperProduct1.0.jar SuperProduct2.0 C:\jdiff\test\new\SuperProduct2.0.jar 
 
 setlocal
-set JDIFF_HOME=C:\test_jdiff\jdiff
+set JDIFF_HOME=C:\jdiff
 REM Change this to point to wherever classdoc is installed locally
 REM e.g. C:\myDir\classdoc.jar. By default, it is in the lib directory.
 set CLASSDOC=%JDIFF_HOME%\lib\classdoc.jar
@@ -43,7 +43,7 @@ REM STEP FOUR. Generate XML for the new API
 java -cp %INPUTJAR2%;%CLASSDOC%;%JDIFF%;%JAVA_HOME%\lib\tools.jar;%CLASSPATH% classdoc -docpath %INPUTJAR2% -doclet jdiff.JDiff -apiname %INPUTNAME2% %DOCLEVEL%
 
 REM STEP FIVE. Generate HTML report comparing the old and new APIs
-javadoc %DOCLEVEL% -J-Xmx128m -doclet jdiff.JDiff -docletpath %JDIFF% -d newdocs -oldapi %INPUTNAME1% -newapi %INPUTNAME2% -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath %JDIFF_HOME%\lib Null
+javadoc %DOCLEVEL% -J-Xmx128m -doclet jdiff.JDiff -docletpath %JDIFF% -d newdocs -stats -oldapi %INPUTNAME1% -newapi %INPUTNAME2% -javadocold "../../olddocs/" -javadocnew "../../newdocs/" %JDIFF_HOME%\lib\Null.java
 
 
 

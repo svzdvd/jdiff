@@ -108,6 +108,9 @@ now, but perhaps it did not with J2SE1.2 javadoc?
 Long Term:
 ---------
 
+Minor: when only one kind of change exists in an index, then that one 
+choice should be prechosen and highlighted.
+
 How to find which classes are documented in a J2SE release, since it is
 a subset of of the source classes shipped.
 [All files marked as 404 (not found) by Xenu shouold have their packages 
