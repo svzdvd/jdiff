@@ -154,6 +154,7 @@ Test classes with no packages
 Check that the comments file tests correctly for the correct APIs
 Test case of a package and a class having the same name
 Test case of moving a method into a superclass and vice versa
+Test nested class definitions more closely
 
 DOCUMENTATION, BUILD AND EXAMPLES
 =================================

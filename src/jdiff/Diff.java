@@ -347,7 +347,6 @@ class Diff {
                     diffFile.println("<HR>");
                     diffFile.println("<!-- End of nav bar -->");
                     
-                    
                     diffFile.println("<h2>");
                     diffFile.println(currPkgName + " Documentation Differences ");
                     diffFile.println("</h2>");

@@ -346,7 +346,7 @@ public class HTMLReportGenerator {
             while (iter.hasNext()) {
                 ClassDiff classDiff = (ClassDiff)(iter.next());
                 String className = classDiff.name_;
-                if (trace) System.out.println("Class/Interface " + className + " was changed.");
+                if (trace) System.out.println("Package " + pkgDiff.name_ + ", class/Interface " + className + " was changed.");
                 writeClassTableEntry(pkgName, className, 2, classDiff.isInterface_, null, false);
             }
             writeTableEnd();

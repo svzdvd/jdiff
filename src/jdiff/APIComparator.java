@@ -210,6 +210,7 @@ public class APIComparator {
         // Only add to the parent Diff object if some difference has been found
         if (differs != 0.0 || differsFlag) 
             apiDiff.packagesChanged.add(pkgDiff);
+
         Long denom = new Long(oldPkg.classes_.size() + newPkg.classes_.size());
         // This should never be zero because a package always has classes?
         if (denom.intValue() == 0) {
@@ -324,6 +325,11 @@ public class APIComparator {
              } else {
                  return 0.0;
              }
+         }
+         // Handle the case where the only change is in documentation or
+         // the modifiers
+         if (differsFlag && differs == 0.0) {
+             differs = 1.0;
          }
          if (trace)
              System.out.println("  Class " + classDiff.name_ + " had a difference of " + differs + "/" + denom.intValue());
