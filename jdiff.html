@@ -561,6 +561,16 @@ ANT is a general-purpose build tool and can be found
   </TR>
 
   <TR>
+    <TD VALIGN="top">The ANT Javadoc task for JDiff fails to find any
+    source files when using J2SE1.4</TD>
+    <TD VALIGN="top">The way Javadoc finds source files, classes and
+    packages changed in J2SE1.4. See the comments in the example and test
+    build.xml files about using the <code>sourcefiles</code> attribute
+    with the ANT task rather than the <code>packagenames</code> attribute.
+    </TD>
+  </TR>
+
+  <TR>
     <TD VALIGN="top">Comparing Jar files results in duplicate class
     changes being reported.</TD>
     <TD VALIGN="top">Be sure to use the <code>-packagesonly</code>
