@@ -26,10 +26,17 @@ javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet
 REM Generate XML for the new API
 javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -apiname "New Test API" -sourcepath new %NEWPKGS%
 
-REM Generate HTML report comparing the old and new APIs
+REM Generate an HTML report comparing the old and new APIs
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ..\lib Null
 copy ..\lib\background.gif newdocs
+
+REM Generate another HTML report comparing the old and new APIs, but ignoring 
+REM changes in documentation by using -nodocchanges
+mkdir newdocs2
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\src -d newdocs2 -nodocchanges -stats -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ..\lib Null
+copy ..\lib\background.gif newdocs2
 
 cd ..\build
 
 REM Now open the file ..\test\newdocs\changes.html in a browser
+REM and also open the file ..\test\newdocs2\changes.html in a browser

@@ -122,25 +122,6 @@ public class HTMLStatistics {
         }
     }
 
-    /** 
-     * Class to compare two PackageDiff objects.
-     */
-    class ComparePkgPdiffs implements Comparator {
-        /** 
-         * Compare two package diffs by their percentage difference,
-         * and then by name.
-         */
-        public int compare(Object obj1, Object obj2){
-            PackageDiff p1 = (PackageDiff)obj1;
-            PackageDiff p2 = (PackageDiff)obj2;
-            if (p1.pdiff < p2.pdiff)
-                return 1;
-            if (p1.pdiff > p2.pdiff)
-                return -1;
-            return p1.name_.compareTo(p2.name_);
-        }
-    }
-        
     /**
      * Emit all packages sorted by percentage difference, and a histogram
      * of the values.
@@ -210,25 +191,6 @@ public class HTMLStatistics {
         h_.writeText("</TABLE>");
     }
 
-    /** 
-     * Class to compare two ClassDiff objects.
-     */
-    class CompareClassPdiffs implements Comparator {
-        /** 
-         * Compare two class diffs by their percentage difference,
-         * and then by name.
-         */
-        public int compare(Object obj1, Object obj2){
-            ClassDiff c1 = (ClassDiff)obj1;
-            ClassDiff c2 = (ClassDiff)obj2;
-            if (c1.pdiff < c2.pdiff)
-                return 1;
-            if (c1.pdiff > c2.pdiff)
-                return -1;
-            return c1.name_.compareTo(c2.name_);
-        }
-    }
-        
     /**
      * Emit all classes sorted by percentage difference, and a histogram
      * of the values..

@@ -84,6 +84,10 @@ class MergeChanges {
             ctorDiff.oldExceptions_ = removedCtor.exceptions_;
             ctorDiff.newExceptions_ = addedCtor.exceptions_;
             ctorDiff.addModifiersChange(removedCtor.modifiers_.diff(addedCtor.modifiers_));
+            // Track changes in documentation
+            if (APIComparator.docChanged(removedCtor.doc_, addedCtor.doc_)) {
+                ctorDiff.documentationChange_ = "Documentation changed from ";
+            }
             classDiff.ctorsChanged.add(ctorDiff);
             // Now remove the entries from the remove and add lists
             classDiff.ctorsRemoved.remove(startRemoved);
@@ -116,6 +120,10 @@ class MergeChanges {
             methodDiff.oldExceptions_ = removedMethod.exceptions_;
             methodDiff.newExceptions_ = addedMethod.exceptions_;
             methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
+            // Track changes in documentation
+            if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
+                methodDiff.documentationChange_ = "Documentation changed from ";
+            }
             classDiff.methodsChanged.add(methodDiff);
             // Now remove the entries from the remove and add lists
             classDiff.methodsRemoved.remove(startRemoved);
@@ -147,6 +155,10 @@ class MergeChanges {
             fieldDiff.oldType_ = removedField.type_;
             fieldDiff.newType_ = addedField.type_;
             fieldDiff.addModifiersChange(removedField.modifiers_.diff(addedField.modifiers_));
+            // Track changes in documentation
+            if (APIComparator.docChanged(removedField.doc_, addedField.doc_)) {
+                fieldDiff.documentationChange_ = "Documentation changed from ";
+            }
             classDiff.fieldsChanged.add(fieldDiff);
             // Now remove the entries from the remove and add lists
             classDiff.fieldsRemoved.remove(startRemoved);

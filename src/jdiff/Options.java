@@ -242,7 +242,7 @@ public class Options {
                 continue;
             }
             if (options[i][0].toLowerCase().equals("-nodocchanges")) {
-                RootDocToXML.saveAllDocs = false;
+                HTMLReportGenerator.reportDocChanges = false;
                 continue;
             }
             if (options[i][0].toLowerCase().equals("-nosuggest")) {

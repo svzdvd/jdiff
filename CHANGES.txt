@@ -1,0 +1,30 @@
+1.0.3
+Fixed bugs in tracking package and class-level documentation changes.
+Fixed bugs in tracking documentation changes at the constructor,
+method and field level.
+Fixed a bug in indexes links to default constructors which had changed
+Fixed a bug that -nodocchanges did not behave as expected
+Fixed bug 472529 (updated documentation for new options)
+Fixed bug 472703 (background color is weird)
+Fixed bug 476930 (HTML tables need &nbsp; in some places) 
+Added feature request 476946 (location of user comments file)
+Added feature request 476201 (Need more statistics) by creating the
+-stats option which generates a statistics page in the report.
+Added feature request 476202 (Port to JDK1.4)
+
+1.0.2
+Added scripts for non-Windows platforms
+Added support for emitting all documentation for an API to the XML, and then
+tracking changes in the documentation, with links to the old and new comments. 
+Added the option -allsentences to emit all documentation for an API.
+Added an option -nodocchanges to disable the comparison of documentation.
+
+1.0.1
+Fixed bug 469794.
+Added script to generate differences between jar files.
+Added documentation about use behind firewalls.
+Added notes for future work.
+
+1.0 
+First release of JDiff.
+

@@ -137,7 +137,8 @@ steps to two.
 TESTS
 =====
 
-Check excludeTag with "@docset Internal" works
+Check excludeTag with "@docset Internal" works, or however the tag value is 
+defined in JDK1.4
 Test change from a class to an interface
 Test interfaces more
 Test very long names
@@ -150,7 +151,6 @@ Test classes with no packages
 Check that the comments file tests correctly for the correct APIs
 Test case of a package and a class having the same name
 Test case of moving a method into a superclass and vice versa
-Test that just changing the documentation creates a change in all cases
 
 DOCUMENTATION, BUILD AND EXAMPLES
 =================================

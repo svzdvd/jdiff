@@ -30,7 +30,7 @@ REM STEP FOUR. Generate XML for the new API
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\..\lib\jdiff.jar -apiname "SuperProduct 2.0" -sourcepath ..\SuperProduct2.0 %NEWPKGS%
 
 REM STEP FIVE. Generate HTML report comparing the old and new APIs
-javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\..\lib\jdiff.jar -d newdocs -oldapi "SuperProduct 1.0" -newapi "SuperProduct 2.0" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ..\..\lib Null
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\..\lib\jdiff.jar -d newdocs -stats -oldapi "SuperProduct 1.0" -newapi "SuperProduct 2.0" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ..\..\lib Null
 copy ..\..\lib\background.gif newdocs
 
 cd ..

@@ -29,6 +29,13 @@ javadoc -private -excludeclass private -excludemember private -J-Xmx128m -doclet
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ../lib Null
 cp ../lib/background.gif newdocs
 
+# Generate another HTML report comparing the old and new APIs, but ignoring 
+# changes in documentation by using -nodocchanges
+mkdir newdocs2
+javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ../src -d newdocs2 -oldapi "Old Test API" -newapi "New Test API" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" -sourcepath ../lib Null
+cp ../lib/background.gif newdocs2
+
 cd ../build
 
 echo "Now open the file ../test/newdocs/changes.html in a browser"
+echo "and also open the file ../test/newdocs2/changes.html in a browser"
