@@ -37,7 +37,7 @@ javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\..\lib\jdiff.jar;..\..\lib
 REM STEP FIVE. Generate HTML report comparing the old and new APIs
 javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath ..\..\lib\jdiff.jar;..\..\lib\xerces.jar -d newdocs -stats -oldapi "SuperProduct 1.0" -newapi "SuperProduct 2.0" -javadocold "../../olddocs/" -javadocnew "../../newdocs/" ..\..\lib\Null.java
 copy ..\..\lib\background.gif newdocs
-copy ..\..\lib\black.gif newdocs\changes\black.gif
+copy ..\..\lib\black.gif newdocs\black.gif
 
 cd ..
 
