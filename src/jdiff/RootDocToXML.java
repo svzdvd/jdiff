@@ -897,6 +897,9 @@ public class RootDocToXML {
     public static int endOfFirstSentence(String text, boolean writingToXML) {
         if (saveAllDocs && writingToXML)
             return -1;
+	int textLen = text.length();
+	if (textLen == 0)
+	    return 0;
         int index = -1;
         // Handle some special cases
         int fromindex = 0;
@@ -905,7 +908,6 @@ public class RootDocToXML {
             fromindex = ellipsis + 5;
         // If the first non-whitespace character is an @, go beyond it
         int i = 0;
-	int textLen = text.length();
         while (i < textLen && text.charAt(i) == ' ') {
             i++;
         }
