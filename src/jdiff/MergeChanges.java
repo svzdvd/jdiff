@@ -15,7 +15,11 @@ import java.util.*;
  * However, if only <i>one</i> method with a given name is removed, and  
  * only <i>one</i> method with the same name is added, we can convert these
  * operations to a change operation. For constructors, this is true if 
- * the types are the same. For fields, the field names have to be the same.
+ * the types are the same. For fields, the field names have to be the same, 
+ * though this should never occur, since field names are unique.
+ *
+ * Another merge which can be made is if two or more methods with the same name
+ * were marked as removed and added because of changes other than signature.
  *
  * @author Matthew Doar, doar@pobox.com
  */
@@ -100,7 +104,16 @@ class MergeChanges {
     /**
      * Convert some removed and added methods into changed methods.
      */
-    public static void mergeRemoveAddMethod(MethodAPI removedMethod, ClassDiff classDiff) {
+    public static void mergeRemoveAddMethod(MethodAPI removedMethod, 
+                                            ClassDiff classDiff) {
+        mergeSingleMethods(removedMethod, classDiff);
+        mergeMultipleMethods(removedMethod, classDiff);
+    }
+
+    /**
+     * Convert single removed and added methods into a changed method.
+     */
+    public static void mergeSingleMethods(MethodAPI removedMethod, ClassDiff classDiff) {
         // Search on the name of the method
         int startRemoved = classDiff.methodsRemoved.indexOf(removedMethod);
         int endRemoved = classDiff.methodsRemoved.lastIndexOf(removedMethod);
@@ -132,6 +145,67 @@ class MergeChanges {
                 System.out.println("Merged the removal and addition of method " + 
                                    removedMethod.name_ + 
                                    " into one change");
+            }
+        }
+    }
+
+    /**
+     * Convert multiple removed and added methods into changed methods.
+     * This handles the case where the methods' signatures are unchanged, but
+     * something else changed.
+     */
+    public static void mergeMultipleMethods(MethodAPI removedMethod, ClassDiff classDiff) {
+        // Search on the name and signature of the method
+        int startRemoved = classDiff.methodsRemoved.indexOf(removedMethod);
+        int endRemoved = classDiff.methodsRemoved.lastIndexOf(removedMethod);
+        int startAdded = classDiff.methodsAdded.indexOf(removedMethod);
+        int endAdded = classDiff.methodsAdded.lastIndexOf(removedMethod);
+        if (startRemoved != -1 && endRemoved != -1 && 
+            startAdded != -1 && endAdded != -1) {
+            // Find the index of the current removed method
+            int removedIdx = -1;
+            for (int i = startRemoved; i <= endRemoved; i++) {                
+                if (removedMethod.equalSignatures(classDiff.methodsRemoved.get(i))) {
+                    removedIdx = i;
+                    break;
+                }
+            }
+            if (removedIdx == -1) {
+                System.out.println("Error: removed method index not found");
+                System.exit(5);
+            }
+            // Find the index of the added method with the same signature, if 
+            // it exists
+            int addedIdx = -1;
+            for (int i = startAdded; i <= endAdded; i++) {
+                if (removedMethod.equalSignatures(classDiff.methodsAdded.get(i)))
+                    addedIdx = i;
+                    break;
+            }
+            if (addedIdx == -1)
+                return;
+            MethodAPI addedMethod = (MethodAPI)(classDiff.methodsAdded.get(addedIdx));
+            // Create a MemberDiff for this change
+            MemberDiff methodDiff = new MemberDiff(removedMethod.name_);
+            methodDiff.oldType_ = removedMethod.returnType_;
+            methodDiff.newType_ = addedMethod.returnType_;
+            methodDiff.oldSignature_ = removedMethod.getSignature();
+            methodDiff.newSignature_ = addedMethod.getSignature();
+            methodDiff.oldExceptions_ = removedMethod.exceptions_;
+            methodDiff.newExceptions_ = addedMethod.exceptions_;
+            methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
+            // Track changes in documentation
+            if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
+                methodDiff.documentationChange_ = "Documentation changed from ";
+            }
+            classDiff.methodsChanged.add(methodDiff);
+            // Now remove the entries from the remove and add lists
+            classDiff.methodsRemoved.remove(removedIdx);
+            classDiff.methodsAdded.remove(addedIdx);
+            if (trace) {
+                System.out.println("Merged the removal and addition of method " + 
+                                   removedMethod.name_ + 
+                                   " into one change. There were multiple methods of this name.");
             }
         }
     }

@@ -100,7 +100,16 @@ class MethodAPI implements Comparable {
         return false;
     }
     
-    /** Cached result of getSignature. */
+    /** 
+     * Tests two methods for equality, using just the signature.
+     */
+    public boolean equalSignatures(Object o) {
+        if (getSignature().compareTo(((MethodAPI)o).getSignature()) == 0)
+            return true;
+        return false;
+    }
+    
+    /** Cached result of getSignature(). */
     public String signature_ = null;
 
     /** Return the signature of the method. */

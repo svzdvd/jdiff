@@ -145,7 +145,9 @@ public class Comments {
      * Convert @link tags to HTML links. 
      * Doesn't generate links to methods very well due to the difficulty of 
      * generating the required but unspecified signature.
-     * Also, may not work with links to inner classes. 
+     * It may not work with links to inner classes, and links from one
+     * package.html to another package.html file will not work.
+     * Links to named anchors and relative links also fail.
      */
     public static String convertAtLinks(String text, String currentElement, 
                                         PackageAPI pkg, ClassAPI cls) {
@@ -197,7 +199,8 @@ public class Comments {
                     // Can occur if the link ends }.
                     if (name.endsWith("}"))
                         name = name.substring(0, name.length()-1);
-                    res += " <A HREF=\"../" + ref + ".html\" target=\"_top\">" + name + "</A>";
+                    res += " <A HREF=\"" + HTMLReportGenerator.newDocPrefix +
+                        ref + ".html\" target=\"_top\">" + name + "</A>";
                 }
             } else {
                 res += " " + tok; // Changes whitespace only, trimmed later

@@ -285,7 +285,6 @@ public class APIComparator {
             pkgDiff.classesChanged.add(classDiff);
 
         // Get the numbers of affected elements from the classDiff object
-         
          differs = 
             classDiff.ctorsRemoved.size() + classDiff.ctorsAdded.size() +
             classDiff.ctorsChanged.size() +

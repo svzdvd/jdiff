@@ -4,6 +4,8 @@ Fixed bugs in tracking documentation changes at the constructor,
 method and field level.
 Fixed a bug in indexes links to default constructors which had changed
 Fixed a bug that -nodocchanges did not behave as expected
+Fixed a bug in converting @link tags to HTML links, but some broken
+links remain.
 Fixed bug 472529 (updated documentation for new options)
 Fixed bug 472703 (background color is weird)
 Fixed bug 476930 (HTML tables need &nbsp; in some places) 
@@ -11,6 +13,7 @@ Added feature request 476946 (location of user comments file)
 Added feature request 476201 (Need more statistics) by creating the
 -stats option which generates a statistics page in the report.
 Added feature request 476202 (Port to JDK1.4)
+Improved merging of additions and removals into changes for methods.
 
 1.0.2
 Added scripts for non-Windows platforms
