@@ -8,9 +8,9 @@ javac -classpath %JAVA_HOME%\lib\tools.jar;..\lib\xerces.jar;%CLASSPATH% new\Add
 
 REM Create jar files of the each version
 cd old
-jar cf SuperProduct10.jar RemovedPackage\*.class ChangedPackage\*.class ChangedPackageDoc\*.class ChangedPackageDoc2\*.class
+jar cf SuperProduct10.jar RemovedPackage\*.class ChangedPackage\*.class ChangedPackageDoc\*.class ChangedPackageDoc2\*.class *.class
 
 cd ..\new
-jar cf SuperProduct20.jar AddedPackage\*.class ChangedPackage\*.class ChangedPackageDoc\*.class ChangedPackageDoc2\*.class
+jar cf SuperProduct20.jar AddedPackage\*.class ChangedPackage\*.class ChangedPackageDoc\*.class ChangedPackageDoc2\*.class *.class
 
 cd ..\..\build
