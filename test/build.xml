@@ -157,7 +157,7 @@ SuperProduct.
   private="yes"
   sourcepath="${JDIFF_HOME}"
   destdir="${NEW_DOCS}"
-  packagenames="${JDIFF_HOME}/lib/Null.java">
+  sourcefiles="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"
     path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-oldapi" value="${OLD_API}"/>
@@ -186,7 +186,7 @@ SuperProduct.
   private="yes"
   sourcepath="${JDIFF_HOME}"
   destdir="${NEW_DOCS2}"
-  packagenames="${JDIFF_HOME}/lib/Null.java">
+  sourcefiles="${JDIFF_HOME}/lib/Null.java">
   <doclet name="jdiff.JDiff"
     path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
     <param name="-docchanges"/>

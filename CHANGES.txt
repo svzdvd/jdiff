@@ -1,4 +1,4 @@
-1.0.x
+1.0.9 - 14th June 2003
 Darren Carlton <darren@bea.com> pointed out that Javadoc
 package.html files may, in fact, be full HTML documents.
 This fix only solves the issue for package.html
