@@ -30,7 +30,8 @@ http://sourceforge.net/projects/javadiff/
 
 SYSTEM REQUIREMENTS:
 
-JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4.0, 1.4.1.
+JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4.0, 1.4.1, 1.4.2 and 
+J2SE1.5.0.
 
 You need to have xerces.jar (used for XML parsing) from the Apache
 project on your classpath, and also on the doclet path parameter for
