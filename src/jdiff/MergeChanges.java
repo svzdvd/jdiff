@@ -90,7 +90,7 @@ class MergeChanges {
             ctorDiff.addModifiersChange(removedCtor.modifiers_.diff(addedCtor.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedCtor.doc_, addedCtor.doc_)) {
-                ctorDiff.documentationChange_ = "Documentation changed from ";
+                ctorDiff.documentationChange_ = Diff.emitDocDiffs(removedCtor.doc_, addedCtor.doc_, classDiff.name_);
             }
             classDiff.ctorsChanged.add(ctorDiff);
             // Now remove the entries from the remove and add lists
@@ -135,7 +135,7 @@ class MergeChanges {
             methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
-                methodDiff.documentationChange_ = "Documentation changed from ";
+                methodDiff.documentationChange_ = Diff.emitDocDiffs(removedMethod.doc_, addedMethod.doc_, removedMethod.name_);
             }
             classDiff.methodsChanged.add(methodDiff);
             // Now remove the entries from the remove and add lists
@@ -196,7 +196,7 @@ class MergeChanges {
             methodDiff.addModifiersChange(removedMethod.modifiers_.diff(addedMethod.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedMethod.doc_, addedMethod.doc_)) {
-                methodDiff.documentationChange_ = "Documentation changed from ";
+                methodDiff.documentationChange_ =Diff.emitDocDiffs(removedMethod.doc_, addedMethod.doc_, removedMethod.name_) ;
             }
             classDiff.methodsChanged.add(methodDiff);
             // Now remove the entries from the remove and add lists
@@ -231,7 +231,7 @@ class MergeChanges {
             fieldDiff.addModifiersChange(removedField.modifiers_.diff(addedField.modifiers_));
             // Track changes in documentation
             if (APIComparator.docChanged(removedField.doc_, addedField.doc_)) {
-                fieldDiff.documentationChange_ = "Documentation changed from ";
+                fieldDiff.documentationChange_ = Diff.emitDocDiffs(removedField.doc_, addedField.doc_, removedField.name_);
             }
             classDiff.fieldsChanged.add(fieldDiff);
             // Now remove the entries from the remove and add lists

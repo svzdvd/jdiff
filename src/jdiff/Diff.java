@@ -106,6 +106,21 @@ class Diff {
                 diffFile.println();
                 diffFile.println("<blockquote>");
                 diffFile.println("This file contains all the changes in documentation as colored differences.");
+                if (deleteEffect == 0)
+                    diffFile.println("Deletions are shown <strike>like this</strike>, and");
+                else if (deleteEffect == 1)
+                    diffFile.println("Deletions are shown <span style=\"background: #FFCCCC\">like this</span>, and");
+                if (insertEffect == 0)
+                    diffFile.println("additions are shown in red <font color=\"red\">like this</font>.");
+                else if (insertEffect == 1)
+                    diffFile.println("additions are shown <span style=\"background: #FFFF00\">like this</span>.");
+                diffFile.println("</blockquote>");
+
+                diffFile.println("<blockquote>");
+                diffFile.println("If no deletions or additions are shown in an entry, the HTML tags will be what has changed. The new HTML tags are shown in the differences.");
+                diffFile.println("</blockquote>");
+
+                diffFile.println("<blockquote>");
                 diffFile.println(" Note that an HTML error in the new documentation may cause the display of other documentation changes to be presented incorrectly. For instance, failure to close a &ltcode&gt; tag will cause all subsequent paragraphs to be displayed differently.");
                 diffFile.println("</blockquote>");
                 diffFile.println("<hr>");

@@ -683,7 +683,7 @@ public class RootDocToXML {
     /** 
      * Find the index of the end of the first sentence in the given text.
      * This is an extended version of the algorithm used by the DocCheck 
-     * JavaDoc doclet. It checks for @tags too.
+     * JavaDoc doclet. It checks for &#064;tags too.
      *
      * @param text The text to be searched.
      * @param writingToXML Set to true when writing out XML.
@@ -694,40 +694,46 @@ public class RootDocToXML {
     public static int endOfFirstSentence(String text, boolean writingToXML) {
         if (saveAllDocs && writingToXML)
             return -1;
-        int index = -1;  // Use the brute force approach.
-        index = minIndex(index, text.indexOf("? " ));
-        index = minIndex(index, text.indexOf("?\t"));
-        index = minIndex(index, text.indexOf("?\n"));
-        index = minIndex(index, text.indexOf("?\r"));
-        index = minIndex(index, text.indexOf("?\f"));
-        index = minIndex(index, text.indexOf("! " ));
-        index = minIndex(index, text.indexOf("!\t"));
-        index = minIndex(index, text.indexOf("!\n"));
-        index = minIndex(index, text.indexOf("!\r"));
-        index = minIndex(index, text.indexOf("!\f"));
-        index = minIndex(index, text.indexOf(". " ));
-        index = minIndex(index, text.indexOf(".\t"));
-        index = minIndex(index, text.indexOf(".\n"));
-        index = minIndex(index, text.indexOf(".\r"));
-        index = minIndex(index, text.indexOf(".\f"));
-        index = minIndex(index, text.indexOf("@param"));
-        index = minIndex(index, text.indexOf("@return"));
-        index = minIndex(index, text.indexOf("@throw"));
-        index = minIndex(index, text.indexOf("@serial"));
-        index = minIndex(index, text.indexOf("@exception"));
-        index = minIndex(index, text.indexOf("@deprecate"));
-        index = minIndex(index, text.indexOf("@author"));
-        index = minIndex(index, text.indexOf("@since"));
-        index = minIndex(index, text.indexOf("@see"));
-        index = minIndex(index, text.indexOf("@version"));
+        int index = -1;
+        // Handle some special cases
+        int fromindex = 0;
+        int ellipsis = text.indexOf(". . ."); // Handles one instances of this
+        if (ellipsis != -1)
+            fromindex = ellipsis + 5;
+        // Use the brute force approach.
+        index = minIndex(index, text.indexOf("? ", fromindex));
+        index = minIndex(index, text.indexOf("?\t", fromindex));
+        index = minIndex(index, text.indexOf("?\n", fromindex));
+        index = minIndex(index, text.indexOf("?\r", fromindex));
+        index = minIndex(index, text.indexOf("?\f", fromindex));
+        index = minIndex(index, text.indexOf("! ", fromindex));
+        index = minIndex(index, text.indexOf("!\t", fromindex));
+        index = minIndex(index, text.indexOf("!\n", fromindex));
+        index = minIndex(index, text.indexOf("!\r", fromindex));
+        index = minIndex(index, text.indexOf("!\f", fromindex));
+        index = minIndex(index, text.indexOf(". ", fromindex));
+        index = minIndex(index, text.indexOf(".\t", fromindex));
+        index = minIndex(index, text.indexOf(".\n", fromindex));
+        index = minIndex(index, text.indexOf(".\r", fromindex));
+        index = minIndex(index, text.indexOf(".\f", fromindex));
+        index = minIndex(index, text.indexOf("@param", fromindex));
+        index = minIndex(index, text.indexOf("@return", fromindex));
+        index = minIndex(index, text.indexOf("@throw", fromindex));
+        index = minIndex(index, text.indexOf("@serial", fromindex));
+        index = minIndex(index, text.indexOf("@exception", fromindex));
+        index = minIndex(index, text.indexOf("@deprecate", fromindex));
+        index = minIndex(index, text.indexOf("@author", fromindex));
+        index = minIndex(index, text.indexOf("@since", fromindex));
+        index = minIndex(index, text.indexOf("@see", fromindex));
+        index = minIndex(index, text.indexOf("@version", fromindex));
         if (doExclude && excludeTag != null)
             index = minIndex(index, text.indexOf(excludeTag));
-        index = minIndex(index, text.indexOf("@vtexclude"));
-        index = minIndex(index, text.indexOf("@vtinclude"));
+        index = minIndex(index, text.indexOf("@vtexclude", fromindex));
+        index = minIndex(index, text.indexOf("@vtinclude", fromindex));
         index = minIndex(index, text.indexOf("<p>", 2)); // Not at start
         index = minIndex(index, text.indexOf("<P>", 2)); // Not at start
         index = minIndex(index, text.indexOf("<blockquote", 2));  // Not at start
-        index = minIndex(index, text.indexOf("<pre")); // May contain anything!
+        index = minIndex(index, text.indexOf("<pre", fromindex)); // May contain anything!
         // Avoid the char at the start of a tag in some cases
         if (index != -1 &&  
             (text.charAt(index) == '@' || text.charAt(index) == '<')) {
@@ -737,7 +743,7 @@ public class RootDocToXML {
         
 /* Not used for jdiff, since tags are explicitly checked for above.
         // Look for a sentence terminated by an HTML tag.
-        index = minIndex(index, text.indexOf(".<"));
+        index = minIndex(index, text.indexOf(".<", fromindex));
         if (index == -1) {
             // If period-whitespace etc was not found, check to see if
             // last character is a period,

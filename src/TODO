@@ -53,10 +53,14 @@ ableMemberDocImpl.java:141)
 Update: 1.4 works but text seems more spread out in changed methods and are 
 there broken links?
 
+Handle @docroot doc tags in JavaDoc1.4
+
 Does JavaDoc add () for links to methods with no arguments? Perhaps it does 
 now but did not with JDK1.2 javadoc?
 
 Unix scripts need chmod +x and dos2unix to work
+
+Ensure that packages in JDK releases match the packages used in JDiff scripts
 
 DESIGN
 ======
@@ -82,8 +86,6 @@ report generator creates the links? (new and old)
 Add support for XML parser use behind firewalls with no connection out at all.
 
 Support inherited exclusion in RootDocToXML.java
-
-Acknowledge xerces.jar
 
 Add copyright reference to all files?
 
@@ -188,6 +190,7 @@ REPORT PRESENTATION
 ===================
 
 Add next, prev class etc links
+
 Better text demo of showing all private changes in APIs
 
 Fix the small size of old and new links
