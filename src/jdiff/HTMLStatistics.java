@@ -111,7 +111,6 @@ public class HTMLStatistics {
             h_.writeText("<a name=\"numbers\"></a>");
             h_.writeText("<h2>Differences By Number and Type</h2>");
             h_.writeText("<BLOCKQUOTE>");
-            // TODO should there be an option to include the sub totals?
             h_.writeText("The numbers of program elements (packages, classes. constructors, methods and fields) which are recorded as removed, added or changed includes only the highest-level program elements. That is, if a class with two methods was added, the number of methods added does not include those two methods, but the number of classes added does include that class.");
             h_.writeText("</BLOCKQUOTE>");
 

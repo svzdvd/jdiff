@@ -471,6 +471,8 @@ public class HTMLReportGenerator {
             if (oldDocPrefix != null) 
                 classDiff.documentationChange_ += "<A HREF=\"" + oldClassRef +
                     ".html\" target=\"_self\"><tt>old</tt></A> to ";
+            else
+                classDiff.documentationChange_ += "<tt>old</tt> to ";
             classDiff.documentationChange_ += "<A HREF=\"" + classRef + 
                 ".html\" target=\"_self\"><tt>new</tt></A>. ";
             writeText(classDiff.documentationChange_);
@@ -1217,6 +1219,8 @@ public class HTMLReportGenerator {
                 memberDiff.documentationChange_ += "<A HREF=\"" + 
                     oldMemberRef + ".html#" + className + "(" + oldType + 
                     ")\" target=\"_self\"><tt>old</tt></A> to ";
+            else 
+                memberDiff.documentationChange_ += "<tt>old</tt> to ";
             memberDiff.documentationChange_ += "<A HREF=\"" + memberRef + 
                 ".html#" + className + "(" + newType + 
                 ")\" target=\"_self\"><tt>new</tt></A>.<br>";
@@ -1369,6 +1373,8 @@ public class HTMLReportGenerator {
                 memberDiff.documentationChange_ += "<A HREF=\"" + 
                     oldMemberRef + ".html#" + memberName + "(" + 
                     oldSignature + ")\" target=\"_self\"><tt>old</tt></A> to ";
+            else
+                memberDiff.documentationChange_ += "<tt>old</tt> to ";
             memberDiff.documentationChange_ += "<A HREF=\"" + memberRef + 
                 ".html#" + memberName + "(" + newSignature + 
                 ")\" target=\"_self\"><tt>new</tt></A>.<br>";
@@ -1514,6 +1520,8 @@ public class HTMLReportGenerator {
             if (oldDocPrefix != null) 
                 memberDiff.documentationChange_ += "<A HREF=\"" + 
                     oldMemberRef + ".html#" + memberName + "\" target=\"_self\"><tt>old</tt></A> to ";
+            else
+                memberDiff.documentationChange_ += "<tt>old</tt> to ";
             memberDiff.documentationChange_ += "<A HREF=\"" + memberRef + 
                 ".html#" + memberName + "\" target=\"_self\"><tt>new</tt></A>.<br>";
         }

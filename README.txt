@@ -43,6 +43,10 @@ ACKNOWLEDGEMENTS
 JDiff uses Stuart D. Gathman's Java translation of Gene Myers' O(ND) 
 difference algorithm.
 
+JDiff also includes a script to use the classdoc application from
+http://www.jensgulden.de/, Jens Gulden, mail@jensgulden.de,
+to call a doclet such as jdiff on a .jar file rather than on source.
+
 Many thanks to the reviewers at Sun and Vitria who gave feedback on early
 versions of JDiff output, and also to the distillers of Laphroaig, and to
 Arturo Fuente for his consistently fine cigars which helped inspire

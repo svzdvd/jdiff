@@ -52,7 +52,7 @@ Test @value changes
 
 Use -linksource in tests with J2SE1.4. (Source info is now in the XML)
 
-Add interactive ability with jdiff.JDiff for easiest use
+Add interactive ability with jdiff.JDiff for easiest use?
 
 Add progress bars for the longer parts of the program?
 
@@ -151,6 +151,8 @@ to scan the current product at the same time as comparing it, reducing three
 steps to two.
 
 The index files are quite large with J2SE14 - 1.7MB for an HTML file.
+
+Provide an option to include the sub totals with the statistics table?
 
 TESTS
 =====
