@@ -125,8 +125,9 @@ class APIHandler extends DefaultHandler {
             boolean isVolatile = false;
             if (attributes.getValue("volatile").compareTo("true") == 0)
                 isVolatile = true;
+            String value = attributes.getValue("value");
             XMLToAPI.addField(fieldName, fieldType, isTransient, isVolatile, 
-                              getModifiers(attributes));
+                              value, getModifiers(attributes));
         } else if (localName.compareTo("param") == 0) {
             String paramName = attributes.getValue("name");
             String paramType = attributes.getValue("type");

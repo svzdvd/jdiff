@@ -35,13 +35,13 @@ class MethodAPI implements Comparable {
     public String exceptions_ = "no exceptions";
 
     /** Set if this method is abstract. */
-    boolean isAbstract_ = false;
+    public boolean isAbstract_ = false;
 
     /** Set if this method is native. */
-    boolean isNative_ = false;
+    public boolean isNative_ = false;
 
     /** Set if this method is synchronized. */
-    boolean isSynchronized_ = false;
+    public boolean isSynchronized_ = false;
 
     /** Modifiers for this class. */
     public Modifiers modifiers_;

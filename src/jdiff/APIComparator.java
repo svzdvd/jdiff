@@ -721,6 +721,15 @@ public class APIComparator {
                             memberDiff.addModifiersChange(changeText);
                             differs = true;
                         }
+                        // Change in value of the field
+                        if (oldField.value_ != null &&
+                            newField.value_ != null &&
+                            oldField.value_.compareTo(newField.value_) != 0) {
+                            String changeText = "Changed in value from " + oldField.value_
+                                + " to " + newField.value_ +".";
+                            memberDiff.addModifiersChange(changeText);
+                            differs = true;
+                        }
                         // Track changes in documentation
                         if (docChanged(oldField.doc_, newField.doc_)) {
                             String fqName = pkgDiff.name_ + "." + classDiff.name_;

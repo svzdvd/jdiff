@@ -353,6 +353,12 @@ public class RootDocToXML {
             outputFile.println("\"");
             outputFile.print("      transient=\"" + fd[i].isTransient() + "\"");
             outputFile.println(" volatile=\"" + fd[i].isVolatile() + "\"");
+/* JDK 1.4 and later */
+/*
+            String value = fd[i].constantValueExpression();
+            if (value != null)
+                outputFile.println(" value=\"" + value + "\"");
+*/
             addCommonModifiers(fd[i], 6);
             outputFile.println(">");
 

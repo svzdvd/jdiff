@@ -28,10 +28,13 @@ class FieldAPI implements Comparable {
     public String inheritedFrom_ = null;
 
     /** Set if this field is transient. */
-    boolean isTransient_ = false;
+    public boolean isTransient_ = false;
 
     /** Set if this field is volatile. */
-    boolean isVolatile_ = false;
+    public boolean isVolatile_ = false;
+
+    /** If non-null, this is the value of this field. */
+    public String value_ = null;
 
     /** Modifiers for this class. */
     public Modifiers modifiers_;
@@ -42,11 +45,12 @@ class FieldAPI implements Comparable {
     /** Constructor. */
     public FieldAPI(String name, String type, 
                     boolean isTransient, boolean isVolatile, 
-                    Modifiers modifiers) {
+                    String value, Modifiers modifiers) {
         name_ = name;
         type_ = type;
         isTransient_ = isTransient;
         isVolatile_ = isVolatile;
+        value_ = value;
         modifiers_ = modifiers;
     }
 
@@ -57,6 +61,7 @@ class FieldAPI implements Comparable {
         inheritedFrom_ = f.inheritedFrom_;
         isTransient_ = f.isTransient_;
         isVolatile_ = f.isVolatile_;
+        value_ = f.value_;
         modifiers_ = f.modifiers_; // Note: shallow copy
         doc_ = f.doc_;
     }
@@ -77,6 +82,11 @@ class FieldAPI implements Comparable {
         }
         if (isVolatile_ != oFieldAPI.isVolatile_) {
             return -1;
+        }
+        if (value_ != null && oFieldAPI.value_ != null) {
+            comp = value_.compareTo(oFieldAPI.value_);
+            if (comp != 0)
+                return comp;
         }
         comp = modifiers_.compareTo(oFieldAPI.modifiers_);
         if (comp != 0)

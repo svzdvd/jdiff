@@ -289,11 +289,11 @@ public class XMLToAPI {
      * @param modifiers Modifiers for this field.
      */
     public static void addField(String name, String type, boolean isTransient,
-                                boolean isVolatile, Modifiers modifiers) {
+                                boolean isVolatile, String value, Modifiers modifiers) {
         String t = type;
         if (t == null)
             t = "void";
-        api_.currField_ = new FieldAPI(name, t, isTransient, isVolatile, modifiers);
+        api_.currField_ = new FieldAPI(name, t, isTransient, isVolatile, value, modifiers);
         api_.currClass_.fields_.add(api_.currField_);
     }
 

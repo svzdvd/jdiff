@@ -1,6 +1,7 @@
 1.0.6 - TODO
 Added better detection of a method or field moving to or from a parent
 class.
+Added checking for changes in field values (the @value tag in J2SE1.4).
 Changed the link to existing Javadoc link to the specific package or class.
 More cleaning up of the generated HTML.
 
