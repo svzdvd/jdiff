@@ -149,6 +149,16 @@ public class JDiff extends Doclet {
      * or later is implied.
      */
     public static void main(String[] args) {
+        String javaVersion = System.getProperty("java.version");
+        if (trace)
+            System.out.println("Java version: " + javaVersion);
+        if (javaVersion.startsWith("1.1") || 
+            javaVersion.startsWith("1.2") || 
+            javaVersion.startsWith("1.3")) {
+            System.out.println("Error: cannot run jdiff.JDiff directly with J2SE version " + javaVersion + ", since it is earlier than version 1.4. Call javadoc directly instead.");
+            return;
+        }
+
         if (args.length != 4) {
             System.out.println("Usage: jdiff jdiff.JDiff <old product name> <old source directory> <new product name> <new source directory>");
             System.out.println("e.g. jdiff jdiff.JDiff SuperProduct1.0 C:\\jdiff\\examples\\SuperProduct1.0 SuperProduct2.0 C:\\jdiff\\examples\\SuperProduct2.0");
@@ -208,16 +218,6 @@ public class JDiff extends Doclet {
 ///        diffJavaDocArgs[10] = "../../newdocs/";
 //        jdiffHome = jdiffHome.replace('\\', '/');
 //        diffJavaDocArgs[5] = jdiffHome + "/lib/Null.java";
-
-        String javaVersion = System.getProperty("java.version");
-        if (trace)
-            System.out.println("Java version: " + javaVersion);
-        if (javaVersion.startsWith("1.1") || 
-            javaVersion.startsWith("1.2") || 
-            javaVersion.startsWith("1.3")) {
-            System.out.println("Error: cannot run jdiff.JDiff directly with J2SE version " + javaVersion + ", since it is earlier than version 1.4. Call javadoc directly instead.");
-            return;
-        }
 
         String programName = "JDiff";
         String defaultDocletClassName = "jdiff.JDiff";
