@@ -146,238 +146,59 @@ public class JDiff extends Doclet {
     
     /** 
      * This method is only called when running JDiff as a standalone
-     * application. Since this calls Javadoc directly, the use of J2SE1.4 
-     * or later is implied.
+     * application, and uses ANT to execute the build configuration in the 
+     * XML configuration file passed in.
      */
     public static void main(String[] args) {
-        if (trace)
-            System.out.println("Java version: " + javaVersion);
-        if (javaVersion.startsWith("1.1") || 
-            javaVersion.startsWith("1.2") || 
-            javaVersion.startsWith("1.3")) {
-            earlyJDK = true;
-        }
-
-        if (args.length != 1) {
-            System.out.println("Usage: jdiff jdiff.JDiff <XML configuration file>");
-            System.out.println("e.g. jdiff jdiff.JDiff C:\\jdiff\\examples\\example.xml");
+        if (args.length == 1) {
+            System.out.println("usage: java jdiff.JDiff [-buildfile <XML configuration file>]");
+            System.out.println("If no build file is specified, the local build.xml file is used.");
             return;
         }
-
-        String configFile = args[0];
-        Config.readFile(configFile);
-
-        String oldProductName = Config.oldProductName();
-        String oldSrcDirName = Config.oldSrcDirName();
-        String newProductName = Config.newProductName();
-        String newSrcDirName = Config.newSrcDirName();
-
-        String oldPkgs = getTopDirs(oldSrcDirName);
-        String newPkgs = getTopDirs(newSrcDirName);
-        if (oldPkgs == null) {
-            System.out.println("JDiff: no packages found for the old API");
-            return;
-        }
-        if (newPkgs == null) {
-            System.out.println("JDiff: no packages found for the new API");
-            return;
-        }
-
-        // Create two separate String[] argument objects for Javadoc
-        List oldJavaDocArgs = new ArrayList();
-        oldJavaDocArgs.add("-private");
-        oldJavaDocArgs.add("-excludeclass");
-        oldJavaDocArgs.add("private");
-        oldJavaDocArgs.add("-excludemember");
-        oldJavaDocArgs.add("private");
-        // JDiff arguments
-        oldJavaDocArgs.add("-apiname");
-        oldJavaDocArgs.add("\"" + oldProductName + "\"");
-        oldJavaDocArgs.add("-sourcepath");
-        oldJavaDocArgs.add("\"" + oldSrcDirName + "\"");
-        if (earlyJDK) {
-            StringTokenizer st = new StringTokenizer(oldPkgs, ":");
-            while (st.hasMoreTokens()) {
-                oldJavaDocArgs.add(st.nextToken());
-            }
-        } else {
-            oldJavaDocArgs.add("-subpackages");
-            oldJavaDocArgs.add(oldPkgs);
-        }
-        String[] oldJavaDocArgsStr = new String[oldJavaDocArgs.size()];
-        oldJavaDocArgsStr = (String[])oldJavaDocArgs.toArray(oldJavaDocArgsStr);
-
-        List newJavaDocArgs = new ArrayList();
-        newJavaDocArgs.add("-private");
-        newJavaDocArgs.add("-excludeclass");
-        newJavaDocArgs.add("private");
-        newJavaDocArgs.add("-excludemember");
-        newJavaDocArgs.add("private");
-        // JDiff arguments
-        newJavaDocArgs.add("-apiname");
-        newJavaDocArgs.add("\"" + newProductName + "\"");
-        newJavaDocArgs.add("-sourcepath");
-        newJavaDocArgs.add("\"" + newSrcDirName + "\"");
-        if (earlyJDK) {
-            StringTokenizer st = new StringTokenizer(newPkgs, ":");
-            while (st.hasMoreTokens()) {
-                newJavaDocArgs.add(st.nextToken());
-            }
-        } else {
-            newJavaDocArgs.add("-subpackages");
-            newJavaDocArgs.add(newPkgs);
-        }
-        String[] newJavaDocArgsStr = new String[newJavaDocArgs.size()];
-        newJavaDocArgsStr = (String[])newJavaDocArgs.toArray(newJavaDocArgsStr);
-
-        String programName = "JDiff";
-        String defaultDocletClassName = "jdiff.JDiff";
-
-        // First generate the XML for the old API
-        System.out.println();
-        System.out.println("JDiff: Step 1 of 3. Creating XML representation of the old API");
-        int rc = runJavadoc(programName, defaultDocletClassName, oldJavaDocArgsStr);
-        if (rc != 0)
-            return;
-
-        // Then generate the XML for the new API
-        System.out.println();
-        System.out.println("JDiff: Step 2 of 3. Creating XML representation of the old API");
-        int rc2 = runJavadoc(programName, defaultDocletClassName, newJavaDocArgsStr);
-        if (rc2 != 0)
-            return;
-
-        // Finally use the two XML files to generate the HTML report of 
-        // the differences between the two APIs. 
-        System.out.println();
-        System.out.println("JDiff: Step 3 of 3. Comparing APIs and generating the HTML report");
-        JDiff.compareAPIs = true;
-        JDiff.writeXML = false;
-        // This doesn't call Javadoc, so set the variables directly.
-        // TODO would be neater to use the Options class
-        HTMLReportGenerator.doStats = true; // -stats
-        oldProductName = oldProductName.replace(' ', '_');
-        JDiff.oldFileName = oldProductName + ".xml"; // -oldapi
-        newProductName = newProductName.replace(' ', '_');
-        JDiff.newFileName = newProductName + ".xml"; // -newapi
-        // Call the doclet start method directly.
-        start(null);
+        int rc = runAnt(args);
+        return;
     }
 
     /** 
-     * Invoke Javadoc by reflection, so that J2SE1.3 can compile code which
-     * uses methods defined in J2SE1.4. 
+     * Invoke ANT by reflection. 
      *
-     * @return The integer return code from running Javadoc.
+     * @return The integer return code from running ANT.
      */
-    public static int runJavadoc(String programName, 
-                                 String defaultDocletClassName, 
-                                 String[] args) {
-        if (earlyJDK) {
-            // Assumes that the class files for JDiff are in the classpath
-            // which was used to invoke JDiff directly. This does not work
-            // from inside an applet.
-            String allArgs = "javadoc -J-Xmx128m -doclet jdiff.JDiff -docletpath " + System.getProperty("java.class.path");
-            for (int i = 0; i < args.length; i++) {
-                allArgs += (" " + args[i]);
-            }
-            System.out.println("Javadoc command line:");
-            System.out.println(allArgs);
-        
-            Process proc  = null;
-            int retCode = -1;
-            try {
-                proc = Runtime.getRuntime().exec(allArgs);
-                StreamReader op = new StreamReader(proc.getInputStream());
-                StreamReader err = new StreamReader(proc.getErrorStream());
-                op.start();
-                err.start();
-                retCode = proc.waitFor();
-                op = null;
-                err = null;
-            } catch (SecurityException sex) {
-                System.out.println("Permission error invoking Javadoc");
-                sex.printStackTrace();
-            } catch (IOException ioex) {
-                System.out.println("IO Error invoking Javadoc");
-                ioex.printStackTrace();
-            } catch (InterruptedException iex) {
-                // Do nothing
-            }
-            System.gc(); // Clean up after running Javadoc
-            return retCode;
-        }
-        
-        // Call Javadoc directly (this is only possible from J2SE1.4 onwards).
-        System.out.println("Javadoc command line arguments:");
-        for (int i = 0; i < args.length; i++) {
-            System.out.print(" " + args[i]);
-        }
-        System.out.println();
-        
+    public static int runAnt(String[] args) {
         String className = null;
+        Class c = null;
         try {
-            className = "com.sun.tools.javadoc.Main";
-            Class c = Class.forName(className);
-            Class[] methodArgTypes = new Class[3];
-            methodArgTypes[0] = String.class;
-            methodArgTypes[1] = String.class;
-            methodArgTypes[2] = args.getClass();
-            Method javaDocMethod = c.getMethod("execute", methodArgTypes);
-            Object[] methodArgs = new Object[3];
-            methodArgs[0] = programName;
-            methodArgs[1] = defaultDocletClassName;
-            methodArgs[2] = args;
-            // The object can be null because the method is static
-            Integer res = (Integer)javaDocMethod.invoke(null, methodArgs);
-            System.gc(); // Clean up after running Javadoc
-            return res.intValue();
+            className = "org.apache.tools.ant.Main";
+            c = Class.forName(className);
         } catch (ClassNotFoundException e1) {
-            System.err.println("Error: class \"" + className + "\"not found");
-            e1.printStackTrace();
+            System.err.println("Error: ant.jar not found on the classpath");
+            return -1;
+        }
+        try {
+            Class[] methodArgTypes = new Class[1];
+            methodArgTypes[0] = args.getClass();
+            Method mainMethod = c.getMethod("main", methodArgTypes);
+            Object[] methodArgs = new Object[1];
+            methodArgs[0] = args;
+            // The object can be null because the method is static
+            Integer res = (Integer)mainMethod.invoke(null, methodArgs);
+            System.gc(); // Clean up after running ANT
+            return res.intValue();
         } catch (NoSuchMethodException e2) {
-            System.err.println("Error: method \"execute\" not found");
+            System.err.println("Error: method \"main\" not found");
             e2.printStackTrace();
         } catch (IllegalAccessException e4) {
             System.err.println("Error: class not permitted to be instantiated");
             e4.printStackTrace();
         } catch (InvocationTargetException e5) {
-            System.err.println("Error: method \"execute\" could not be invoked");
+            System.err.println("Error: method \"main\" could not be invoked");
             e5.printStackTrace();
         } catch (Exception e6) {
             System.err.println("Error: ");
             e6.printStackTrace();
         }
-        System.gc(); // Clean up after running Javadoc
+        System.gc(); // Clean up after running ANT
         return -1;
-    }
-
-    /**
-     * Create the lists of top-level directories in the given source
-     * directories.
-     *
-     * @return A String with the top-level directories separated by colons,
-     *         or null if none are found.
-     */
-    public static String getTopDirs(String dirName) {
-        String res = null;
-        boolean firstPkg = true;
-        File dir = new File(dirName);
-        if (dir.isDirectory()) {
-            String[] packages = dir.list();
-            for (int i = 0; i < packages.length; i++) {
-                File potentialPkg = new File(dir + JDiff.DIR_SEP + packages[i]);
-                if (potentialPkg.isDirectory() && packages[i].compareTo("CVS") != 0) {
-                    if (firstPkg) {
-                        res = packages[i];
-                        firstPkg = false;
-                    } else {
-                        res += ":" + packages[i];
-                    }
-                }
-            }
-        }
-        return res;
     }
 
     /** 

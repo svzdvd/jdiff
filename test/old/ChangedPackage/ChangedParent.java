@@ -16,6 +16,7 @@ public class ChangedParent {
 
     /** OLD This method is removed from the parent. */
     public int OldParentMethod(int a) {
+        return 1;
     }
 
     /** OLD This field moves to its child. */

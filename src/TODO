@@ -2,6 +2,21 @@
 * JDiff Work Items *
 ********************
 
+For 1.0.6
+
+Review upcoming article and change the defaults to match expectations
+
+Remove all doc references to example.xml, Config.java and config.xsd.
+
+Complete build.xml files, and make them platform independent.
+
+Add docs necessary to ship ant.jar
+
+Document or update the documentation for how to use JDiff as a script
+
+Need to label files in CVS
+
+
 KNOWN BUGS
 ==========
 
@@ -10,11 +25,13 @@ Bugs for JDiff1.0.6
 
 BUG Work with crimson XML parser?
 
-Other Bugs
-----------
-
 BUG: Using classdoc to compare jar files suggests that the handling of
 classes with no packages is not correct. Temporarily disabled.
+
+BUG: nodocchanges should stop the "Text Changes" appearing in the navigation bar
+
+Other Bugs
+----------
 
 BUG: Handling of @link tags in the first sentence of comments is not as 
 general as it should be. See convertAtLinks() comments.
@@ -39,6 +56,11 @@ DESIGN
 
 Short Term:
 ----------
+
+ant.bat is a complex script for all windows platforms - could be useful
+
+icontrol and ant page at has helpful info for a JavaUI and ANT task
+http://icplus.sourceforge.net/dbc_example.html
 
 Synchronize option defaults with the article, e.g. doc changes
 
@@ -248,6 +270,10 @@ Maybe the table should be name and a row under it for the description , to stop 
 
 Add note that links in docdiffs may not necessarily work, since some of them
 are written expecting to be in documents in the Java API tree.
+
+Add a "having problems?" page?
+
+Add note about build.xml and ANT
 
 MISCELLANEOUS
 =============

@@ -180,7 +180,7 @@ public class HTMLStatistics {
                 h_.writeText("<TR>");
                 h_.writeText("  <TD ALIGN=\"center\">" + i + "</TD>");
                 h_.writeText("  <TD>" + (hist[i]/total) + "</TD>");
-                h_.writeText("  <TD><img alt=\"|\" src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
+                h_.writeText("  <TD><img alt=\"|\" src=\"../black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
                 h_.writeText("</TR>");
             }
         }
@@ -270,7 +270,7 @@ public class HTMLStatistics {
                 h_.writeText("<TR>");
                 h_.writeText("  <TD ALIGN=\"center\">" + i + "</TD>");
                 h_.writeText("  <TD>" + (hist[i]/total) + "</TD>");
-                h_.writeText("  <TD><img alt=\"|\" src=\"black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
+                h_.writeText("  <TD><img alt=\"|\" src=\"../black.gif\" height=20 width=" + (hist[i]*300/total) + "></TD>");
                 h_.writeText("</TR>");
             }
         }
