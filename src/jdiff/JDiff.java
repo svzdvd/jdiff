@@ -182,7 +182,7 @@ public class JDiff extends Doclet {
         // TODO Add a config file
         // TODO Define the packages more easily
 
-        // Create three separate String[] argument objects for Javadoc
+        // Create two separate String[] argument objects for Javadoc
         List oldJavaDocArgs = new ArrayList();
         oldJavaDocArgs.add("-private");
         oldJavaDocArgs.add("-excludeclass");
@@ -233,20 +233,23 @@ public class JDiff extends Doclet {
         String defaultDocletClassName = "jdiff.JDiff";
 
         // First generate the XML for the old API
+        System.out.println();
         System.out.println("JDiff: Step 1 of 3. Creating XML representation of the old API");
         int rc = runJavadoc(programName, defaultDocletClassName, oldJavaDocArgsStr);
         if (rc != 0)
             return;
 
         // Then generate the XML for the new API
-        System.out.println("JDiff: Step 2 of 3. reating XML representation of the old API");
+        System.out.println();
+        System.out.println("JDiff: Step 2 of 3. Creating XML representation of the old API");
         int rc2 = runJavadoc(programName, defaultDocletClassName, newJavaDocArgsStr);
         if (rc2 != 0)
             return;
 
         // Finally use the two XML files to generate the HTML report of 
         // the differences between the two APIs. 
-        System.out.println("JDiff: Step 3 of 3. Comparing APIs");
+        System.out.println();
+        System.out.println("JDiff: Step 3 of 3. Comparing APIs and generating the HTML report");
         JDiff.compareAPIs = true;
         JDiff.writeXML = false;
         // This doesn't call Javadoc, so set the variables directly.
