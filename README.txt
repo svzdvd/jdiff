@@ -57,3 +57,9 @@ Many thanks to the reviewers at Sun and Vitria who gave feedback on early
 versions of JDiff output, and also to the distillers of Laphroaig, and to
 Arturo Fuente for his consistently fine cigars which helped inspire
 much of this work.
+
+NOTE: 
+
+If you are looking for a generalized diff tool for XML, try diffmk from
+
+http://wwws.sun.com/software/xml/developers/diffmk/
