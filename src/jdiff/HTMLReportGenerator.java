@@ -268,11 +268,14 @@ public class HTMLReportGenerator {
             String newPkgRef = pkgDocRef;
             if (oldDocPrefix != null)
                 oldPkgRef = oldDocPrefix + oldPkgRef;
-            if (newDocPrefix != null)
-                newPkgRef = newDocPrefix + newPkgRef;
+            else 
+                oldPkgRef = null;
+            newPkgRef = newDocPrefix + newPkgRef;
             if (oldPkgRef != null) 
                 pkgDiff.documentationChange_ += "<A HREF=\"" + oldPkgRef +
                     ".html#package_description\" target=\"_self\"><tt>old</tt></A> to ";
+            else
+                pkgDiff.documentationChange_ += "<tt>old</tt> to ";
             pkgDiff.documentationChange_ += "<A HREF=\"" + newPkgRef + 
                 ".html#package_description\" target=\"_self\"><tt>new</tt></A>. ";
             writeText(pkgDiff.documentationChange_);
@@ -1114,7 +1117,7 @@ public class HTMLReportGenerator {
         }
         String shortType = simpleName(type);
         if (linkType == 0) {
-            if (oldDocPrefix != null) {
+            if (oldDocPrefix == null) {
                 // No link
                 reportFile.print("  <nobr>" + shownClassName);
                 emitTypeWithParens(shortType);
@@ -1131,15 +1134,19 @@ public class HTMLReportGenerator {
             if (className.indexOf('.') != -1) {
                 memberRef = pkgName + ".";
                 memberRef = memberRef.replace('.', '/');
-                if (useOld)
+                if (useOld) {
+                    // oldDocPrefix is non-null at this point
                     memberRef = oldDocPrefix + memberRef + className;
-                else
+                } else {
                     memberRef = newDocPrefix + memberRef + className;
+                }
             } else {
-                if (useOld)
+                if (useOld) {
+                    // oldDocPrefix is non-null at this point
                     memberRef = oldDocPrefix + memberRef;
-                else
+                } else {
                     memberRef = newDocPrefix + memberRef;
+                }
             }
             reportFile.print("  <nobr><A HREF=\"" + memberRef + ".html#" + className +
                              "(" + type + ")\" target=\"_top\"><tt>" + shownClassName + "</tt></A>");
@@ -1266,15 +1273,19 @@ public class HTMLReportGenerator {
             if (className.indexOf('.') != -1) {
                 memberRef = pkgName + ".";
                 memberRef = memberRef.replace('.', '/');
-                if (useOld)
+                if (useOld) {
+                    // oldDocPrefix is non-null at this point
                     memberRef = oldDocPrefix + memberRef + className;
-                else
+                } else {
                     memberRef = newDocPrefix + memberRef + className;
+                }
             } else {
-                if (useOld)
+                if (useOld) {
+                    // oldDocPrefix is non-null at this point
                     memberRef = oldDocPrefix + memberRef;
-                else
+                } else {
                     memberRef = newDocPrefix + memberRef;
+                }
             }
             reportFile.print("  <nobr>");
             emitType(shortReturnType);

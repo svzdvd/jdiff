@@ -22,7 +22,8 @@ public class JDiff extends Doclet {
      * @return true if document generation succeeds
      */
     public static boolean start(RootDoc root) {
-        System.out.println("JDiff: doclet started ...");
+        if (root != null)
+            System.out.println("JDiff: doclet started ...");
         JDiff jd = new JDiff();
         return jd.startGeneration(root);
     }
@@ -148,10 +149,23 @@ public class JDiff extends Doclet {
      * or later is implied.
      */
     public static void main(String[] args) {
-        // TODO the fixed arguments below work for the test cases only
-        // TODO echo out the arguments for ease of use
+        if (args.length != 4) {
+            System.out.println("Usage: jdiff jdiff.JDiff <old product name> <old source directory> <new product name> <new source directory>");
+            System.out.println("e.g. jdiff jdiff.JDiff SuperProduct1.0 C:\\jdiff\\examples\\SuperProduct1.0 SuperProduct2.0 C:\\jdiff\\examples\\SuperProduct2.0");
+            return;
+        }
+        String oldProductName = args[0];
+        String oldSrcDirName = args[1];
+        String newProductName = args[2];
+        String newSrcDirName = args[3];
+
+        String oldPkgs = getTopDirs(oldSrcDirName);
+        String newPkgs = getTopDirs(newSrcDirName);
+
+        // TODO Add a config file
+
         // Create three separate String[] argument objects for Javadoc
-        String[] oldJavaDocArgs = new String[13];
+        String[] oldJavaDocArgs = new String[11];
         oldJavaDocArgs[0] = "-private";
         oldJavaDocArgs[1] = "-excludeclass";
         oldJavaDocArgs[2] = "private";
@@ -159,15 +173,13 @@ public class JDiff extends Doclet {
         oldJavaDocArgs[4] = "private";
         // JDiff arguments
         oldJavaDocArgs[5] = "-apiname";
-        oldJavaDocArgs[6] = "Old Test API";
+        oldJavaDocArgs[6] = oldProductName;
         oldJavaDocArgs[7] = "-sourcepath";
-        oldJavaDocArgs[8] = "old";
-        oldJavaDocArgs[9] = "RemovedPackage";
-        oldJavaDocArgs[10] = "ChangedPackage";
-        oldJavaDocArgs[11] = "ChangedPackageDoc";
-        oldJavaDocArgs[12] = "ChangedPackageDoc2";
+        oldJavaDocArgs[8] = oldSrcDirName;
+        oldJavaDocArgs[9] = "-subpackages";
+        oldJavaDocArgs[10] = oldPkgs;
 
-        String[] newJavaDocArgs = new String[13];
+        String[] newJavaDocArgs = new String[11];
         newJavaDocArgs[0] = "-private";
         newJavaDocArgs[1] = "-excludeclass";
         newJavaDocArgs[2] = "private";
@@ -175,28 +187,27 @@ public class JDiff extends Doclet {
         newJavaDocArgs[4] = "private";
         // JDiff arguments
         newJavaDocArgs[5] = "-apiname";
-        newJavaDocArgs[6] = "New Test API";
+        newJavaDocArgs[6] = newProductName;
         newJavaDocArgs[7] = "-sourcepath";
-        newJavaDocArgs[8] = "new";
-        newJavaDocArgs[9] = "AddedPackage";
-        newJavaDocArgs[10] = "ChangedPackage";
-        newJavaDocArgs[11] = "ChangedPackageDoc";
-        newJavaDocArgs[12] = "ChangedPackageDoc2";
+        newJavaDocArgs[8] = newSrcDirName;
+        newJavaDocArgs[9] = "-subpackages";
+        newJavaDocArgs[10] = newPkgs;
 
-        String[] diffJavaDocArgs = new String[12];
-        diffJavaDocArgs[0] = "-d";
-        diffJavaDocArgs[1] = "newdocs";
+        String[] diffJavaDocArgs = new String[6];
+//        diffJavaDocArgs[0] = "-d";
+//        diffJavaDocArgs[1] = "newdocs";
         // JDiff arguments
-        diffJavaDocArgs[2] = "-stats";
-        diffJavaDocArgs[3] = "-oldapi";
-        diffJavaDocArgs[4] = "Old Test API";
-        diffJavaDocArgs[5] = "-newapi";
-        diffJavaDocArgs[6] = "New Test API";
-        diffJavaDocArgs[7] = "-javadocold";
-        diffJavaDocArgs[8] = "../../olddocs/";
-        diffJavaDocArgs[9] = "-javadocnew";
-        diffJavaDocArgs[10] = "../../newdocs/";
-        diffJavaDocArgs[11] = "../lib/Null.java";
+        diffJavaDocArgs[0] = "-stats";
+        diffJavaDocArgs[1] = "-oldapi";
+        diffJavaDocArgs[2] = oldProductName;
+        diffJavaDocArgs[3] = "-newapi";
+        diffJavaDocArgs[4] = newProductName;
+//        diffJavaDocArgs[7] = "-javadocold";
+//        diffJavaDocArgs[8] = "../../olddocs/";
+//        diffJavaDocArgs[9] = "-javadocnew";
+///        diffJavaDocArgs[10] = "../../newdocs/";
+//        jdiffHome = jdiffHome.replace('\\', '/');
+//        diffJavaDocArgs[5] = jdiffHome + "/lib/Null.java";
 
         String javaVersion = System.getProperty("java.version");
         if (trace)
@@ -208,23 +219,32 @@ public class JDiff extends Doclet {
             return;
         }
 
+        String programName = "JDiff";
+        String defaultDocletClassName = "jdiff.JDiff";
+
         // First generate the XML for the old API
-        int rc = runJavadoc("JDiff", "jdiff.JDiff", oldJavaDocArgs);
+        int rc = runJavadoc(programName, defaultDocletClassName, oldJavaDocArgs);
         if (rc != 0)
             return;
 
         // Then generate the XML for the new API
-        int rc2 = runJavadoc("JDiff", "jdiff.JDiff", newJavaDocArgs);
+        int rc2 = runJavadoc(programName, defaultDocletClassName, newJavaDocArgs);
         if (rc2 != 0)
             return;
 
         // Finally use the two XML files to generate the HTML report of 
-        // the differences between the two APIs.
-        JDiff.compareAPIs = false;
+        // the differences between the two APIs. 
+        JDiff.compareAPIs = true;
         JDiff.writeXML = false;
-        int rc3 = runJavadoc("JDiff", "jdiff.JDiff", diffJavaDocArgs);
-        if (rc3 != 0)
-            return;
+        // This doesn't call Javadoc, so set the variables directly.
+        // TODO would be neater to use the Options class
+        HTMLReportGenerator.doStats = true; // -stats
+        oldProductName = oldProductName.replace(' ', '_');
+        JDiff.oldFileName = oldProductName + ".xml"; // -oldapi
+        newProductName = newProductName.replace(' ', '_');
+        JDiff.newFileName = newProductName + ".xml"; // -newapi
+        // Call the doclet start method directly.
+        start(null);
     }
 
     /** 
@@ -234,8 +254,14 @@ public class JDiff extends Doclet {
      * @return The integer return code from running Javadoc.
      */
     public static int runJavadoc(String programName, 
-                             String defaultDocletClassName, 
-                             String[] args) {
+                                 String defaultDocletClassName, 
+                                 String[] args) {
+        System.out.println("Javadoc command line arguments:");
+        for (int i = 0; i < args.length; i++) {
+            System.out.print(" " + args[i]);
+        }
+        System.out.println();
+        
         String className = null;
         try {
             className = "com.sun.tools.javadoc.Main";
@@ -269,6 +295,34 @@ public class JDiff extends Doclet {
             e6.printStackTrace();
         }
         return -1;
+    }
+
+    /**
+     * Create the lists of top-level directories in the given source
+     * directories.
+     *
+     * @return A String with the top-level directories separated by colons,
+     *         or null if none are found.
+     */
+    public static String getTopDirs(String dirName) {
+        String res = null;
+        boolean firstPkg = true;
+        File dir = new File(dirName);
+        if (dir.isDirectory()) {
+            String[] packages = dir.list();
+            for (int i = 0; i < packages.length; i++) {
+                File potentialPkg = new File(dir + JDiff.DIR_SEP + packages[i]);
+                if (potentialPkg.isDirectory() && packages[i].compareTo("CVS") != 0) {
+                    if (firstPkg) {
+                        res = packages[i];
+                        firstPkg = false;
+                    } else {
+                        res += ":" + packages[i];
+                    }
+                }
+            }
+        }
+        return res;
     }
 
     /** 

@@ -859,8 +859,7 @@ public class APIComparator {
     /** 
      * Given the name of the class, generate a link to a relevant page.
      * This was originally for inheritance changes, so the JDiff page could 
-     * be a 
-     * class changes page, or a section in a removed or added classes 
+     * be a class changes page, or a section in a removed or added classes 
      * table. Since there was no easy way to tell which type the link
      * should be, it is now just a link to the relevant Javadoc page.
      */
