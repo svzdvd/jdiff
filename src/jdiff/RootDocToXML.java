@@ -73,8 +73,7 @@ public class RootDocToXML {
             PrintWriter xsdFile = new PrintWriter(fos);
             // The contents of the api.xsd file
             xsdFile.println("<?xml version=\"1.0\" encoding=\"iso-8859-1\" standalone=\"no\"?>");
-            xsdFile.println("<xsd:schema ");
-            xsdFile.println("xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
+            xsdFile.println("<xsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">");
             xsdFile.println("");
             xsdFile.println("<xsd:annotation>");
             xsdFile.println("  <xsd:documentation>");
