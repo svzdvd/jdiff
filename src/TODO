@@ -67,9 +67,6 @@ Could tidy up the doc diffs page more - group classes together?
 
 Could add an index to changed documentation
 
-Could add links back to classes as well as the other elements from the 
-documentation differences pages
-
 Handle @docroot doc tags in Javadoc1.4
 
 Does Javadoc add "()" for links to methods with no arguments? Perhaps it does 

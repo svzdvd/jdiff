@@ -1,5 +1,7 @@
 1.0.5.
 Added links to previous and next packages and classes.
+Added links from documentation difference pages to classes, in
+addition to the existing links to constructors, methods and fields.
 Corrected somes uses of JDK/J2SE and the capitalization of Javadoc.
 
 1.0.4
