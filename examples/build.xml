@@ -15,7 +15,8 @@ SuperProduct.
 </target>
  
 <!-- ======================================================= -->
-<!-- Properties used when generating Javadoc and JDiff output  -->
+<!-- Properties used when generating Javadoc and JDiff output -->
+<!-- You must change some of these for this build file to work. -->
 <!-- ======================================================= -->
 <target name="init">
   <property name="app.name" value="JDiff Examples"/>
@@ -23,6 +24,9 @@ SuperProduct.
   <property name="JDIFF_INSTALL" value="c:\jdiff"/>
   <!-- The location of the source code for the APIs to be compared -->
   <property name="PROJECTBASE" value="c:\jdiff\examples"/>
+
+  <!-- NOTE: Change backslashes to forward slashes for non-Windows -->
+  <!-- systems. -->
 
   <!-- Values used for the old API -->
   <property name="OLD_SRC" value="${PROJECTBASE}\SuperProduct1.0"/>
