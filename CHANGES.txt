@@ -1,4 +1,7 @@
-1.0.10 - not yet released
+1.0.10 - 31st May 2004
+
+#954228 Feature request from Kohsuke Kawaguchi (and 2 years ago from
+ Steve Loughran!) to add a custom Ant Task for JDiff.
 
 #875516 Some HTML elements in user comments were being processed incorrectly. 
 Thanks to Jojo Dijamco for pointing this bug out.
@@ -15,7 +18,7 @@ C. Le Goff for finding this bug and providing the fix.
 made it hard to use an XML parser other than Xerces. Thanks to Brian
 Duff for finding this bug and providing the fix.
 
-Tested with j2sdk1.5.0 beta1.
+Tested with j2sdk1.5.0 beta1, released with examples built by JDK1.4.2.
 
 Updated copyright notices to 2004.
 

@@ -29,7 +29,7 @@
 </target>
 
 <target name="tgz" depends="release">
-    <tar tarfile="jdiff109.tar.gz" basedir=".." 
+    <tar tarfile="jdiff-1.0.10.tar.gz" basedir=".." 
          excludes="*.tar.gz" includes="jdiff/**" 
          compression="gzip"/>
 </target>
