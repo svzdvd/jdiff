@@ -33,7 +33,7 @@ public class XMLToAPI {
      *
      * @param filename The full name of the file containing the XML 
      *                 representing the API
-     * @param crateGlobalComments If set, then store possible comments
+     * @param createGlobalComments If set, then store possible comments
      * @param apiName The simple name of the API file. If -oldapidir and 
      *                -newapidir are not used, then this is the same as 
      *                the filename parameter
