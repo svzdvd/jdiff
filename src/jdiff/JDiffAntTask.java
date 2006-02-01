@@ -230,6 +230,7 @@ public class JDiffAntTask {
 	Javadoc jd = new Javadoc();
 	jd.setProject(project); // Vital, otherwise Ant crashes
 	jd.setTaskName(logMsg);
+	jd.setSource(getSource()); // So we can set the language version
 	jd.init();
 
 	// Set up some common parameters for the Javadoc task
@@ -425,6 +426,19 @@ public class JDiffAntTask {
 
     public boolean getStats() {
 	return this.stats;
+    }
+
+    /**
+     * Allow the source language version to be specified.
+     */
+    private String source = "1.4"; // Default is 1.4, so asserts will work
+    
+    public void setSource(String source) {
+        this.source = source;
+    }
+    
+    public String getSource() {
+        return source;
     }
 
     /* ***************************************************************** */
