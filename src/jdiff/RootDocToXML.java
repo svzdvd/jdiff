@@ -669,7 +669,7 @@ public class RootDocToXML {
         char[] sa = s.toCharArray();
         for (int i = 0; i < sa.length; i++) {
             char c = sa[i];
-            // TODO still have an issue with Unicode: 0xfc in java.lang.String.toUpperCase comments "Fahrvergn" && c != '§' && c != ''
+            // TODO still have an issue with Unicode: 0xfc in java.lang.String.toUpperCase comments
 //            if (Character.isDefined(c))
             if (Character.isLetterOrDigit(c))
                 continue;
