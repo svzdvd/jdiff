@@ -38,7 +38,7 @@ public class RootDocToXML {
             FileOutputStream fos = new FileOutputStream(tempFileName);
             outputFile = new PrintWriter(fos);
             System.out.println("JDiff: writing the API to file '" + tempFileName + "'...");
-            if (root.specifiedPackages().length != 0) {
+            if (root.specifiedPackages().length != 0 || root.specifiedClasses().length != 0) {
                 RootDocToXML apiWriter = new RootDocToXML();
                 apiWriter.emitXMLHeader();
                 apiWriter.logOptions();
@@ -222,7 +222,45 @@ public class RootDocToXML {
      * @param pd  an array of PackageDoc objects
      */
     public void processPackages(RootDoc root) {
-        PackageDoc[] pd = root.specifiedPackages();
+        PackageDoc[] specified_pd = root.specifiedPackages();
+	Map pdl = new TreeMap();
+        for (int i = 0; specified_pd != null && i < specified_pd.length; i++) {
+	    pdl.put(specified_pd[i].name(), specified_pd[i]);
+	}
+
+	// Classes may be specified separately, so merge their packages into the
+	// list of specified packages.
+        ClassDoc[] cd = root.specifiedClasses();
+	// This is lists of the specific classes to document
+	Map classesToUse = new HashMap();
+        for (int i = 0; cd != null && i < cd.length; i++) {
+	    PackageDoc cpd = cd[i].containingPackage();
+	    if (cpd == null && !packagesOnly) {
+		// If the RootDoc object has been created from a jar file
+		// this duplicates classes, so we have to be able to disable it.
+		// TODO this is still null?
+		cpd = root.packageNamed("anonymous");
+	    }
+            String pkgName = cpd.name();
+            String className = cd[i].name();
+	    if (trace) System.out.println("Found package " + pkgName + " for class " + className);
+	    if (!pdl.containsKey(pkgName)) {
+		if (trace) System.out.println("Adding new package " + pkgName);
+		pdl.put(pkgName, cpd);
+	    }
+
+	    // Keep track of the specific classes to be used for this package
+	    List classes;
+	    if (classesToUse.containsKey(pkgName)) {
+		classes = (ArrayList) classesToUse.get(pkgName);
+	    } else {
+		classes = new ArrayList();
+	    }
+	    classes.add(cd[i]);
+	    classesToUse.put(pkgName, classes);
+	}
+
+	PackageDoc[] pd = (PackageDoc[]) pdl.values().toArray(new PackageDoc[0]);
         for (int i = 0; pd != null && i < pd.length; i++) {
             String pkgName = pd[i].name();
             
@@ -237,7 +275,15 @@ public class RootDocToXML {
             int tagCount = pd[i].tags().length;
             if (trace) System.out.println("#tags: " + tagCount);
             
-            List classList = new LinkedList(Arrays.asList(pd[i].allClasses()));
+            List classList;
+	    if (classesToUse.containsKey(pkgName)) {
+		// Use only the specified classes in the package
+		System.out.println("Using the specified classes");
+		classList = (ArrayList) classesToUse.get(pkgName);
+	    } else {
+		// Use all classes in the package
+		classList = new LinkedList(Arrays.asList(pd[i].allClasses()));
+	    }
             Collections.sort(classList);
             ClassDoc[] classes = new ClassDoc[classList.size()];
             classes = (ClassDoc[])classList.toArray(classes);
@@ -245,21 +291,6 @@ public class RootDocToXML {
 
             addPkgDocumentation(root, pd[i], 2);
 
-            outputFile.println("</package>");
-        }
-
-        // Deal with classes which have no package.
-        // If the RootDoc object has been created from a jar file
-        // this duplicates classes, so need to be disable it.
-        ClassDoc[] cd = root.specifiedClasses();
-        if (!packagesOnly && cd != null && cd.length != 0) {
-            String pkgName = "anonymous";
-            outputFile.println("<package name=\"" + pkgName + "\">");
-            List classList = new LinkedList(Arrays.asList(cd));
-            Collections.sort(classList);
-            ClassDoc[] classes = new ClassDoc[classList.size()];
-            classes = (ClassDoc[])classList.toArray(classes);
-            processClasses(classes, pkgName);
             outputFile.println("</package>");
         }
     } // processPackages

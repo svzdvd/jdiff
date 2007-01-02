@@ -217,4 +217,23 @@ uses a custom Ant task for JDiff, named JDiffAntTask to build a simple report.
 </javac>
 </target>	
 	
+<!-- ======================================================= -->
+<!-- Use Javadoc with the JDiff doclet to generate an XML file -->
+<!-- representing a subset of the old API, showing specifying files not packages -->
+<!-- ======================================================= -->
+<target name="jdiff_old_api_subset" depends="create_javadoc_dirs">
+<javadoc
+  sourcefiles="${OLD_SRC}/com/acme/sp/SP.java, ${OLD_SRC}/com/acme/sp/SPImpl.java"
+  packagenames="${OLD_PACKAGES}">
+  <doclet name="jdiff.JDiff"
+    path="${JDIFF_HOME}/lib/jdiff.jar:${JDIFF_HOME}/lib/xerces.jar">
+    <param name="-apiname" value="${OLD_API}_subset"/>
+    <param name="-baseURI" value="${BASE_URI}"/>
+  </doclet>
+  <classpath>
+    <path refid="class.path"/>
+  </classpath>
+</javadoc>
+</target>
+
 </project>
