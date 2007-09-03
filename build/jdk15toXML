@@ -1,7 +1,0 @@
-# This would scan all the private classes and members too
-# javadoc -private -excludeclass private -excludemember private 
-
-# Remember to set the sourcepath to find the Java source files on your system
-export SRCPATH=/home/matt/jdktests/150b1
-
-/usr/j2sdk1.5.0/bin/javadoc -J-Xmx256m -doclet jdiff.JDiff -docletpath ../lib/jdiff.jar:../lib/xerces.jar -source 1.5 -apiname J2SE1.5.0b1 -sourcepath .:$SRCPATH @jdk150b1pkglist.txt
