@@ -5,10 +5,28 @@
 The JDiff Ant build file.
 </description>
 
-<target name="init" description="Properties used by other targets">
-  <property name="app.name" value="JDiff" />
-  <!-- Root of the JDiff hierarchy of directories -->
+<!-- ========================================================= -->
+<!-- Show how to use the Ant JDiff task with two versions of a -->
+<!-- product named SuperProduct.                               -->
+<!-- ========================================================= -->
+<target name="example" depends="dist">
+  <taskdef name="jdiff" 
+           classname="jdiff.JDiffAntTask" 
+           classpath="${dist.dir}/antjdiff.jar" />
+  <jdiff destdir="${reports.dir}/example" 
+         verbose="on"
+         stats="on"
+         docchanges="on">
+    <old name="Version 1">
+      <dirset dir="${examples.dir}/SuperProduct1.0" includes="com/**" />
+    </old>
+    <new name="Version 2">
+      <dirset dir="${examples.dir}/SuperProduct2.0" includes="com/**" />
+    </new>
+  </jdiff>
+</target>
 
+<target name="init" description="Properties used by other targets">
   <property name="src.dir" value="${basedir}/src" />
   <property name="test.dir" value="${basedir}/test" />
   <property name="examples.dir" value="${basedir}/examples" />
@@ -19,12 +37,12 @@ The JDiff Ant build file.
   <property name="lib.dir" value="${build.dir}/lib" />
   <property name="dist.dir" value="${build.dir}/dist" />
   <property name="reports.dir" value="${build.dir}/reports" />
+  <property name="xml.dir" value="${build.dir}/xml" />
 
   <path id="class.path">
     <pathelement location="${basedir}/lib/xerces.jar" />
   </path>
   
-  <property name="build.compiler"  value="javac1.4" />    
   <property name="debug" value="true" />
 </target>
 
@@ -34,6 +52,7 @@ The JDiff Ant build file.
   <mkdir dir="${testclasses.dir}" />
   <mkdir dir="${lib.dir}" />
   <mkdir dir="${reports.dir}" />
+  <mkdir dir="${xml.dir}" />
   <mkdir dir="${dist.dir}" />
 </target>
 
@@ -82,8 +101,8 @@ The JDiff Ant build file.
        includes="*jdiff/JDiffAntTask*.class" />
 </target>	
 
-
-<target name="dist" depends="jar, jar.anttask">
+<target name="dist" depends="jar, jar.anttask"
+        description="Create the distribution directory">
   <copy file="${lib.dir}/jdiff.jar" todir="${dist.dir}" />
   <copy file="${lib.dir}/antjdiff.jar" todir="${dist.dir}" />
   <copy file="${basedir}/lib/Null.java" todir="${dist.dir}" />
@@ -95,31 +114,14 @@ The JDiff Ant build file.
   <property name="JDIFF_HOME" value="${dist.dir}" />
 </target>	
 
-
-<!-- ========================================================= -->
-<!-- Show how to use the Ant JDiff task with two versions of a -->
-<!-- product named SuperProduct.                               -->
-<!-- ========================================================= -->
-<target name="example" depends="dist">
-  <taskdef name="jdiff" 
-           classname="jdiff.JDiffAntTask" 
-           classpath="${dist.dir}/antjdiff.jar" />
-  <jdiff destdir="${reports.dir}/example" 
-         verbose="on"
-         stats="on"
-         docchanges="on">
-    <old name="Version 1">
-      <dirset dir="${examples.dir}/SuperProduct1.0" includes="com/**" />
-    </old>
-    <new name="Version 2">
-      <dirset dir="${examples.dir}/SuperProduct2.0" includes="com/**" />
-    </new>
-  </jdiff>
+<target name="release" depends="clean, dist, unittest, example, fine_control"
+        description="Create a release of JDiff">
+  <echo message="TODO" />
 </target>
 
 <!-- ========================================================= -->
 <!-- Show how to use the Ant JDiff task with two versions of   -->
-<!-- the unit test packages and classes.                            -->
+<!-- the unit test packages and classes.                       -->
 <!-- ========================================================= -->
 <target name="unittest" depends="dist">
   <taskdef name="jdiff" 
@@ -140,7 +142,7 @@ The JDiff Ant build file.
 
 <!-- ========================================================= -->
 <!-- The targets below here show how JDiff can be run as a     -->
-<!-- series of Ant Javadoc targets for finer control           -->
+<!-- series of separate Ant Javadoc targets for finer control. -->
 <!-- ========================================================= -->
 
 <target name="jdiff.old" depends="dist"
@@ -151,6 +153,7 @@ The JDiff Ant build file.
     packagenames="RemovedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,NoPackage,NoPackageRemoved">
     <doclet name="jdiff.JDiff"
       path="${dist.dir}/jdiff.jar:${dist.dir}/xerces.jar">
+      <param name="-apidir" value="${xml.dir}" />
       <param name="-excludeclass" value="private" />
       <param name="-excludemember" value="private" />
       <param name="-apiname" value="Old Test API" />
@@ -170,6 +173,7 @@ The JDiff Ant build file.
     packagenames="AddedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,NoPackage,NoPackageAdded">
     <doclet name="jdiff.JDiff"
       path="${dist.dir}/jdiff.jar:${dist.dir}/xerces.jar">
+      <param name="-apidir" value="${xml.dir}" />
       <param name="-excludeclass" value="private" />
       <param name="-excludemember" value="private" />
       <param name="-apiname" value="New Test API" />
@@ -181,11 +185,12 @@ The JDiff Ant build file.
   </javadoc>		
 </target>
 
-<target name="jdiff.fine_control" depends="jdiff.old, jdiff.new, javadoc.old, javadoc.new, check.compile"
+<target name="fine_control" depends="jdiff.old, jdiff.new, javadoc.old, javadoc.new, check.compile"
         description="Use Javadoc with the JDiff doclet to compare the two XML 
                      files representing the old and new APIs, and generate an 
                      HTML report describing the differences between the two 
                      APIs.">
+  <mkdir dir="${build.dir}/reports/fine_control" />
   <javadoc 
     private="yes"
     sourcepath="${dist.dir}"
@@ -195,18 +200,24 @@ The JDiff Ant build file.
       path="${dist.dir}/jdiff.jar:${dist.dir}/xerces.jar">
       <param name="-oldapi" value="Old Test API" />
       <param name="-newapi" value="New Test API" />
-      <!-- We could use a file:/// prefix to refer to Javadoc files, or -->
-      <!-- we could make them relative to the changes directory.        -->
-      <!-- Remember to add a trailing forward slash.                    -->
-      <param name="-javadocold" value="${build.dir}/javadoc/old" />
-      <param name="-javadocnew" value="${build.dir}/javadoc/new" />
+      <param name="-oldapidir" value="${xml.dir}" />
+      <param name="-newapidir" value="${xml.dir}" />
+      <!-- Usually this would be a URL for existing Javadoc files. This 
+           could be file:/// as well for local files or a relative path. 
+           Don't forget the trailing forward slash.  -->
+      <param name="-javadocold" value="../../../javadoc/old/" />
+      <param name="-javadocnew" value="../../../javadoc/new/" />
+      <param name="-docchanges"/>
+      <param name="-stats"/>
     </doclet>
     <classpath>
       <path refid="class.path" />    
     </classpath>
   </javadoc>	
-  <!-- Copy one image file. -->
+  <!-- Copy image files as necessary. black.gif is only needed because -stats 
+       was used -->
   <copy file="${dist.dir}/background.gif" todir="${build.dir}/reports/fine_control" />
+  <copy file="${dist.dir}/black.gif" todir="${build.dir}/reports/fine_control" />
 </target>
 
 <target name="javadoc.old" depends="create.dirs" 

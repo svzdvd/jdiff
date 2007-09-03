@@ -7,29 +7,25 @@
 
 
 The JDiff doclet is used to generate a report describing the
-difference between two public Java APIs.For an example, run:
+difference between two public Java APIs.For an example, run "ant" and
+look at the HTML output in ./build/reports/example/changes.html 
 
-ant examples
+The page at ./build/reports/example/changes/com.acme.sp.SPImpl.html
+shows what a typical page of changes looks like. Other examples of
+using JDiff to compare the public APIs of J2SE1.3 and J2SE1.4 can be
+seen at http://www.jdiff.org
 
-and look at the output in build/reports/example/changes.html
-
-Other examples of using JDiff to compare the public APIs of J2SE1.3 and
-J2SE1.4 can be seen at http://www.jdiff.org 
-
-doc/jdiff.html contains the reference page for JDiff.  The latest
-version of JDiff can be downloaded at http://sourceforge.net/projects/javadiff
+The file doc/jdiff.html contains the reference page for JDiff.  The
+latest version of JDiff can be downloaded at: 
+http://sourceforge.net/projects/javadiff
 
 System Requirements
 -------------------
 
-JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4.0, 1.4.1, 1.4.2 and 
-J2SE1.5.0.
+JDiff has been tested with all releases of Java since J2SE1.2.
 
-You need to have xerces.jar (used for XML parsing) from the Apache
-project on your classpath, and also on the doclet path parameter for
-Javadoc. The version tested with was Xerces 1.4.2 and later.
-This file is included in this release, or may be downloaded from
-http://www.apache.org.
+License
+-------
 
 JDiff is licensed under the Lesser GNU General Public License (LGPL).
 See the file LICENSE.txt.
@@ -39,6 +35,8 @@ Acknowledgements
 
 JDiff uses Stuart D. Gathman's Java translation of Gene Myers' O(ND) 
 difference algorithm.
+
+JDiff uses Xerces 1.4.2 from http://www.apache.org.
 
 JDiff also includes a script to use the classdoc application from
 http://classdoc.sourceforge.net or http://www.jensgulden.de, by Jens

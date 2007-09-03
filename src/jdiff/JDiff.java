@@ -106,7 +106,7 @@ public class JDiff extends Doclet {
             System.out.println("JDiff: reading the comments in from file '" + commentsFileName + "'...");
             Comments existingComments = Comments.readFile(commentsFileName);
             if (existingComments == null)
-                System.out.println(" (this will be created)");
+                System.out.println(" (this file will be created)");
             
             // Generate an HTML report which summarises all the API differences.
             HTMLReportGenerator reporter = new HTMLReportGenerator();
