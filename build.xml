@@ -113,6 +113,7 @@ The JDiff Ant build file.
   <copy file="${basedir}/lib/xerces.jar" todir="${dist.dir}" />
   <copy file="${basedir}/lib/background.gif" todir="${dist.dir}" />
   <copy file="${basedir}/lib/black.gif" todir="${dist.dir}" />
+  <!-- Files below here are not necessary for reports -->
   <copy file="${basedir}/lib/new.gif" todir="${dist.dir}" />
   <copy file="${basedir}/lib/jdiff_logo.gif" todir="${dist.dir}" />
   <copy file="${basedir}/LICENSE.txt" todir="${dist.dir}" />
