@@ -33,17 +33,20 @@ The JDiff Ant build file.
 
   <property name="build.dir" value="build" />
   <property name="classes.dir" value="${build.dir}/classes" />
-  <property name="testclasses.dir" value="${build.dir}/test/classes" />
+  <property name="testclasses.dir" value="${build.dir}/testclasses" />
   <property name="lib.dir" value="${build.dir}/lib" />
-  <property name="dist.dir" value="${build.dir}/dist" />
+  <property name="version" value="1.1.0" />
+  <property name="dist.dir" value="${build.dir}/jdiff-${version}" />
   <property name="reports.dir" value="${build.dir}/reports" />
-  <property name="xml.dir" value="${build.dir}/xml" />
+  <property name="xml.dir" value="${build.dir}/xml_output" />
 
   <path id="class.path">
     <pathelement location="${basedir}/lib/xerces.jar" />
   </path>
   
   <property name="debug" value="true" />
+
+  <property name="JDIFF_HOME" value="${dist.dir}" />
 </target>
 
 <target name="create.dirs" depends="init">
@@ -102,7 +105,8 @@ The JDiff Ant build file.
 </target>	
 
 <target name="dist" depends="jar, jar.anttask"
-        description="Create the distribution directory">
+        description="Create the distribution directory suitable for packaging 
+                     for a release">
   <copy file="${lib.dir}/jdiff.jar" todir="${dist.dir}" />
   <copy file="${lib.dir}/antjdiff.jar" todir="${dist.dir}" />
   <copy file="${basedir}/lib/Null.java" todir="${dist.dir}" />
@@ -111,12 +115,15 @@ The JDiff Ant build file.
   <copy file="${basedir}/lib/black.gif" todir="${dist.dir}" />
   <copy file="${basedir}/lib/new.gif" todir="${dist.dir}" />
   <copy file="${basedir}/lib/jdiff_logo.gif" todir="${dist.dir}" />
-  <property name="JDIFF_HOME" value="${dist.dir}" />
+  <copy file="${basedir}/LICENSE.txt" todir="${dist.dir}" />
+  <copy file="${basedir}/README.txt" todir="${dist.dir}" />
+  <copy file="${basedir}/doc/jdiff.html" todir="${dist.dir}" />
+  <copy file="${examples.dir}/example.xml" todir="${dist.dir}" />
 </target>	
 
 <target name="release" depends="clean, dist, unittest, example, fine_control"
         description="Create a release of JDiff">
-  <echo message="TODO" />
+  <zip file="${build.dir}/jdiff-${version}.zip" basedir="${build.dir}" includes="jdiff-${version}/*"/>
 </target>
 
 <!-- ========================================================= -->

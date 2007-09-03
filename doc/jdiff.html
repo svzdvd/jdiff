@@ -80,8 +80,8 @@ shipped.
 </BLOCKQUOTE>
 
 <BLOCKQUOTE>
-There is an example of how to use JDiff in the <code>examples</code>
-directory.
+There is a working example of how to use JDiff in the <code>examples</code>
+directory of the source distribution.
 </BLOCKQUOTE>
 
 <hr>
@@ -89,10 +89,22 @@ directory.
 <A NAME="installation"></A>
 <H2>INSTALLATION</H2>
 
-TODO
+<BLOCKQUOTE>
+Unpack the jdiff-1.1.0.zip file. This will produce a directory named
+"jdiff-1.1.0" containing all that is necessary to use JDiff to produce
+your own reports.  See the file "example.xml" in that directory for an
+example of how to use the Ant JDiff task. The file "jdiff.html"
+contains more information about using JDiff.
+</BLOCKQUOTE>
 
 <BLOCKQUOTE>
-Note: The Ant JDiff task needs Ant 1.6.1 to work correctly.  Using Ant
+If you are using the complete source distribution, then you should be
+able to simply type "ant" at the top-level to produce a working
+example report.
+</BLOCKQUOTE>
+
+<BLOCKQUOTE>
+The Ant JDiff task needs Ant 1.6.1 to work correctly.  Using Ant
 1.5 will produce the error: 
 <pre>
 Error: two projects are needed, one &lt;old> and one &lt;new>
@@ -101,7 +113,7 @@ Error: two projects are needed, one &lt;old> and one &lt;new>
 
 <BLOCKQUOTE>
 No Windows registry entries are changed by JDiff. To remove JDiff,
-simply delete the directory where it is installed.
+simply delete the directory where it is was unpacked.
 </BLOCKQUOTE>
 
 <hr>

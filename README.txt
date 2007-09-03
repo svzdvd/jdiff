@@ -7,17 +7,20 @@
 
 
 The JDiff doclet is used to generate a report describing the
-difference between two public Java APIs.For an example, run "ant" and
-look at the HTML output in ./build/reports/example/changes.html 
+difference between two public Java APIs. 
 
-The page at ./build/reports/example/changes/com.acme.sp.SPImpl.html
-shows what a typical page of changes looks like. Other examples of
-using JDiff to compare the public APIs of J2SE1.3 and J2SE1.4 can be
-seen at http://www.jdiff.org
-
-The file doc/jdiff.html contains the reference page for JDiff.  The
-latest version of JDiff can be downloaded at: 
+The file jdiff.html contains the reference page for JDiff.  The latest
+version of JDiff can be downloaded at:
 http://sourceforge.net/projects/javadiff
+
+To use the Ant task on your own project, see example.xml. More examples
+of using JDiff to compare the public APIs of J2SE1.3 and J2SE1.4 can
+be seen at http://www.jdiff.org
+
+For an example with the source distribution, run "ant" and
+look at the HTML output in ./build/reports/example/changes.html 
+The page at ./build/reports/example/changes/com.acme.sp.SPImpl.html
+shows what a typical page of changes looks like. 
 
 System Requirements
 -------------------
