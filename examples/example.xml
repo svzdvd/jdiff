@@ -7,7 +7,8 @@ Creates a report in the directory "myreport". This will not run as shipped.
 </description>
 
 <target name="jdiff_report" depends="">
-  <!-- This variable is used by the Ant JDiff task -->
+  <!-- This variable is used by the Ant JDiff task. Set it to the
+       location where the jdiff package was unpacked -->
   <property name="JDIFF_HOME" value="/home/mdoar/jdiff-1.1.0" />
   <taskdef name="jdiff" 
            classname="jdiff.JDiffAntTask" 
@@ -17,9 +18,11 @@ Creates a report in the directory "myreport". This will not run as shipped.
          stats="on"
          docchanges="on">
     <old name="Version 1">
+      <!-- This is the location of your old source files -->
       <dirset dir="/home/mdoar/SuperProduct1.0" includes="com/**" />
     </old>
     <new name="Version 2">
+      <!-- This is the location of your new source files -->
       <dirset dir="/home/mdoar/SuperProduct2.0" includes="com/**" />
     </new>
   </jdiff>

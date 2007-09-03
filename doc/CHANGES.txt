@@ -1,11 +1,11 @@
+
 Released
 --------
 
 1.1.0 - 3rd September 2007
 
-Support for the new features of J2SE1.5 added. These are
-generics, enums, varargs and annotations.
-
+Support for generics (new with J2SE1.5) added. Still need to add
+support for enums, varargs and annotations.
 
 #1604749 fixed - Scanning only specified files is broken
 
