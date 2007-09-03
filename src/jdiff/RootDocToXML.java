@@ -1,6 +1,8 @@
 package jdiff;
 
 import com.sun.javadoc.*;
+import com.sun.javadoc.ParameterizedType;
+import com.sun.javadoc.Type;
 
 import java.util.*;
 import java.io.*;
@@ -321,14 +323,14 @@ public class RootDocToXML {
                 outputFile.print("  <class name=\"" + className + "\"");
             }
             // Add attributes to the class element
-            ClassDoc parent = cd[i].superclass();
+            Type parent = cd[i].superclassType();
             if (parent != null)
-                outputFile.println(" extends=\"" + parent.qualifiedName() + "\"");
+                outputFile.println(" extends=\"" + buildEmittableTypeString(parent) + "\"");
             outputFile.println("    abstract=\"" + cd[i].isAbstract() + "\"");
             addCommonModifiers(cd[i], 4);
             outputFile.println(">");
             // Process class members. (Treat inner classes as members.)
-            processInterfaces(cd[i].interfaces());
+            processInterfaces(cd[i].interfaceTypes());
             processConstructors(cd[i].constructors());
             processMethods(cd[i], cd[i].methods());
             processFields(cd[i].fields());
@@ -453,10 +455,10 @@ public class RootDocToXML {
      *
      * @param ifaces An array of ClassDoc objects
      */
-    public void processInterfaces(ClassDoc[] ifaces) {
+    public void processInterfaces(Type[] ifaces) {
         if (trace) System.out.println("PROCESSING INTERFACES, number=" + ifaces.length);
         for (int i = 0; i < ifaces.length; i++) {
-            String ifaceName = ifaces[i].qualifiedName();
+            String ifaceName = buildEmittableTypeString(ifaces[i]);
             if (trace) System.out.println("PROCESSING INTERFACE: " + ifaceName);
             outputFile.println("    <implements name=\"" + ifaceName + "\"/>");
         }//for
@@ -609,13 +611,33 @@ public class RootDocToXML {
      * @param type A Type object.
      */
     public void emitType(com.sun.javadoc.Type type) {
-	if (type == null)
-	    return;
-        String name = type.qualifiedTypeName();
-        if (name.startsWith("<<ambiguous>>"))
-            name = name.substring(13);
-        outputFile.print(name + type.dimension());
+        String name = buildEmittableTypeString(type);
+        if (name == null)
+            return;
+        outputFile.print(name);
     }
+
+    /**
+     * Build the emittable type name. The type may be an array and/or
+     * a generic type.
+     *
+     * @param type A Type object
+     * @return The emittable type name
+     */
+    private String buildEmittableTypeString(com.sun.javadoc.Type type) {
+        if (type == null) {
+    	    return null;
+        }
+      // type.toString() returns the fully qualified name of the type
+      // including the dimension and the parameters we just need to
+      // escape the generic parameters brackets so that the XML
+      // generated is correct
+      String name = type.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+      if (name.startsWith("<<ambiguous>>")) {
+          name = name.substring(13);
+      }
+      return name;
+    }    
 
     /**
      * Emit the XML header.

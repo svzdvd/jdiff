@@ -1790,19 +1790,50 @@ public class HTMLReportGenerator {
             return null;
         String res = "";
         boolean hasContent = false;
-        StringTokenizer st = new StringTokenizer(fqNames, ", ");
-        while (st.hasMoreTokens()) {
-            String fqName = st.nextToken();
+        // We parse the string step by step to ensure we take
+        // fqNames that contains generics parameter in a whole.
+        ArrayList<String> fqNamesList = new ArrayList<String>();
+        int genericParametersDepth = 0;
+        StringBuffer buffer = new StringBuffer();
+        for (int i=0; i<fqNames.length(); i++) {
+          char c = fqNames.charAt(i);
+          if ('<' == c) {
+            genericParametersDepth++;
+          }
+          if ('>' == c) {
+            genericParametersDepth--;
+          }
+          if (',' != c || genericParametersDepth > 0) {
+            buffer.append(c);
+          } else if (',' == c) {
+            fqNamesList.add(buffer.toString().trim());
+            buffer = new StringBuffer(buffer.length());
+          }
+        }
+        fqNamesList.add(buffer.toString().trim());
+        for (String fqName : fqNamesList) {
             // Assume this will be used inside a <nobr> </nobr> set of tags.
             if (hasContent)
                 res += ", "; 
             hasContent = true;
+            // Look for text within '<' and '>' in case this is a invocation of a generic
+            
+            int firstBracket = fqName.indexOf('<');
+            int lastBracket = fqName.lastIndexOf('>');
+            String genericParameter = null;
+            if (firstBracket != -1 && lastBracket != -1) {
+              genericParameter = simpleName(fqName.substring(firstBracket + 1, lastBracket));
+              fqName = fqName.substring(0, firstBracket);              
+            }
+            
             int lastDot = fqName.lastIndexOf('.');
             if (lastDot < 0) {
                 res += fqName; // Already as simple as possible
             } else {
                 res += fqName.substring(lastDot+1);
             }
+            if (genericParameter != null)
+              res += "&lt;" + genericParameter + "&gt;";            
         }
         return res;
     }

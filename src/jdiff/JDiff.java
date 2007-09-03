@@ -16,6 +16,9 @@ import java.lang.Process;
  */
 public class JDiff extends Doclet {
 
+    public static LanguageVersion languageVersion(){
+      return LanguageVersion.JAVA_1_5;
+    } 
     /**
      * Doclet-mandated start method. Everything begins here.
      *
@@ -106,7 +109,7 @@ public class JDiff extends Doclet {
             System.out.println("JDiff: reading the comments in from file '" + commentsFileName + "'...");
             Comments existingComments = Comments.readFile(commentsFileName);
             if (existingComments == null)
-                System.out.println(" (this file will be created)");
+                System.out.println(" (the comments file will be created)");
             
             // Generate an HTML report which summarises all the API differences.
             HTMLReportGenerator reporter = new HTMLReportGenerator();
@@ -271,7 +274,7 @@ public class JDiff extends Doclet {
 
     /** Details for where to find JDiff. */
     static final String jDiffLocation = "http://www.jdiff.org";
-    /** Contact email address for the JDiff maintainer. */
+    /** Contact email address for the primary JDiff maintainer. */
     static final String authorEmail = "mdoar@pobox.com";
 
     /** A description for HTML META tags. */

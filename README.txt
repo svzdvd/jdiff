@@ -25,7 +25,8 @@ shows what a typical page of changes looks like.
 System Requirements
 -------------------
 
-JDiff has been tested with all releases of Java since J2SE1.2.
+JDiff has been tested with all releases of Java since J2SE1.2 but
+releases of JDiff after 1.10.0 focus on JDK1.5.
 
 License
 -------

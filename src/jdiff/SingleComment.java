@@ -21,7 +21,9 @@ class SingleComment implements Comparable {
     public boolean isUsed_ = true;
 
     public SingleComment(String id, String text) {
-        id_ = id;
+        // Escape the commentID in case it contains "<" or ">"
+        // characters (generics)
+        id_ = id.replaceAll("<", "&lt;").replaceAll(">", "&gt;");;
         text_ = text;
     }
 
