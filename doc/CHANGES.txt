@@ -1,19 +1,16 @@
-Upcoming 
+Released
 --------
 
-(1.1.0)
+1.1.0 - 3rd September 2007
 
 Support for the new features of J2SE1.5 added. These are
 generics, enums, varargs and annotations.
 
-CVS Only
---------
 
-Patch from Stefan Aust so you can pass a "source" argument to the Ant
+#1604749 fixed - Scanning only specified files is broken
+
+Merged patch from Stefan Aust so you can pass a "source" argument to the Ant
 task to specify the language version, e.g. for dealing with asserts.
-
-Released
---------
 
 1.0.10 - 31st May 2004
 
