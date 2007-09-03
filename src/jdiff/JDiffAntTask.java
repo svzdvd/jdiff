@@ -432,7 +432,7 @@ public class JDiffAntTask {
     /**
      * Allow the source language version to be specified.
      */
-    private String source = "1.4"; // Default is 1.4, so asserts will work
+    private String source = "1.5"; // Default is 1.5, so generics will work
     
     public void setSource(String source) {
         this.source = source;

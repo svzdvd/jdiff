@@ -17,3 +17,4 @@ documentation. (510309).
 general as it should be. See convertAtLinks() comments.
 5) strictfp and strict modifiers are not checked for between
 APIs (547422).
+6) Changes in parameter names are not tracked.

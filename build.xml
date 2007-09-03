@@ -157,7 +157,7 @@ The JDiff Ant build file.
                      representing the old API">
   <javadoc 
     sourcepath="${test.dir}/old"
-    packagenames="RemovedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,NoPackage,NoPackageRemoved">
+    packagenames="RemovedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,ChangedPackageGenerics,NoPackage,NoPackageRemoved">
     <doclet name="jdiff.JDiff"
       path="${dist.dir}/jdiff.jar:${dist.dir}/xerces.jar">
       <param name="-apidir" value="${xml.dir}" />
@@ -177,7 +177,7 @@ The JDiff Ant build file.
                      representing the new API">
   <javadoc 
     sourcepath="${test.dir}/new"
-    packagenames="AddedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,NoPackage,NoPackageAdded">
+    packagenames="AddedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,ChangedPackageGenerics,NoPackage,NoPackageAdded">
     <doclet name="jdiff.JDiff"
       path="${dist.dir}/jdiff.jar:${dist.dir}/xerces.jar">
       <param name="-apidir" value="${xml.dir}" />
@@ -235,7 +235,7 @@ The JDiff Ant build file.
     sourcepath="${test.dir}/old"
     destdir="${build.dir}/javadoc/old"
     verbose="no"
-    packagenames="RemovedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,NoPackage,NoPackageRemoved" 
+    packagenames="RemovedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,ChangedPackageGenerics,NoPackage,NoPackageRemoved" 
     doctitle="Old Test API"
     windowtitle="JDiff Test Old API">
     <classpath>
@@ -252,7 +252,7 @@ The JDiff Ant build file.
     sourcepath="${test.dir}/new"
     destdir="${build.dir}/javadoc/new"
     verbose="no"
-    packagenames="AddedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,NoPackage,NoPackageAdded" 
+    packagenames="AddedPackage,ChangedPackage,ChangedPackageDoc,ChangedPackageDoc2,ChangedPackageGenerics,NoPackage,NoPackageAdded" 
     doctitle="New Test API"
     windowtitle="JDiff Test New API">
     <classpath>
