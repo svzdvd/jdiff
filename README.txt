@@ -1,34 +1,26 @@
 
                            JDiff Doclet
+                           ------------
 
                            Matthew Doar
-                          doar@pobox.com
+                          mdoar@pobox.com
+
 
 The JDiff doclet is used to generate a report describing the
-difference between two public Java APIs. For more information on
-the doclet and instructions for using it, see:
+difference between two public Java APIs.For an example, run:
 
-examples/README.html
+ant examples
 
-./jdiff.html contains the reference page for JDiff. 
+and look at the output in build/reports/example/changes.html
 
-Examples of using JDiff to compare the public APIs of J2SE1.3 and
-J2SE1.4 can be seen at: 
+Other examples of using JDiff to compare the public APIs of J2SE1.3 and
+J2SE1.4 can be seen at http://www.jdiff.org 
 
-http://www.jdiff.org 
+doc/jdiff.html contains the reference page for JDiff.  The latest
+version of JDiff can be downloaded at http://sourceforge.net/projects/javadiff
 
-or via http://javadiff.sourceforge.net/jdiff/jdkchanges/changes.html
-
-or via http://www.pobox.com/~doar and the SourceForge javadiff project 
-homepage.
-
-VERSION:
-
-The latest version of JDiff can be downloaded at
-
-http://sourceforge.net/projects/javadiff/
-
-SYSTEM REQUIREMENTS:
+System Requirements
+-------------------
 
 JDiff has been tested with J2SE1.2, J2SE1.3 and J2SE1.4.0, 1.4.1, 1.4.2 and 
 J2SE1.5.0.
@@ -42,25 +34,24 @@ http://www.apache.org.
 JDiff is licensed under the Lesser GNU General Public License (LGPL).
 See the file LICENSE.txt.
 
-ACKNOWLEDGEMENTS
+Acknowledgements
+----------------
 
 JDiff uses Stuart D. Gathman's Java translation of Gene Myers' O(ND) 
 difference algorithm.
 
-JDiff also has the option to use an ANT XML configuration file. ANT is
-a general-purpose build tool and can be found at http://jakarta.apache.org/ant
-
 JDiff also includes a script to use the classdoc application from
-http://classdoc.sourceforge.net or http://www.jensgulden.de, by Jens Gulden, mail@jensgulden.de,
-to call a doclet such as jdiff on a .jar file rather than on source.
+http://classdoc.sourceforge.net or http://www.jensgulden.de, by Jens
+Gulden, (mail@jensgulden.de), to call a doclet such as jdiff on a .jar
+file rather than on source.
 
 Many thanks to the reviewers at Sun and Vitria who gave feedback on early
 versions of JDiff output, and also to the distillers of Laphroaig, and to
 Arturo Fuente for his consistently fine cigars which helped inspire
 much of this work.
 
-NOTE: 
+
+Footnote:
 
 If you are looking for a generalized diff tool for XML, try diffmk from
-
 http://wwws.sun.com/software/xml/developers/diffmk/

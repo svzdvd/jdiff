@@ -1,37 +1,15 @@
-<!-- ======================================================= -->
-<!-- Test the use of the JDiff Ant task.                     -->
-<!-- ======================================================= -->
 
-<project name="tests" default="test_anttask" basedir=".">
-
-<target name="test_anttask">
-  <property name="JDIFF_HOME" value=".."/>
-  <taskdef name="jdiff" 
-           classname="jdiff.JDiffAntTask" 
-           classpath="${JDIFF_HOME}/lib/antjdiff.jar"/>
-
-  <jdiff destdir="test_jdiff_report" stats="on" docchanges="on" >
-    <old name="Old">
-      <dirset dir="old"/>
-    </old>
-    <new name="New">
-      <dirset dir="new"/> 
-    </new>
-  </jdiff>
-</target>
-
-<!-- 
 30 May 2004. Current results from: linklint -error -warn -index changes.html /@
 
-#------------------------------------------------------------
+#-
 # ERROR   1 missing html file
-#------------------------------------------------------------
+#-
 /New/ChangedField.html
  - Error in @link in Javadoc text for test/new/ChangedPackageDoc2/ChangedField.java:unchanged. Not seen unless -docchanges is used.
 
-#------------------------------------------------------------
+#-
 # ERROR   2 missing named anchors
-#------------------------------------------------------------
+#-
 /Old/ChangedPackage/ChangedChild.html#MovingField2
 /Old/ChangedPackage/ChangedChild.html#MovingMethod2()
 
@@ -46,7 +24,3 @@ though Javadoc didn't create them. but the links still work to the
 page for that class, so users will probably never notice.
 
 However, no problems at all are seen with the existing test/build.xml, so I have added this as a bug
--->
-
-
-</project>

@@ -29,10 +29,11 @@ public class JDiffAntTask {
 	    jdiffHome.compareTo("(not set)") == 0) {
 	    throw new BuildException("Error: invalid JDIFF_HOME property. Set it in the build file to the directory where jdiff is installed");
 	}
+        project.log(" JDiff home: " + jdiffHome, Project.MSG_INFO);
 
-	jdiffClassPath = jdiffHome + DIR_SEP + "lib" + DIR_SEP + "jdiff.jar" +
+	jdiffClassPath = jdiffHome + DIR_SEP + "jdiff.jar" +
 	    System.getProperty("path.separator") +
-	    jdiffHome + DIR_SEP + "lib" + DIR_SEP + "xerces.jar";
+	    jdiffHome + DIR_SEP + "xerces.jar";
 
 	// TODO detect and set verboseAnt
 
@@ -143,7 +144,7 @@ public class JDiffAntTask {
 	jd.setPrivate(true);
 
 	// Tell Javadoc which files we want to scan - a dummy file in this case
-	jd.setSourcefiles(jdiffHome + DIR_SEP + "lib" + DIR_SEP + "Null.java");
+	jd.setSourcefiles(jdiffHome + DIR_SEP + "Null.java");
 	
 	// Create the DocletInfo first so we have a way to use it to add params
 	DocletInfo dInfo = jd.createDoclet();
@@ -177,9 +178,9 @@ public class JDiffAntTask {
 	    // There are no arguments to this argument
 	    dInfo.createParam().setName("-stats");
 	    // We also have to copy two image files for the stats pages
-	    copyFile(jdiffHome + DIR_SEP + "lib" + DIR_SEP + "black.gif",
+	    copyFile(jdiffHome + DIR_SEP + "black.gif",
 		     getDestdir().toString() + DIR_SEP + "black.gif");
-	    copyFile(jdiffHome + DIR_SEP + "lib" + DIR_SEP + "background.gif",
+	    copyFile(jdiffHome + DIR_SEP + "background.gif",
 		     getDestdir().toString() + DIR_SEP + "background.gif");
 	}
 	
@@ -350,8 +351,8 @@ public class JDiffAntTask {
 
     /**
      * JDIFF_HOME must be set as a property in the Ant build file.
-     * It should be set to the root JDiff directory, ie. the one above 
-     * wherever jdiff/lib/jdiff.jar is found.
+     * It should be set to the root JDiff directory, ie. the one where 
+     * jdiff.jar is found.
      */
     private String jdiffHome = "(not set)";
 
