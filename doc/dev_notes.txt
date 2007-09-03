@@ -26,6 +26,11 @@ fi
 These are the CVS repository backups, only changed when something has changed:
 http://cvs.sourceforge.net/cvstarballs/javadiff-cvsroot.tar.bz2
 
+ftp upload.sourceforge.net
+anonymous
+cd incoming
+put jdiff-1.1.0.zip
+put jdiff-1.1.0-src.zip
 
 cvs tag JDIFF_1_1_0 .
 Creating a src package:
