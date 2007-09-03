@@ -17,7 +17,7 @@ import org.xml.sax.helpers.*;
  * All methods in this class for populating an API object are static.
  * 
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 public class XMLToAPI {
 

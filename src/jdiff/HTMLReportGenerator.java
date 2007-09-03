@@ -7,7 +7,7 @@ import java.io.*;
  * Emit HTML based on the changes between two sets of APIs.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 public class HTMLReportGenerator {
 

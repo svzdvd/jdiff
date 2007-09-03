@@ -9,7 +9,7 @@ import com.sun.javadoc.*;
  * which contain the changes in each package, and so on.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 public class APIDiff {
 

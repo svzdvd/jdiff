@@ -8,7 +8,7 @@ import java.io.*;
  * All indexes are links to JDiff-generated pages.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 public class HTMLIndexes {
 
@@ -1001,7 +1001,7 @@ public class HTMLIndexes {
  * Class used to produce indexes of packages and classes. 
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 class Index implements Comparable {
 

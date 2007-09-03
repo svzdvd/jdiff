@@ -12,7 +12,7 @@ import java.lang.Process;
  * Generates HTML describing the changes between two sets of Java source code.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com.
+ * @author Matthew Doar, mdoar@pobox.com.
  */
 public class JDiff extends Doclet {
 
@@ -272,7 +272,7 @@ public class JDiff extends Doclet {
     /** Details for where to find JDiff. */
     static final String jDiffLocation = "http://www.jdiff.org";
     /** Contact email address for the JDiff maintainer. */
-    static final String authorEmail = "doar@pobox.com";
+    static final String authorEmail = "mdoar@pobox.com";
 
     /** A description for HTML META tags. */
     static final String jDiffDescription = "JDiff is a Javadoc doclet which generates an HTML report of all the packages, classes, constructors, methods, and fields which have been removed, added or changed in any way, including their documentation, when two APIs are compared.";

@@ -11,7 +11,7 @@ import java.util.*;
  * comparison based upon everything that is known about this package.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 class PackageAPI implements Comparable {
 

@@ -8,7 +8,7 @@ import java.io.*;
  * Statistical information only appears if the -stats argument is used.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 public class HTMLStatistics {
 

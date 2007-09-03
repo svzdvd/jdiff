@@ -7,7 +7,7 @@ import java.io.*;
  * Reads in lines from an input stream and displays them.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com.
+ * @author Matthew Doar, mdoar@pobox.com.
  */
 class StreamReader extends Thread {
     /** The input stream. */

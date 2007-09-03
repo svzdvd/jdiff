@@ -22,7 +22,7 @@ import java.util.*;
  * were marked as removed and added because of changes other than signature.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 class MergeChanges {
 

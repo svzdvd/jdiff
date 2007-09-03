@@ -7,7 +7,7 @@ import java.util.*;
  * Class to generate colored differences between two sections of HTML text.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 class Diff {
 

@@ -6,7 +6,7 @@ import java.util.*;
  * Class to compare two ClassDiff objects.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 class CompareClassPdiffs implements Comparator {
     /** 

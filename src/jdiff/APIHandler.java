@@ -14,7 +14,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Handle the parsing of an XML file and the generation of an API object.
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 class APIHandler extends DefaultHandler {
 

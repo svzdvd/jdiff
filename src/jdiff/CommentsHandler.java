@@ -21,7 +21,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * "Empty elements must either have an end tag or the start tag must end with /&lt;". 
  *
  * See the file LICENSE.txt for copyright details.
- * @author Matthew Doar, doar@pobox.com
+ * @author Matthew Doar, mdoar@pobox.com
  */
 class CommentsHandler extends DefaultHandler {
 
