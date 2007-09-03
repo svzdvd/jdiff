@@ -7,6 +7,8 @@ ssh -l mdoar javadiff.sourceforge.net
 scp jdkchanges.zip mdoar@javadiff.sourceforge.net:/home/groups/j/ja/javadiff/htdocs/ 
 scp jdkchanges.zip mdoar@jdiff.sourceforge.net:/home/groups/j/jd/jdiff/htdocs/ 
 
+scp index.html mdoar@javadiff.sourceforge.net:/home/users/m/md/mdoar/jdiff/htdocs
+
 crontab when logged in as mdoar in /home/users/m/md/mdoar:
 0 1 * * * /home/users/m/md/mdoar/nightly.sh > /dev/null
 
