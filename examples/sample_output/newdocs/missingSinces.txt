@@ -1,1 +1,0 @@
-OK: com.acme.sp.SPImpl Method flushTable(com.acme.sp.SP)
