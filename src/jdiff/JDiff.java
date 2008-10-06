@@ -283,7 +283,7 @@ public class JDiff extends Doclet {
     static final String jDiffKeywords = "diff, jdiff, javadiff, java diff, java difference, API difference, difference between two APIs, API diff, Javadoc, doclet";
 
     /** The current JDiff version. */
-    static final String version = "1.1.0";
+    static final String version = "1.1.1";
 
     /** The current JVM version. */
     static String javaVersion = System.getProperty("java.version");

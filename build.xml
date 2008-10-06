@@ -35,7 +35,7 @@ The JDiff Ant build file.
   <property name="classes.dir" value="${build.dir}/classes" />
   <property name="testclasses.dir" value="${build.dir}/testclasses" />
   <property name="lib.dir" value="${build.dir}/lib" />
-  <property name="version" value="1.1.0" />
+  <property name="version" value="1.1.1" />
   <property name="dist.dir" value="${build.dir}/jdiff-${version}" />
   <property name="reports.dir" value="${build.dir}/reports" />
   <property name="xml.dir" value="${build.dir}/xml_output" />

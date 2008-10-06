@@ -1,5 +1,5 @@
 
-				JDiff 1.1.0
+				JDiff 1.1.1
 
 Known limitations, features and bugs which aren't likely to get fixed
 soon are listed here. There is another list of smaller gripes in src/TODO.

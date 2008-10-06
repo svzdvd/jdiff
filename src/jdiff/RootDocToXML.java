@@ -632,7 +632,10 @@ public class RootDocToXML {
       // including the dimension and the parameters we just need to
       // escape the generic parameters brackets so that the XML
       // generated is correct
-      String name = type.toString().replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+      String name = type.toString().
+                         replaceAll("&", "&amp;").
+                         replaceAll("<", "&lt;").
+                         replaceAll(">", "&gt;");
       if (name.startsWith("<<ambiguous>>")) {
           name = name.substring(13);
       }

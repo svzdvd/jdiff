@@ -2,6 +2,11 @@
 Released
 --------
 
+1.1.1 - 3rd October 2008
+
+Patch for 1990278 (the xml report doesn't escape & in type names) from
+owenomalley included.
+
 1.1.0 - 3rd September 2007
 
 Support for generics (new with J2SE1.5) added. Still need to add
