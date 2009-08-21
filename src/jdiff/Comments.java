@@ -247,13 +247,13 @@ public class Comments {
         ref = ref.replace('.', '/');        
         
         for (int i=0; i < text.length(); i++) {
-	    char c = text.charAt( i);
-	    char nextChar = i < text.length()-1 ? text.charAt( i+1) : (char)-1;
+	    char c = text.charAt(i);
+	    char nextChar = i < text.length()-1 ? text.charAt(i+1) : (char)-1;
 	    int remainingChars = text.length() - i;
           
 	    switch (state) {
 	    case NORMAL_TEXT:
-		if (c == '{' && remainingChars >= 5) {
+		if (c == '{' && remainingChars >= 6) {
 		    if ("{@link".equals(text.substring(i, i + 6))) {
 			state = IN_LINK;
 			identifier = null;
@@ -263,7 +263,7 @@ public class Comments {
 			continue;
 		    }
 		}
-		result.append( c);
+		result.append(c);
 		break;
 	    case IN_LINK:
 		if (Character.isWhitespace(nextChar)) continue;
